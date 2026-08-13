@@ -30,12 +30,12 @@ import csv
 import itertools
 import json
 import os
-import random
 import sys
 from multiprocessing import Pool
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from experiments.common import bootstrap_ratio as _bootstrap_ratio  # noqa: E402
 from sim.config import Config  # noqa: E402
 from sim.engine import run_config  # noqa: E402
 from sim.run import build_metadata  # noqa: E402
@@ -104,49 +104,6 @@ def build_jobs(base: Config, seeds: list[int],
             })
             jobs.append({"sweep": "pause", "config": cfg.to_dict()})
     return jobs
-
-
-def _bootstrap_ratio(numer_pairs: list[tuple[float, float]],
-                     denom_pairs: list[tuple[float, float]],
-                     n_boot: int = 5000, rng_seed: int = 12345) -> dict | None:
-    """Paired bootstrap over seeds for a ratio of mean differences.
-
-    The per-seed ratio has an unstable denominator, so its mean is heavy-tailed and its
-    standard deviation overstates the uncertainty of the quantity actually being
-    claimed. What is claimed is a population ratio -- "across this workload, what share
-    of the total saving does X deliver" -- which is a ratio of means, and whose
-    uncertainty has to come from resampling whole seeds rather than from averaging
-    ratios. Resampling is seeded so the interval is reproducible.
-    """
-    if not numer_pairs or not denom_pairs or len(numer_pairs) != len(denom_pairs):
-        return None
-    rng = random.Random(rng_seed)
-    n = len(numer_pairs)
-
-    def ratio(idx):
-        num = sum(numer_pairs[i][0] - numer_pairs[i][1] for i in idx)
-        den = sum(denom_pairs[i][0] - denom_pairs[i][1] for i in idx)
-        return num / den if den else None
-
-    point = ratio(range(n))
-    if point is None:
-        return None
-    draws = []
-    for _ in range(n_boot):
-        idx = [rng.randrange(n) for _ in range(n)]
-        val = ratio(idx)
-        if val is not None:
-            draws.append(val)
-    draws.sort()
-    if len(draws) < 100:
-        return {"point": point, "lo": None, "hi": None, "n_seeds": n}
-    return {
-        "point": point,
-        "lo": draws[int(0.025 * (len(draws) - 1))],
-        "hi": draws[int(0.975 * (len(draws) - 1))],
-        "n_seeds": n,
-        "n_boot": len(draws),
-    }
 
 
 def analyze(rows: list[dict], out_dir: str) -> dict:

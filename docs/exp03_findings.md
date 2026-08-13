@@ -52,14 +52,17 @@ does. The simulator now reports two:
 Closed loop, 15 seeds, concurrency 16 (pressure 1.27-1.36 throughout, so pressure is
 *not* what varies here):
 
-| median pause | GPU busy | LRU hit | tokens headroom | RM wall | RM gpu-time | conversion |
+| median pause | GPU busy | LRU hit | tokens headroom [95% CI] | RM wall | RM gpu-time | conversion |
 |---|---|---|---|---|---|---|
-| 0.5 s | 99.9% | 0.184 | 1.1% | 0.5% | 0.5% | 45% |
-| 1 s | 99.8% | 0.221 | 2.6% | 1.7% | 1.7% | 65% |
-| 2 s | 99.4% | 0.297 | 5.7% | 3.6% | 3.6% | 63% |
-| 5 s | 95.9% | 0.484 | 19.8% | 9.6% | 10.4% | 53% |
-| 10 s | 83.5% | 0.647 | 27.9% | 5.2% | 8.8% | 32% |
-| 30 s | 45.7% | 0.742 | 35.2% | **0.9%** | **7.2%** | 20% |
+| 0.5 s | 99.9% | 0.184 | 1.1% [0.3, 1.8] | 0.5% | 0.5% | 45% |
+| 1 s | 99.8% | 0.221 | 2.6% [1.9, 3.4] | 1.7% | 1.7% | 65% |
+| 2 s | 99.4% | 0.297 | 5.7% [4.4, 7.1] | 3.6% | 3.6% | 63% |
+| 5 s | 95.9% | 0.484 | 19.8% [17.0, 22.6] | 9.6% | 10.4% | 53% |
+| 10 s | 83.5% | 0.647 | 27.9% [23.7, 31.8] | 5.2% | 8.8% | 32% |
+| 30 s | 45.7% | 0.742 | 35.2% [34.3, 36.1] | **0.9%** | **7.2%** | 20% |
+
+All six intervals exclude zero, and they are tight — the closed loop has a 0% runaway
+rate at every pause, so its seeds are a single population rather than a mixture.
 
 **The dramatic version of Finding 4 was a property of wall-clock billing.** At a 30 s
 median pause, tool execution is most of a session's wall clock and no retention policy
@@ -86,14 +89,20 @@ arrivals. It could not, and the reason is worth more than the comparison would h
 
 At the calibrated rate, the seeds split into two populations:
 
-| median pause | median live | range across seeds | seeds that ran away |
-|---|---|---|---|
-| 0.5 s | 51.3 | 4.6 – 89.3 | 67% |
-| 1 s | 26.1 | 3.9 – 81.5 | 47% |
-| 2 s | 57.0 | 5.6 – 82.1 | 73% |
-| 5 s | 43.9 | 6.3 – 62.1 | 60% |
-| 10 s | 37.3 | 8.6 – 50.0 | 53% |
-| 30 s | 22.0 | 13.0 – 29.6 | **0%** |
+| median pause | median live | range across seeds | ran away | tokens headroom [95% CI] |
+|---|---|---|---|---|
+| 0.5 s | 51.3 | 4.6 – 89.3 | 67% | 0.2% [−0.1, 0.6] |
+| 1 s | 26.1 | 3.9 – 81.5 | 47% | 1.2% [0.5, 2.2] |
+| 2 s | 57.0 | 5.6 – 82.1 | 73% | 7.2% **[1.3, 20.1]** |
+| 5 s | 43.9 | 6.3 – 62.1 | 60% | 5.3% [2.9, 8.7] |
+| 10 s | 37.3 | 8.6 – 50.0 | 53% | 15.7% **[6.7, 28.2]** |
+| 30 s | 22.0 | 13.0 – 29.6 | **0%** | 34.3% [30.3, 38.6] |
+
+The intervals on the runaway rows are three to four times wider than the closed-loop
+intervals at the same pause. That width is not an estimator defect — it is the correct
+report of a bimodal mixture, and it is the quantitative version of the warning that
+those rows should not be compared against the closed loop. The one row with a 0% runaway
+rate is also the one with an interval comparable to the closed loop's.
 
 At the same offered load, one arrival realisation settles at ~5 live sessions while
 another runs away to ~89. There is no stable operating point in between: during
@@ -111,9 +120,11 @@ a threshold it does not recover.
   0% runaway rate and a live-session range of ±1. EXP01's numbers are all from the
   stable side of a system that has an unstable side.
 - Only the 30 s pause point is a valid open-vs-closed comparison, and there the two
-  agree: tokens headroom 34.3% open vs 35.2% closed, and GPU-time cost headroom 9.9%
-  open vs 7.2% closed. That is the one piece of evidence that the EXP01 conclusions are
-  not closed-loop artefacts, and it is a single point.
+  agree with overlapping intervals: tokens headroom **34.3% [30.3, 38.6] open against
+  35.2% [34.3, 36.1] closed**, and GPU-time cost headroom 9.9% open against 7.2% closed.
+  That is the one piece of evidence that the EXP01 conclusions are not closed-loop
+  artefacts, and it is a single point — but it is now a point with an interval around it
+  rather than two bare numbers that happened to look similar.
 - A "cache hit rate under load" figure for an open-loop agent workload near saturation
   is reporting a mixture of two regimes. Its mean is not a central tendency of anything.
 
@@ -127,4 +138,7 @@ a threshold it does not recover.
   admission and preemption rules is untested. Recompute-preemption in particular
   amplifies the feedback, and a swap-based preemption might not.
 - The open-vs-closed agreement rests on one pause point.
-- Bootstrap intervals were not computed for this experiment.
+- The open-loop intervals are wide by construction on the runaway rows. Widening them
+  further with more seeds would not help: sampling a bimodal mixture more finely
+  estimates the mixture better, not the operating point, because there is no single
+  operating point to estimate.

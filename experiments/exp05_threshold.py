@@ -33,9 +33,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments.common import (  # noqa: E402
+    bootstrap_ratio as _bootstrap_ratio,
     default_workers, read_results, run_grid, write_results,
 )
-from experiments.exp01_ttl_falsify import _bootstrap_ratio  # noqa: E402
 from experiments.exp04_predictor import CONCURRENCY, predict_table, train  # noqa: E402
 from sim.config import Config  # noqa: E402
 from sim.workload import generate_sessions  # noqa: E402

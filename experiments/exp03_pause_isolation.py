@@ -52,7 +52,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments.common import (  # noqa: E402
-    default_workers, read_results, run_grid, run_job, write_results,
+    bootstrap_ratio, default_workers, read_results, run_grid, run_job, write_results,
 )
 from sim.config import Config  # noqa: E402
 
@@ -182,14 +182,29 @@ def analyze(rows: list[dict], out_dir: str) -> dict:
                  "live_min": min(lru_live) if lru_live else None,
                  "live_max": max(lru_live) if lru_live else None,
                  "hit_rate_lru": mean_of("lru", "token_hit_rate")}
+        def by_seed(policy, metric):
+            return {r["seed"]: r[metric] for r in group if r["policy"] == policy}
+
         for metric in ("prefill_tokens_computed", "rm_per_1k_calls",
                        "rm_gputime_per_1k_calls", "ttft_p95"):
             lru = mean_of("lru", metric)
             bel = mean_of("belady", metric)
             term = mean_of("oracle_terminal", metric)
+
+            # Paired over seeds. In the open-loop arm the seeds are a bimodal mixture of
+            # runs that settled and runs that ran away, so the interval there is wide by
+            # construction -- and that width is the honest report of what a mixture
+            # supports, not a defect of the estimator.
+            lru_s, bel_s = by_seed("lru", metric), by_seed("belady", metric)
+            paired = sorted(set(lru_s) & set(bel_s))
+            headroom_ci = bootstrap_ratio(
+                [(lru_s[sd], bel_s[sd]) for sd in paired],
+                [(lru_s[sd], 0.0) for sd in paired]) if paired else None
+
             entry[metric] = {
                 "lru": lru, "belady": bel, "oracle_terminal": term,
                 "headroom_frac": (lru - bel) / lru if lru else 0.0,
+                "headroom_ci": headroom_ci,
                 "terminal_share": ((lru - term) / (lru - bel))
                                   if lru and lru > bel else None,
             }
@@ -215,25 +230,33 @@ def print_report(report: dict) -> None:
         if not pts:
             continue
         print(f"\n  {loop} loop -- {note}")
-        print(f"  {'pause':>6} {'busy':>6} {'press':>6} {'live':>6} {'range':>13} "
-              f"{'runaway':>8} {'hit':>6} | "
-              f"{'tokens head%':>13} {'RM wall%':>10} {'RM gpu%':>9} {'TTFT head%':>11}")
-        print("  " + "-" * 116)
+        print(f"  {'pause':>6} {'busy':>6} {'press':>6} {'live':>6} {'runaway':>8} "
+              f"{'hit':>6} | {'tokens head% [95% CI]':>24} "
+              f"{'RM wall%':>10} {'RM gpu%':>9} {'TTFT%':>8}")
+        print("  " + "-" * 108)
         for p in pts:
-            rng = (f"[{p['live_min']:>5.1f},{p['live_max']:>5.1f}]"
-                   if p.get("live_min") is not None else " " * 13)
+            tok = p["prefill_tokens_computed"]
+            ci = tok.get("headroom_ci") or {}
+            if ci.get("lo") is None:
+                tok_txt = f"{100*tok['headroom_frac']:>10.1f}%"
+            else:
+                sig = " " if (ci["lo"] <= 0 <= ci["hi"]) else "*"
+                tok_txt = (f"{100*tok['headroom_frac']:>7.1f}% "
+                           f"[{100*ci['lo']:>5.1f},{100*ci['hi']:>5.1f}]{sig}")
             print(f"  {p['pause_median_s']:>6.1f} {p['gpu_busy_frac']:>6.3f} "
                   f"{p['pressure_measured']:>6.2f} {p['median_live_sessions']:>6.1f} "
-                  f"{rng:>13} {100*p['runaway_frac']:>7.0f}% "
-                  f"{p['hit_rate_lru']:>6.3f} | "
-                  f"{100*p['prefill_tokens_computed']['headroom_frac']:>12.1f}% "
+                  f"{100*p['runaway_frac']:>7.0f}% "
+                  f"{p['hit_rate_lru']:>6.3f} | {tok_txt:>24} "
                   f"{100*p['rm_per_1k_calls']['headroom_frac']:>9.1f}% "
                   f"{100*p['rm_gputime_per_1k_calls']['headroom_frac']:>8.1f}% "
-                  f"{100*p['ttft_p95']['headroom_frac']:>10.1f}%")
-    print("\n'live' is the median over seeds, 'range' their spread. Where runaway is "
-          "non-zero the seeds\nare a bimodal mixture -- some settled at the offered load "
-          "and some did not -- so no single\nnumber summarises that row and it must not "
-          "be compared against the closed-loop block.")
+                  f"{100*p['ttft_p95']['headroom_frac']:>7.1f}%")
+    print("\n'live' is the median over seeds. Where runaway is non-zero the seeds are a "
+          "bimodal\nmixture -- some settled at the offered load and some did not -- so "
+          "no single number\nsummarises that row and it must not be compared against "
+          "the closed-loop block. The\nwide intervals on those rows are the honest "
+          "consequence, not an estimator defect.")
+    print("\n'*' marks a token headroom whose 95% interval excludes zero. Intervals are "
+          "paired\nbootstrap over seeds, 5000 resamples, seeded.")
     print("\n'RM wall%' bills wall clock (reserved box). 'RM gpu%' bills only seconds "
           "the GPU worked\n(shared/autoscaled). Where they diverge, the conclusion "
           "depends on the billing model,\nnot on the cache.")

@@ -26,7 +26,7 @@ are kept in `results/exp0*` and should not be quoted.
 | experiment | question | verdict |
 |---|---|---|
 | [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
-| [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | headroom rides the pressure axis everywhere; absolute hit rate does not, above pressure 1.0 |
+| [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | headroom rides the pressure axis, but at the peak the agreement is only resolved to ±11 pp; absolute hit rate does not transfer above pressure 1.0 |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
 | [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | about 50% — 70% of what a perfect termination oracle delivers, +7.4% [+2.3, +12.6] over LRU. Ranking by predicted *pause length* is catastrophic at any accuracy |
 | [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
@@ -121,6 +121,8 @@ Five rules, all load-bearing:
 3. **Report pressure, not concurrency.** `pressure = live sessions x context blocks /
    pool blocks`. Below 1.0 the results transfer between hardware configurations; above
    it, concurrency has to be stated too. See [EXP02](docs/exp02_findings.md).
+   Every experiment reports 95% paired-bootstrap intervals over seeds, and every
+   headline in this project that was ever quoted without one turned out to be wrong.
 4. **LRU is not a naive baseline.** Age correlates with termination on this workload,
    so LRU is already exploiting a real signal. Any arm that overrides its ordering must
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).

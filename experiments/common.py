@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import random
 import json
 import os
 import sys
@@ -102,3 +103,81 @@ def read_results(out_dir: str) -> list[dict]:
 
 def default_workers() -> int:
     return max(1, (os.cpu_count() or 4) - 2)
+
+
+def bootstrap_ratio(numer_pairs: list[tuple[float, float]],
+                     denom_pairs: list[tuple[float, float]],
+                     n_boot: int = 5000, rng_seed: int = 12345) -> dict | None:
+    """Paired bootstrap over seeds for a ratio of mean differences.
+
+    The per-seed ratio has an unstable denominator, so its mean is heavy-tailed and its
+    standard deviation overstates the uncertainty of the quantity actually being
+    claimed. What is claimed is a population ratio -- "across this workload, what share
+    of the total saving does X deliver" -- which is a ratio of means, and whose
+    uncertainty has to come from resampling whole seeds rather than from averaging
+    ratios. Resampling is seeded so the interval is reproducible.
+    """
+    if not numer_pairs or not denom_pairs or len(numer_pairs) != len(denom_pairs):
+        return None
+    rng = random.Random(rng_seed)
+    n = len(numer_pairs)
+
+    def ratio(idx):
+        num = sum(numer_pairs[i][0] - numer_pairs[i][1] for i in idx)
+        den = sum(denom_pairs[i][0] - denom_pairs[i][1] for i in idx)
+        return num / den if den else None
+
+    point = ratio(range(n))
+    if point is None:
+        return None
+    draws = []
+    for _ in range(n_boot):
+        idx = [rng.randrange(n) for _ in range(n)]
+        val = ratio(idx)
+        if val is not None:
+            draws.append(val)
+    draws.sort()
+    if len(draws) < 100:
+        return {"point": point, "lo": None, "hi": None, "n_seeds": n}
+    return {
+        "point": point,
+        "lo": draws[int(0.025 * (len(draws) - 1))],
+        "hi": draws[int(0.975 * (len(draws) - 1))],
+        "n_seeds": n,
+        "n_boot": len(draws),
+    }
+
+
+def bootstrap_stat(per_seed_rows: list, statistic, n_boot: int = 5000,
+                   rng_seed: int = 12345) -> dict | None:
+    """95% interval for an arbitrary statistic of a paired-over-seeds sample.
+
+    `per_seed_rows` is one entry per seed -- whatever `statistic` needs -- and whole
+    seeds are resampled together so that any pairing inside a seed is preserved. Used
+    for statistics that are not a ratio of differences, such as the spread across
+    conditions in EXP02, where the quantity of interest is a max-minus-min of means and
+    has no closed-form standard error.
+    """
+    n = len(per_seed_rows)
+    if n < 2:
+        return None
+    rng = random.Random(rng_seed)
+    point = statistic(per_seed_rows)
+    if point is None:
+        return None
+    draws = []
+    for _ in range(n_boot):
+        sample = [per_seed_rows[rng.randrange(n)] for _ in range(n)]
+        val = statistic(sample)
+        if val is not None:
+            draws.append(val)
+    if len(draws) < 100:
+        return {"point": point, "lo": None, "hi": None, "n_seeds": n}
+    draws.sort()
+    return {
+        "point": point,
+        "lo": draws[int(0.025 * (len(draws) - 1))],
+        "hi": draws[int(0.975 * (len(draws) - 1))],
+        "n_seeds": n,
+        "n_boot": len(draws),
+    }

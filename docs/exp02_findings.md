@@ -38,33 +38,48 @@ reaches each target pressure three different ways and measures whether they agre
 
 Disagreement between the three conditions at equal pressure:
 
-| target pressure | headroom mean | hit-rate spread | headroom spread |
+Disagreement between the three conditions, with 95% paired-bootstrap intervals over
+seeds (whole seeds resampled, the max-minus-min spread recomputed on each draw — the
+statistic has no closed-form standard error):
+
+| target pressure | headroom mean | headroom spread [95% CI] | hit-rate spread [95% CI] |
 |---|---|---|---|
-| 0.50 | 1.2% | 0.000 | 0.7 pp |
-| 0.70 | 9.0% | 0.014 | 5.9 pp |
-| 0.85 | **17.4%** | 0.071 | 5.3 pp |
-| 1.00 | 15.3% | 0.058 | **1.4 pp** |
-| 1.15 | 8.8% | 0.128 | 2.5 pp |
-| 1.30 | 5.0% | 0.153 | 2.7 pp |
-| 1.60 | 1.4% | 0.058 | 2.6 pp |
-| 2.00 | 0.5% | 0.013 | 1.0 pp |
+| 0.50 | 1.2% | 0.7 pp [0.3, 1.1] | 0.00 [0.00, 0.00] |
+| 0.70 | 9.0% | 5.9 pp [4.9, 7.2] | 0.00 [0.00, 0.00] |
+| 0.85 | **17.4%** | 5.3 pp **[1.7, 11.5]** | 0.07 [0.07, 0.07] |
+| 1.00 | 15.3% | 1.4 pp **[0.5, 7.3]** | 0.06 [0.04, 0.06] |
+| 1.15 | 8.8% | 2.5 pp [1.0, 5.3] | 0.13 [0.07, 0.15] |
+| 1.30 | 5.0% | 2.7 pp [2.1, 4.4] | 0.15 [0.12, 0.17] |
+| 1.60 | 1.4% | 2.6 pp [1.7, 3.4] | 0.06 [0.03, 0.10] |
+| 2.00 | 0.5% | 1.0 pp [0.5, 1.6] | 0.01 [0.00, 0.03] |
 
-The recalibrated run splits the answer more sharply than the first one did, and the two
-halves point in different directions:
+**The intervals change the reading, and they change it exactly where it matters.** An
+earlier draft of this document said "the spread never exceeds 5.9 pp, and is 1.4-2.7 pp
+through the whole pressured band", concluding that headroom transfers everywhere. That
+was a claim about point estimates. At pressure 0.85 and 1.00 — the two points where the
+headroom peaks and where the transfer claim is worth the most — the intervals reach
+**11.5 pp and 7.3 pp**. With 10 seeds the data is compatible with disagreement roughly
+twice as large as the point estimate suggests.
 
-**Headroom transfers everywhere.** The spread across the three conditions never exceeds
-5.9 pp, and is 1.4-2.7 pp through the whole pressured band. "Belady beats LRU by 17% at
-pressure 0.85" is a statement about the workload, not about a particular GPU.
+What survives:
 
-**Hit rate does not transfer above pressure 1.0.** The spread grows to 0.128 and 0.153 at
-pressures 1.15 and 1.30, and the direction is systematic: at equal pressure, *more
-concurrent sessions collapse harder*. Thrashing depends on how many ways the deficit is
-split, not only on how big the deficit is.
+**Headroom transfers, but not tightly enough to quote at the peak.** At pressures away
+from the peak the upper bounds are 1.1-5.3 pp, which is small against headrooms of
+5-9%. At the peak the upper bound is comparable to a third of the effect itself.
+"Belady beats LRU by about 17% at pressure 0.85, on any of three hardware
+configurations" is supportable; "and the three agree to within 5 pp" is not, at this
+seed count.
 
-That combination is convenient. The quantity this project actually claims -- how much a
-better policy is worth -- rides on the pressure axis cleanly. The quantity it merely
-reports as context -- absolute hit rate -- needs the concurrency stated alongside it
-once pressure exceeds 1.
+**Hit rate does not transfer above pressure 1.0**, and this part is firm. The spread
+grows to 0.13 [0.07, 0.15] and 0.15 [0.12, 0.17] at pressures 1.15 and 1.30, intervals
+well clear of the sub-0.01 spreads below saturation. The direction is systematic: at
+equal pressure, *more concurrent sessions collapse harder*. Thrashing depends on how
+many ways the deficit is split, not only on how big the deficit is.
+
+The asymmetry is still convenient for the project. The quantity actually claimed — how
+much a better policy is worth — rides the pressure axis well enough to state with a
+number and an interval. The quantity reported only as context — absolute hit rate —
+needs the concurrency stated alongside it once pressure exceeds 1.
 
 ## The second useful result: the peak is at working set ≈ pool
 
@@ -93,9 +108,9 @@ what makes the positive result credible.
 
 ## What is not established
 
-- 10 seeds, no bootstrap intervals on the collapse test. The spreads at pressure 0.85
-  and 1.15 are close enough to the seed noise that their ordering should not be read
-  into.
+- 10 seeds. The collapse test now carries bootstrap intervals, and they are wide at the
+  peak: the tightness of the agreement at pressures 0.85 and 1.00 is not resolved at this
+  seed count. Raising to 15+ seeds is the cheap fix and has not been done.
 - GPU utilisation is not held constant across the three conditions (0.856 to 0.998 at
   the same pressure), because more sessions means more offered work. That does not
   affect the token metrics used for the collapse test, but it does mean the cost and

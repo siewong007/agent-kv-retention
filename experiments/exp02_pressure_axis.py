@@ -33,7 +33,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments.common import (  # noqa: E402
-    default_workers, read_results, run_grid, write_results,
+    bootstrap_ratio, bootstrap_stat, default_workers, read_results, run_grid,
+    write_results,
 )
 from sim.config import Config  # noqa: E402
 from sim.workload import generate_sessions, mean_context_blocks  # noqa: E402
@@ -104,14 +105,25 @@ def analyze(rows: list[dict], out_dir: str) -> dict:
 
     out = []
     for (cond, target), group in sorted(points.items()):
-        def mean_of(policy, metric):
-            vals = [r[metric] for r in group if r["policy"] == policy]
+        def by_seed(policy, metric="prefill_tokens_computed"):
+            return {r["seed"]: r[metric] for r in group if r["policy"] == policy}
+
+        def mean_of(policy, metric="prefill_tokens_computed"):
+            vals = list(by_seed(policy, metric).values())
             return st.fmean(vals) if vals else None
 
-        lru = mean_of("lru", "prefill_tokens_computed")
-        bel = mean_of("belady", "prefill_tokens_computed")
-        term = mean_of("oracle_terminal", "prefill_tokens_computed")
+        seeds = sorted({r["seed"] for r in group})
+        lru = mean_of("lru")
+        bel = mean_of("belady")
+        term = mean_of("oracle_terminal")
         headroom = (lru - bel) / lru if lru else 0.0
+
+        lru_s = by_seed("lru")
+        bel_s = by_seed("belady")
+        paired = [sd for sd in seeds if sd in lru_s and sd in bel_s]
+        headroom_ci = bootstrap_ratio([(lru_s[sd], bel_s[sd]) for sd in paired],
+                                      [(lru_s[sd], 0.0) for sd in paired])
+
         out.append({
             "condition": cond,
             "target_pressure": target,
@@ -121,27 +133,70 @@ def analyze(rows: list[dict], out_dir: str) -> dict:
             "hit_rate_lru": mean_of("lru", "token_hit_rate"),
             "hit_rate_belady": mean_of("belady", "token_hit_rate"),
             "headroom_frac": headroom,
+            "headroom_ci": headroom_ci,
             "terminal_share": ((lru - term) / (lru - bel)) if lru and lru > bel else None,
             "gpu_busy_frac": mean_of("lru", "gpu_busy_frac"),
             "rm_per_1k_calls_lru": mean_of("lru", "rm_per_1k_calls"),
             "n_sessions": group[0].get("n_sessions"),
-            "n_seeds": len({r["seed"] for r in group}),
+            "n_seeds": len(seeds),
         })
 
-    # Collapse test: at each target pressure, how far apart are the three conditions?
+    # Collapse test. The statistic is a max-minus-min across three conditions, which has
+    # no closed-form standard error, so whole seeds are resampled and the spread is
+    # recomputed from scratch on each draw. Without an interval, a small spread cannot be
+    # distinguished from three conditions that merely happened to land close together.
     spread = []
     for target in TARGET_PRESSURES:
         at = [p for p in out if p["target_pressure"] == target]
         if len(at) < 2:
             continue
-        hits = [p["hit_rate_lru"] for p in at]
-        heads = [p["headroom_frac"] for p in at]
+        conds = [p["condition"] for p in at]
+        per_seed = []
+        seeds = sorted({r["seed"] for r in rows if r["target_pressure"] == target})
+        for sd in seeds:
+            row = {}
+            for cond in conds:
+                g = [r for r in rows
+                     if r["target_pressure"] == target and r["condition"] == cond
+                     and r["seed"] == sd]
+                lru = next((r["prefill_tokens_computed"] for r in g
+                            if r["policy"] == "lru"), None)
+                bel = next((r["prefill_tokens_computed"] for r in g
+                            if r["policy"] == "belady"), None)
+                hit = next((r["token_hit_rate"] for r in g if r["policy"] == "lru"), None)
+                if lru is None or bel is None:
+                    continue
+                row[cond] = {"lru": lru, "belady": bel, "hit": hit}
+            if len(row) == len(conds):
+                per_seed.append(row)
+
+        def head_range(sample):
+            if not sample:
+                return None
+            vals = []
+            for cond in conds:
+                lru = st.fmean([s[cond]["lru"] for s in sample])
+                bel = st.fmean([s[cond]["belady"] for s in sample])
+                vals.append((lru - bel) / lru if lru else 0.0)
+            return max(vals) - min(vals)
+
+        def hit_range(sample):
+            if not sample:
+                return None
+            vals = [st.fmean([s[cond]["hit"] for s in sample]) for cond in conds]
+            return max(vals) - min(vals)
+
         spread.append({
             "target_pressure": target,
-            "hit_rate_range": max(hits) - min(hits),
-            "hit_rate_mean": st.fmean(hits),
-            "headroom_range": max(heads) - min(heads),
-            "headroom_mean": st.fmean(heads),
+            "hit_rate_range": max(p["hit_rate_lru"] for p in at)
+                              - min(p["hit_rate_lru"] for p in at),
+            "hit_rate_mean": st.fmean([p["hit_rate_lru"] for p in at]),
+            "headroom_range": max(p["headroom_frac"] for p in at)
+                              - min(p["headroom_frac"] for p in at),
+            "headroom_mean": st.fmean([p["headroom_frac"] for p in at]),
+            "headroom_range_ci": bootstrap_stat(per_seed, head_range),
+            "hit_range_ci": bootstrap_stat(per_seed, hit_range),
+            "n_seeds": len(per_seed),
         })
 
     report = {"points": out, "collapse": spread}
@@ -169,17 +224,29 @@ def print_report(report: dict) -> None:
                   f"{100*p['headroom_frac']:>8.1f}% {term:>7} {p['gpu_busy_frac']:>6.3f}")
         print()
 
-    print("Collapse test -- spread across the three conditions at equal pressure:")
-    print(f"{'target p':>9} {'hit rate mean':>14} {'hit rate range':>15} "
-          f"{'headroom mean':>14} {'headroom range':>15}")
-    print("-" * 72)
-    for s in report["collapse"]:
-        print(f"{s['target_pressure']:>9.2f} {s['hit_rate_mean']:>14.3f} "
-              f"{s['hit_rate_range']:>15.3f} {100*s['headroom_mean']:>13.1f}% "
-              f"{100*s['headroom_range']:>14.1f}%")
+    print("Collapse test -- disagreement between the three conditions at equal pressure,")
+    print("with 95% bootstrap intervals over seeds (whole seeds resampled, spread "
+          "recomputed):")
+    print(f"{'target p':>9} {'headroom mean':>14} {'headroom range [95% CI]':>30} "
+          f"{'hit range [95% CI]':>26}")
+    print("-" * 84)
+    for c in report["collapse"]:
+        hr = c.get("headroom_range_ci") or {}
+        hc = c.get("hit_range_ci") or {}
+
+        def fmt(ci, val, scale, unit):
+            if not ci or ci.get("lo") is None:
+                return f"{val*scale:>10.1f}{unit}"
+            return (f"{val*scale:>8.1f}{unit} [{ci['lo']*scale:>5.1f},"
+                    f"{ci['hi']*scale:>5.1f}]")
+
+        print(f"{c['target_pressure']:>9.2f} {100*c['headroom_mean']:>13.1f}% "
+              f"{fmt(hr, c['headroom_range'], 100, '%'):>30} "
+              f"{fmt(hc, c['hit_rate_range'], 1, ''):>26}")
     print("\nA small range means the three ways of reaching a pressure agree, i.e. the "
-          "axis transfers.\nA large one means the result belongs to its configuration, "
-          "not to the pressure.")
+          "axis transfers.\nRead the upper bound of the interval, not the point "
+          "estimate: it is the largest\ndisagreement the data is compatible with, and "
+          "that is what a transfer claim has to survive.")
 
 
 def main(argv=None) -> int:
