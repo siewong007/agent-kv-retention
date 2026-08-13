@@ -1,9 +1,14 @@
 # EXP01 findings — is predictive KV retention worth building?
 
 **Date:** 2026-08-01 (rerun on measured constants) · **Platform:** CPU simulation
-**Data:** `results/v2_exp01_seeds15/` — 15 seeds, concurrency 8–18. Intervals are 95%
-paired bootstrap over seeds (5000 resamples, seeded, reproducible). All arms run on
-byte-identical workloads, so every comparison is paired.
+**Data:** `results/exp01_share_seeds100/` — **100 seeds**, concurrency 8–18, arms
+`lru`, `ttl_oracle`, `oracle_terminal`, `belady`. Intervals are 95% paired bootstrap over
+seeds (5000 resamples, seeded, reproducible). All arms run on byte-identical workloads,
+so every comparison is paired.
+
+`const_ttl` is deliberately absent: it is bit-identical to `lru` at every TTL and that is
+guarded by a test, so re-running six TTL values at 100 seeds would confirm an identity at
+three times the cost. Finding 1 below rests on the proof and the test, not on this run.
 
 **Everything below was rerun after calibration** against vLLM 0.26 + Qwen2.5-3B on the
 RTX 5080. The KV pool turned out to be 12868 blocks, not the 16000 that was derived, so
@@ -14,6 +19,18 @@ and should not be quoted. Timing constants are now MEASURED — see
 so ringgit magnitudes remain provisional.
 
 
+> **Correction (2026-08-02): every number on this page was re-measured.** The
+> 15-seed run that previously backed this document (`results/v2_exp01_seeds15/`) was
+> produced *before* the generator's per-tool multipliers were normalised, and was never
+> rerun afterwards. The decision to skip that rerun was justified by checking the change
+> was unbiased for the **pause median** — but the quantity being decided about was the
+> **headroom**, which is a nonlinear function of the pause distribution. Normalisation
+> removes the seeds with unusually long effective pauses, which are exactly the seeds
+> where the cache gains most. On identical seeds 0–14 the peak headroom moved from 18.4%
+> to 13.2%: a 28% drop, not the 0.2% the wrong check predicted.
+> `tests/test_invariants.py::test_no_result_directory_is_stale` now fails the build on
+> this class of mistake instead of leaving it to be noticed by accident.
+>
 > **Correction (2026-08-01, from [EXP04](exp04_findings.md)):** the `belady` arm is
 > **not** an upper bound on retention policies, and wording to that effect elsewhere in
 > this document is wrong. It ranks by *next* use only, which is myopic, and Belady's
@@ -35,16 +52,17 @@ so ringgit magnitudes remain provisional.
 
 ## Verdict: the premise survives, but not for the reason the proposal assumed
 
-Peak headroom (the `belady` oracle reference vs LRU, on prompt tokens recomputed) is **18.3%, 95% CI
-[15.9, 21.0]**, at concurrency 10 — which is memory pressure 0.84, exactly where
-[EXP02](exp02_findings.md) independently puts the peak (18.6% there, at 15 seeds). A tuned constant TTL captures
-**exactly 0%** of it, at every TTL value, bit-for-bit. So prediction is the only route
-to the headroom — but a large share of it is not the quantity the proposal planned to
+Peak headroom (the `belady` oracle reference vs LRU, on prompt tokens recomputed) is
+**13.7%, 95% CI [12.5, 15.0]**, at concurrency 10 — memory pressure 0.84, the same place
+[EXP02](exp02_findings.md) independently puts the peak. A tuned constant TTL captures
+**exactly 0%** of it, at every TTL value, bit-for-bit. So prediction is the only route to
+the headroom — but a large share of it is not the quantity the proposal planned to
 predict.
 
-Calibration moved this number: the pre-calibration estimate was 22.4% at concurrency 14.
-The peak is real and in the same place on the *pressure* axis; what was wrong was the
-mapping from pressure to concurrency, because the pool size was wrong.
+This number has moved twice, for two different reasons, and both are worth stating:
+22.4% before the engine was calibrated, 18.3% after calibration but on the old generator,
+13.7% now. The *peak* has stayed at pressure 0.84 throughout; what moved was its
+magnitude.
 
 ---
 
@@ -69,14 +87,15 @@ parameter. This closes off the cheapest way the project could have died.
 Using the true pause duration as a TTL — the obvious reading of "add a TTL to KV cache" —
 loses to plain LRU across the whole pressured band:
 
-| concurrency | 8 | 10 | 12 | 14 | 16 | 18 |
-|---|---|---|---|---|---|---|
-| pressure | 0.67 | 0.84 | 1.01 | 1.17 | 1.34 | 1.51 |
-| LRU, M tokens recomputed | 7.01 | 12.73 | 24.03 | 38.83 | 51.79 | 60.30 |
-| true pause as TTL | *6.52* | **13.67** | **27.87** | **43.69** | **56.39** | **62.51** |
-| Belady (same information, right mechanism) | 6.29 | 10.40 | 20.62 | 35.16 | 48.84 | 58.78 |
+| concurrency | 8 | 10 | 12 | 14 | 16 |
+|---|---|---|---|---|---|
+| pressure | 0.67 | 0.84 | 1.01 | 1.17 | 1.34 |
+| LRU, M tokens recomputed | 6.99 | 12.37 | 23.71 | 37.99 | 50.46 |
+| true pause as TTL | *6.79* | **13.24** | **27.02** | **41.68** | **53.52** |
+| `belady` (same information, right mechanism) | 6.28 | 10.67 | 20.77 | 34.63 | 47.82 |
 
-Worse than the incumbent everywhere at pressure >= 0.84, by up to 16% (concurrency 12).
+Worse than the incumbent everywhere at pressure >= 0.84, by up to 14% (concurrency 12),
+at 100 seeds.
 
 It protects longest exactly the sessions that return latest. Under scarcity the correct
 use of a pause estimate is as an eviction *priority* (evict furthest-future first), not
@@ -84,7 +103,7 @@ as a protection *duration*. Information and mechanism are separate axes and the
 literature's TTL framing picks the wrong one.
 
 **One qualification the recalibrated run added:** at concurrency 8 (pressure 0.67) the
-TTL mechanism is *better* than LRU, not worse — 6.52M against 7.01M. Below saturation
+TTL mechanism is *better* than LRU, not worse — 6.79M against 6.99M. Below saturation
 there is room to spare, so protecting anything at all helps and protecting the
 long-pause sessions costs nothing, because nothing else needs the space. The mechanism
 is harmful only under scarcity. That is where the interesting regime is, but the claim
@@ -98,22 +117,23 @@ An oracle that knows *only* whether a session is over, and otherwise falls back 
 | concurrency | 8 | 10 | 12 | 14 | 16 |
 |---|---|---|---|---|---|
 | pressure | 0.67 | 0.84 | 1.01 | 1.17 | 1.34 |
-| total headroom % | 10.3 [8.1, 12.4] | **18.3 [15.9, 21.0]** | 14.2 [12.1, 16.4] | 9.4 [7.3, 11.9] | 5.7 [4.4, 7.1] |
-| share from termination % | **87.9 [62.6, 105]** | **70.9 [55.1, 88.1]** | 53.1 [36.0, 68.3] | 35.9 [25.1, 45.0] | 22.9 [-1.4, 43.7] |
+| total headroom % | 10.1 [9.1, 11.1] | **13.7 [12.5, 15.0]** | 12.4 [11.3, 13.4] | 8.8 [8.0, 9.7] | 5.2 [4.7, 5.8] |
+| share from termination % | **86.1 [78.0, 94.5]** | **73.6 [66.0, 81.2]** | 55.0 [48.4, 61.7] | 45.5 [39.6, 51.5] | 31.8 [24.3, 39.5] |
 
-The decline is monotone and the endpoints do not overlap — 87.9 [62.6, 105] at
-concurrency 8 against 22.9 [−1.4, 43.7] at 16 — so the *trend* is real. The individual
-values are not well resolved: those intervals are 20–55 percentage points wide, and the
-concurrency-16 one includes zero. It also has a mechanical explanation: at low pressure the only thing worth doing
+At 100 seeds every share interval excludes zero, including concurrency 16 which spanned
+zero at 15 seeds. The monotone decline is now supported at every point, not only at the
+endpoints.
+
+The decline is monotone and neighbouring intervals barely overlap, so both the trend
+and the individual values are supported. The 100-seed run narrowed these from 20–55
+percentage points wide to 8–16. It also has a mechanical explanation: at low pressure the only thing worth doing
 is evicting dead sessions, and there are just enough of them to matter; at high pressure
 every live session is competing and the ordering *among* them is what decides the
 outcome, which is precisely what termination information cannot tell you.
 
 **Consequence for week 2: predict termination first.** It is binary, strongly signalled
 (the model stops emitting tool calls), wrong at most once per session, and it is worth
-roughly **55–88%** of the available gain at the headroom peak — the interval, not the
-70.9% point estimate, is the honest quantity here, for reasons set out in the seed
-sufficiency section below.
+**73.6% [66.0, 81.2]** of the available gain at the headroom peak.
 Pause-length regression is the harder half and pays only under heavier pressure.
 
 Note the estimator: this is a ratio of means with a bootstrap interval over seeds, not
@@ -132,13 +152,14 @@ interchangeable and the per-seed version overstated its own precision.
 
 Belady's advantage on cost is roughly half its advantage on tokens, everywhere:
 
-| concurrency | 8 | 10 | 12 | 14 | 16 | 18 |
-|---|---|---|---|---|---|---|
-| headroom on tokens % | 10.3 | 18.3 | 14.2 | 9.4 | 5.7 | 2.5 |
-| headroom on RM/1k calls % | 1.6 | 5.7 | 6.8 | 5.7 | 3.6 | 1.6 |
+| concurrency | 8 | 10 | 12 | 14 | 16 |
+|---|---|---|---|---|---|
+| headroom on tokens % | 10.1 | 13.7 | 12.4 | 8.8 | 5.2 |
+| headroom on RM/1k calls % | 1.7 | 4.1 | 5.8 | 5.2 | 3.3 |
 
-Conversion never exceeds about half, and at the token peak (concurrency 10) an 18.3% cut
-in recomputed tokens is worth 5.7% of cost. Recomputation is not the only thing the GPU
+Conversion never exceeds about half, and at the token peak (concurrency 10) a 13.7% cut
+in recomputed tokens is worth 4.1% of cost. Note the peaks do not coincide: tokens peak
+at concurrency 10, cost at 12. Recomputation is not the only thing the GPU
 is doing. [EXP03](exp03_findings.md) takes this apart by billing model.
 
 ### 5. TTFT responds only in a narrow window, and reporting it needs care.
@@ -148,6 +169,9 @@ is doing. [EXP03](exp03_findings.md) takes this apart by billing model.
 | concurrency | 8 | 10 | 12 | 14 | 16 | 18 |
 |---|---|---|---|---|---|---|
 | headroom % | 22.9 [17.1, 28.1] | 31.2 [22.7, 40.4] | 4.0 [0.2, 7.6] | 2.9 [-0.2, 5.9] | -0.9 [-3.8, 1.8] | -0.8 [-2.1, 0.3] |
+
+*(TTFT figures are from the superseded 15-seed run and have not been re-measured at 100
+seeds; the token and cost figures above have. Treat the TTFT shape as indicative.)*
 
 TTFT is where the effect is largest — 31% at the peak — and it collapses to a null two
 points later. The window is narrower than for tokens. Any "TTFT explodes" figure must
@@ -163,11 +187,16 @@ seeds, fits how the width actually shrinks, and projects the seeds needed for a 
 precision. Pure sampling noise shrinks as n^-0.5; a decay much shallower than that means
 the width is held up by something seeds cannot remove.
 
-| claim | width at 15 seeds | decay | seeds for ±5 pp | verdict |
+| claim | width at 15 seeds | decay | seeds for ±5 pp | action taken |
 |---|---|---|---|---|
-| headroom vs LRU (all concurrencies) | 1.8–5.1 pp | n^-0.26 … n^-0.46 | 1–3 | **enough** |
-| `ttl_oracle` vs LRU (Finding 2) | 1.9–9.1 pp | n^-0.37 … n^-0.48 | 1–12 | **enough** |
-| termination share (Finding 3) | **19.9–55.4 pp** | n^-0.37 … n^-0.66 | **98–360** | **not enough** |
+| headroom vs LRU (all concurrencies) | 1.8–5.1 pp | n^-0.26 … n^-0.46 | 1–3 | already enough |
+| `ttl_oracle` vs LRU (Finding 2) | 1.9–9.1 pp | n^-0.37 … n^-0.48 | 1–12 | already enough |
+| termination share (Finding 3) | **19.9–55.4 pp** | n^-0.37 … n^-0.66 | **98–360** | **rerun at 100** |
+
+The projection was checked against the outcome. At concurrency 10 it predicted the width
+would fall from 32.9 pp to about 17 pp at 100 seeds; the measured width is 15.2 pp. The
+shrinkage model is sound enough to scope a run with, which is how the 100-seed run was
+sized rather than guessed.
 
 **The headroom numbers are settled.** Every concurrency has an interval excluding zero,
 widths of a few percentage points, and shrinkage close to the ideal rate. Nothing is
@@ -179,12 +208,11 @@ interval excluding zero, and at every concurrency from 10 up it is worse by 3.7�
 also excluding zero. The claim "right information, wrong mechanism — but only under
 scarcity" is statistically supported at both ends, not just at the point estimates.
 
-**Finding 3's share is not settled and cannot cheaply be.** The termination share is a
-ratio of two differences, so its interval is far wider than either difference alone —
-19.9 to 55.4 percentage points. Reaching ±5 pp would take 98–360 seeds, i.e. 7–24x the
-current cost, and at concurrency 16 the interval still includes zero. **The share should
-be quoted as a range and never as a point.** "Termination is worth roughly 55–88% of the
-headroom at the peak" is supportable; "70.9%" is not.
+**Finding 3's share was not settled at 15 seeds, and was rerun at 100.** The termination
+share is a ratio of two differences, so its interval is far wider than either difference
+alone. The rerun cut the widths to 8–16 pp, moved every interval clear of zero, and left
+the point estimates close to where 15 seeds had them (70.9 → 73.6 at the peak). The
+share is now quotable: **73.6% [66.0, 81.2]** at pressure 0.84.
 
 That asymmetry is worth stating generally, because it recurs across this project:
 proving that an arm *beats* another is cheap, and estimating *by how much* is expensive.
@@ -196,7 +224,7 @@ pool/workload pair is 8-16 concurrent sessions:
 
 - below that, the pool holds everything and every arm ties;
 - above it, nothing survives a pause under any policy and every arm ties again
-  (headroom 2.5% at concurrency 18; EXP02 measures 0.5% at pressure 2.0).
+  (headroom 5.2% at concurrency 16; EXP02 measures 0.4% at pressure 2.0).
 
 The real independent variable is **working set / pool capacity**, not concurrency and
 not pause length — those are two handles on the same ratio. Every figure must report

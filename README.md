@@ -19,13 +19,16 @@ is not.**
 
 ## Where this is
 
+**Start here: [docs/SUMMARY.md](docs/SUMMARY.md)** — every current number with its
+interval, what is not established, and where each result lives.
+
 Week 0. A CPU simulator, five experiments, and one calibration pass against real vLLM.
 All experiment numbers below were **rerun after calibration**; the pre-calibration runs
 are kept in `results/exp0*` and should not be quoted.
 
 | experiment | question | verdict |
 |---|---|---|
-| [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
+| [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom **13.7% [12.5, 15.0]**, of which **73.6% [66.0, 81.2]** comes from knowing the session ended (100 seeds) |
 | [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | pressure is necessary but **not sufficient**: it transfers across a 4x change in pool size, but not across a 2.5x change in session count |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
 | [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | 49.6% [20.9, 67.2] at the strongest signal tested, and indistinguishable from LRU at the other three. Ranking by predicted *pause length* is catastrophic at any accuracy |
@@ -59,7 +62,7 @@ python -m sim.run --config configs/base.json --set policy.kind=belady
 ```
 
 ```bash
-python -m experiments.exp01_ttl_falsify --sessions 200 --seeds 15 --concurrency 8,10,12,14,16,18 --pause "" --out results/v2_exp01_seeds15
+python -m experiments.exp01_ttl_falsify --sessions 200 --seeds 100 --concurrency 8,10,12,14,16,18 --pause "" --arms lru,ttl_oracle,oracle_terminal,belady --out results/exp01_share_seeds100
 ```
 
 ```bash
@@ -67,7 +70,7 @@ python -m experiments.exp02_pressure_axis --sessions 200 --seeds 15 --out result
 ```
 
 ```bash
-python -m experiments.exp03_pause_isolation --sessions 200 --seeds 15 --out results/v2_exp03
+python -m experiments.exp03_pause_isolation --sessions 200 --seeds 15 --out results/v3_exp03
 ```
 
 ```bash

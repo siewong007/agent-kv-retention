@@ -1,0 +1,52 @@
+EXP01: 600 runs on 14 workers (200 sessions x 100 seeds)
+  20/600
+  40/600
+  60/600
+  80/600
+  100/600
+  120/600
+  140/600
+  160/600
+  180/600
+  200/600
+  220/600
+  240/600
+  260/600
+  280/600
+  300/600
+  320/600
+  340/600
+  360/600
+  380/600
+  400/600
+  420/600
+  440/600
+  460/600
+  480/600
+  500/600
+  520/600
+  540/600
+  560/600
+  580/600
+  600/600
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Paul\Documents\deep-learning-project\experiments\exp01_ttl_falsify.py", line 351, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Paul\Documents\deep-learning-project\experiments\exp01_ttl_falsify.py", line 345, in main
+    print_report(analyze(rows, args.out))
+  File "C:\Users\Paul\Documents\deep-learning-project\experiments\exp01_ttl_falsify.py", line 276, in print_report
+    f"{share_txt}   n={m.get('headroom_by_seed', {}).get('n', 0)}")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+
+================================================================================================
+EXP01  metric: M tokens recomputed
+headroom = how much less than lru the belady upper bound needs.  const%/term% = the share of that headroom already captured by a tuned constant TTL / by knowing only that a session ended.
+================================================================================================
+
+  sweep: concurrency
+     conc       lru    const*  ttl_orac      term    belady |    headroom % [95% CI]     terminal share % [95% CI] 
+  ----------------------------------------------------------------------------------------------------------------------

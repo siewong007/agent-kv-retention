@@ -63,12 +63,21 @@ METRIC_KEYS = [
 ]
 
 
-def arms() -> list[dict]:
+def arms(only: list[str] | None = None) -> list[dict]:
+    """All arms, or a named subset.
+
+    A subset is worth having because `const_ttl` is bit-identical to `lru` at every TTL
+    (proved, and guarded by tests/test_invariants.py). Re-running six TTL values at a
+    high seed count buys nothing, and the arms that are actually expensive to resolve --
+    the termination share needs hundreds of seeds -- are only three of the ten.
+    """
     out = [{"policy.kind": "lru"}]
     out += [{"policy.kind": "const_ttl", "policy.const_ttl_s": t} for t in CONST_TTL_GRID]
     out += [{"policy.kind": "ttl_oracle"},
             {"policy.kind": "oracle_terminal"},
             {"policy.kind": "belady"}]
+    if only:
+        out = [a for a in out if a["policy.kind"] in only]
     return out
 
 
@@ -90,9 +99,10 @@ def _run_one(job: dict) -> dict:
 
 
 def build_jobs(base: Config, seeds: list[int],
-               conc_grid: list[int], pause_grid: list[float]) -> list[dict]:
+               conc_grid: list[int], pause_grid: list[float],
+               only_arms: list[str] | None = None) -> list[dict]:
     jobs = []
-    for seed, arm in itertools.product(seeds, arms()):
+    for seed, arm in itertools.product(seeds, arms(only_arms)):
         for conc in conc_grid:
             cfg = base.replace(seed=seed, **{**arm, "arrival.concurrency": conc})
             jobs.append({"sweep": "concurrency", "config": cfg.to_dict()})
@@ -239,7 +249,8 @@ def print_report(report: dict) -> None:
             for p in sorted(pts, key=lambda x: x[key]):
                 m = p[metric]
                 best_ttl = m["best_const_ttl_s"]
-                ttl_label = "inf" if best_ttl and best_ttl >= 1e8 else f"{best_ttl:g}"
+                ttl_label = ("--" if best_ttl is None
+                             else "inf" if best_ttl >= 1e8 else f"{best_ttl:g}")
                 def ci(block):
                     if not block:
                         return " " * 26
@@ -252,14 +263,20 @@ def print_report(report: dict) -> None:
                 # with a sign-indeterminate denominator. Suppress it rather than print
                 # a number that will be read as if it meant something.
                 hci = m.get("headroom_ci")
+                # A reduced arm set (--arms) can leave no lru/belady pair to form a
+                # headroom from. Print the row rather than crashing on it: the runs are
+                # still valid data and the CSV is already written by this point.
                 share_txt = ci(m.get("terminal_share_ci"))
                 if hci and hci.get("lo") is not None and hci["lo"] <= 0 <= hci["hi"]:
                     share_txt = f"{'-- (headroom CI spans 0)':>26}"
 
-                print(f"  {p[key]:>7g} {m['lru']/scale:>9.3f} {m['best_const']/scale:>9.3f} "
-                      f"{m['ttl_oracle']/scale:>9.3f} {m['oracle_terminal']/scale:>9.3f} "
-                      f"{m['belady']/scale:>9.3f} |{ci(hci)} "
-                      f"{share_txt}   n={m.get('headroom_by_seed', {}).get('n', 0)}")
+                def col(v):
+                    return f"{v/scale:>9.3f}" if v is not None else f"{'--':>9}"
+
+                print(f"  {p[key]:>7g} {col(m['lru'])} {col(m['best_const'])} "
+                      f"{col(m['ttl_oracle'])} {col(m['oracle_terminal'])} "
+                      f"{col(m['belady'])} |{ci(hci)} "
+                      f"{share_txt}   n={(m.get('headroom_by_seed') or {}).get('n', 0)}")
 
 
 def main(argv=None) -> int:
@@ -275,7 +292,11 @@ def main(argv=None) -> int:
                     help="comma-separated concurrency grid; empty string skips the sweep")
     ap.add_argument("--pause", default=",".join(f"{p:g}" for p in PAUSE_GRID),
                     help="comma-separated pause-median grid; empty string skips the sweep")
+    ap.add_argument("--arms", default="",
+                    help="comma-separated subset of policy arms; empty runs all of them")
     args = ap.parse_args(argv)
+
+    only_arms = [a.strip() for a in args.arms.split(",") if a.strip()] or None
 
     conc_grid = [int(v) for v in args.concurrency.split(",") if v.strip()]
     pause_grid = [float(v) for v in args.pause.split(",") if v.strip()]
@@ -292,7 +313,7 @@ def main(argv=None) -> int:
     os.makedirs(args.out, exist_ok=True)
     base = Config.load(args.config).replace(**{"workload.n_sessions": args.sessions})
     seeds = list(range(args.seeds))
-    jobs = build_jobs(base, seeds, conc_grid, pause_grid)
+    jobs = build_jobs(base, seeds, conc_grid, pause_grid, only_arms)
     print(f"EXP01: {len(jobs)} runs on {args.workers} workers "
           f"({args.sessions} sessions x {args.seeds} seeds)")
 
@@ -313,6 +334,7 @@ def main(argv=None) -> int:
         "experiment": "exp01_ttl_falsify",
         "seeds": seeds,
         "const_ttl_grid": CONST_TTL_GRID,
+        "arms_run": only_arms or "all",
         "concurrency_grid": conc_grid,
         "pause_grid": pause_grid,
         "pause_sweep_concurrency": PAUSE_SWEEP_CONCURRENCY,

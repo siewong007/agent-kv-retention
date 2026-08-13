@@ -282,6 +282,54 @@ def test_predict_with_perfect_input_equals_belady():
             f"predict(truth) != belady on {key}: {ref[key]} vs {got[key]}")
 
 
+@check
+def test_no_result_directory_is_stale():
+    """Every results/ directory must have been produced by the current config schema.
+
+    This exists because of a real failure. The tool-multiplier normalisation changed the
+    generator, and the decision not to rerun EXP01 was justified by checking that the
+    change was unbiased for the *pause median* -- while the quantity actually being
+    decided about was the *headroom*, which is a nonlinear function of it. The headroom
+    at the peak moved 28%, and the stale numbers stayed in the findings docs until they
+    were noticed by accident, days later.
+
+    A config-schema mismatch is not a perfect staleness detector -- a change to a value
+    rather than a field would slip through -- but it catches exactly the class of change
+    that caused this one, and it costs nothing to run.
+    """
+    import json
+    import os
+
+    current = set(Config().to_dict()["workload"].keys())
+    stale = []
+    results = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "results")
+    if not os.path.isdir(results):
+        return
+    for name in sorted(os.listdir(results)):
+        meta = os.path.join(results, name, "metadata.json")
+        if not os.path.isfile(meta):
+            continue
+        with open(meta, encoding="utf-8") as f:
+            wl = json.load(f).get("config", {}).get("workload", {})
+        missing = current - set(wl.keys())
+        if missing:
+            stale.append(f"{name} (missing {sorted(missing)})")
+
+    known_stale = {
+        # Kept on purpose: superseded runs are evidence of how the numbers moved, and
+        # every findings doc that cites one says so and points at its replacement.
+        "exp01", "exp01_seeds15", "exp02", "exp03",
+        "v2_exp01_seeds15", "v2_exp02", "v2_exp03",
+    }
+    unexpected = [s for s in stale if s.split(" ")[0] not in known_stale]
+    assert not unexpected, (
+        "result directories produced by an older config schema and not declared stale: "
+        + ", ".join(unexpected)
+        + ". Either rerun them, or add them to known_stale with a note in the findings "
+          "doc saying which run supersedes them.")
+
+
 def main() -> int:
     failures = 0
     for fn in CHECKS:

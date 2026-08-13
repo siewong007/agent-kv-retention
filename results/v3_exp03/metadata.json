@@ -1,0 +1,263 @@
+{
+  "sim_version": "0.1.0",
+  "created_utc": "2026-08-13T18:05:21Z",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 0,
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 200,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45,
+      "termination_signal_strength": 0.0,
+      "finishing_tool_id": 0
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 12868,
+      "max_num_seqs": 64,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.009554,
+      "prefill_s_per_token": 6.669e-05,
+      "prefill_s_per_token2": 1.954e-09,
+      "decode_s_per_seq": 2.4e-05,
+      "decode_s_per_kv_token": 5.994e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 32,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "note": "CPU simulator output. Not comparable with measured GPU numbers.",
+  "experiment": "exp03_pause_isolation",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "pause_grid": [
+    0.5,
+    1.0,
+    2.0,
+    5.0,
+    10.0,
+    30.0
+  ],
+  "arms": [
+    "lru",
+    "oracle_terminal",
+    "belady"
+  ],
+  "closed_concurrency": 16,
+  "target_live": 16.0,
+  "calibrated_rates": {
+    "0.5": 0.058328878842306434,
+    "1.0": 0.04782790413434506,
+    "2.0": 0.04013504160624429,
+    "5.0": 0.02941988412018315,
+    "10.0": 0.02576816281650723,
+    "30.0": 0.01331579168738336
+  },
+  "calibration": [
+    {
+      "pause_median_s": 0.5,
+      "rate_per_s": 0.058328878842306434,
+      "calibrated_live": 6.222939079887475,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.02278471829777595,
+          "live": 1.7251807413750024
+        },
+        {
+          "rate": 0.03645554927644152,
+          "live": 3.13320791126171
+        },
+        {
+          "rate": 0.058328878842306434,
+          "live": 6.222939079887475
+        },
+        {
+          "rate": 0.0933262061476903,
+          "live": 99.3130665218951
+        },
+        {
+          "rate": 0.04666310307384515,
+          "live": 4.525800688145372
+        }
+      ]
+    },
+    {
+      "pause_median_s": 1.0,
+      "rate_per_s": 0.04782790413434506,
+      "calibrated_live": 5.681910250522594,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.02335346881559817,
+          "live": 2.2648823066126864
+        },
+        {
+          "rate": 0.037365550104957075,
+          "live": 4.144532187658898
+        },
+        {
+          "rate": 0.05978488016793132,
+          "live": 74.60592569669171
+        },
+        {
+          "rate": 0.02989244008396566,
+          "live": 3.059217074333889
+        },
+        {
+          "rate": 0.04782790413434506,
+          "live": 5.681910250522594
+        }
+      ]
+    },
+    {
+      "pause_median_s": 2.0,
+      "rate_per_s": 0.04013504160624429,
+      "calibrated_live": 6.050425099926527,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.025084401003902676,
+          "live": 3.457517238419999
+        },
+        {
+          "rate": 0.04013504160624429,
+          "live": 6.050425099926527
+        },
+        {
+          "rate": 0.06421606656999086,
+          "live": 83.53759014509016
+        },
+        {
+          "rate": 0.03210803328499543,
+          "live": 4.626428939204003
+        },
+        {
+          "rate": 0.051372853255992695,
+          "live": 66.50328484430544
+        }
+      ]
+    },
+    {
+      "pause_median_s": 5.0,
+      "rate_per_s": 0.02941988412018315,
+      "calibrated_live": 7.827060044783132,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.02941988412018315,
+          "live": 7.827060044783132
+        },
+        {
+          "rate": 0.04707181459229304,
+          "live": 68.93929565559978
+        },
+        {
+          "rate": 0.02353590729614652,
+          "live": 6.079783959099594
+        },
+        {
+          "rate": 0.037657451673834434,
+          "live": 51.2764902843434
+        },
+        {
+          "rate": 0.018828725836917217,
+          "live": 4.837942613131406
+        }
+      ]
+    },
+    {
+      "pause_median_s": 10.0,
+      "rate_per_s": 0.02576816281650723,
+      "calibrated_live": 12.934601431442523,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.025967257826704865,
+          "live": 12.898897858907397
+        },
+        {
+          "rate": 0.032210203520634036,
+          "live": 44.72073041392554
+        },
+        {
+          "rate": 0.016105101760317018,
+          "live": 7.342454132582276
+        },
+        {
+          "rate": 0.02576816281650723,
+          "live": 12.934601431442523
+        },
+        {
+          "rate": 0.03187501425918581,
+          "live": 43.71476619612586
+        }
+      ]
+    },
+    {
+      "pause_median_s": 30.0,
+      "rate_per_s": 0.01331579168738336,
+      "calibrated_live": 15.795497700446266,
+      "target_live": 16.0,
+      "matched": true,
+      "trace": [
+        {
+          "rate": 0.011269794873797907,
+          "live": 13.541569454831258
+        },
+        {
+          "rate": 0.01331579168738336,
+          "live": 15.795497700446266
+        }
+      ]
+    }
+  ],
+  "calibration_seed": 0,
+  "max_calibration_refinements": 5
+}

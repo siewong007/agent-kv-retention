@@ -1,9 +1,11 @@
 # EXP03 findings — was the pause sweep confounded, and which billing model was it?
 
 **Date:** 2026-08-01 (rerun on measured constants) · **Platform:** CPU simulation
-**Data:** `results/v2_exp03/` — 540 runs, 15 seeds, 6 pause points x 2 arrival regimes x
+**Data:** `results/v3_exp03/` — 540 runs, 15 seeds, 6 pause points x 2 arrival regimes x
 3 policy arms, plus `calibration.json` recording how each open-loop arrival rate was
-chosen. The pre-calibration run is in `results/exp03/`; do not quote it.
+chosen. Earlier runs are in `results/exp03/` (pre-calibration) and `results/v2_exp03/`
+(pre-generator-normalisation); neither should be quoted. See the correction note at the
+top of [EXP01](exp01_findings.md) for why v2 had to be discarded.
 
 **Caveat on where this sits.** The closed-loop arm is pinned at concurrency 16, which
 with the measured pool of 12868 blocks is pressure 1.35 -- above the headroom peak that
@@ -54,21 +56,21 @@ Closed loop, 15 seeds, concurrency 16 (pressure 1.27-1.36 throughout, so pressur
 
 | median pause | GPU busy | LRU hit | tokens headroom [95% CI] | RM wall | RM gpu-time | conversion |
 |---|---|---|---|---|---|---|
-| 0.5 s | 99.9% | 0.184 | 1.1% [0.3, 1.8] | 0.5% | 0.5% | 45% |
-| 1 s | 99.8% | 0.221 | 2.6% [1.9, 3.4] | 1.7% | 1.7% | 65% |
-| 2 s | 99.4% | 0.297 | 5.7% [4.4, 7.1] | 3.6% | 3.6% | 63% |
-| 5 s | 95.9% | 0.484 | 19.8% [17.0, 22.6] | 9.6% | 10.4% | 53% |
-| 10 s | 83.5% | 0.647 | 27.9% [23.7, 31.8] | 5.2% | 8.8% | 32% |
-| 30 s | 45.7% | 0.742 | 35.2% [34.3, 36.1] | **0.9%** | **7.2%** | 20% |
+| 0.5 s | 99.9% | 0.184 | 1.1% [0.7, 1.6] | 0.6% | 0.6% | 55% |
+| 1 s | 99.8% | 0.220 | 1.7% [1.1, 2.4] | 0.9% | 0.9% | 53% |
+| 2 s | 99.6% | 0.291 | 5.2% [4.2, 6.4] | 3.5% | 3.6% | 69% |
+| 5 s | 97.0% | 0.496 | 15.9% [13.6, 18.5] | 7.1% | 7.8% | 49% |
+| 10 s | 85.0% | 0.647 | 30.4% [27.3, 33.5] | 6.3% | 9.5% | 31% |
+| 30 s | 45.2% | 0.745 | 35.2% [33.8, 36.4] | **0.8%** | **7.1%** | 20% |
 
 All six intervals exclude zero, and they are tight — the closed loop has a 0% runaway
 rate at every pause, so its seeds are a single population rather than a mixture.
 
 **The dramatic version of Finding 4 was a property of wall-clock billing.** At a 30 s
 median pause, tool execution is most of a session's wall clock and no retention policy
-can touch it, so the reserved-box cost saving goes to 0.9%. That is arithmetic, not a
+can touch it, so the reserved-box cost saving goes to 0.8%. That is arithmetic, not a
 measurement, and no experimental design removes it. Under utilisation billing the same
-runs save 7.2% -- eight times more, from identical simulator runs. The billing model is
+runs save 7.1% -- nearly nine times more, from identical simulator runs. The billing model is
 not a presentation choice; it changes the conclusion.
 
 **The robust core survives in both.** Conversion efficiency — how much of a token saving
@@ -89,14 +91,20 @@ arrivals. It could not, and the reason is worth more than the comparison would h
 
 At the calibrated rate, the seeds split into two populations:
 
-| median pause | median live | range across seeds | ran away | tokens headroom [95% CI] |
-|---|---|---|---|---|
-| 0.5 s | 51.3 | 4.6 – 89.3 | 67% | 0.2% [−0.1, 0.6] |
-| 1 s | 26.1 | 3.9 – 81.5 | 47% | 1.2% [0.5, 2.2] |
-| 2 s | 57.0 | 5.6 – 82.1 | 73% | 7.2% **[1.3, 20.1]** |
-| 5 s | 43.9 | 6.3 – 62.1 | 60% | 5.3% [2.9, 8.7] |
-| 10 s | 37.3 | 8.6 – 50.0 | 53% | 15.7% **[6.7, 28.2]** |
-| 30 s | 22.0 | 13.0 – 29.6 | **0%** | 34.3% [30.3, 38.6] |
+| median pause | median live | ran away | tokens headroom [95% CI] |
+|---|---|---|---|
+| 0.5 s | 48.1 | 67% | 6.1% [0.5, 16.8] |
+| 1 s | 25.6 | 47% | 6.1% [0.3, 18.0] |
+| 2 s | 21.1 | 33% | 8.3% [−4.5, 24.4] |
+| 5 s | 10.6 | 33% | 15.4% [7.1, 28.0] |
+| 10 s | 24.8 | 20% | 31.5% [19.9, 45.1] |
+| 30 s | 16.0 | **0%** | 36.6% [35.3, 37.9] |
+
+The runaway fractions differ from the earlier run because the arrival rates were
+recalibrated on the current generator, but the pattern is the same: every row with a
+non-zero runaway fraction carries an interval three to twenty times wider than the
+closed-loop row at the same pause, and the only row with a tight interval is the one
+that did not run away.
 
 The intervals on the runaway rows are three to four times wider than the closed-loop
 intervals at the same pause. That width is not an estimator defect — it is the correct
@@ -119,11 +127,10 @@ a threshold it does not recover.
   immediately it caps the feedback, which is why every closed-loop row here has a
   0% runaway rate and a live-session range of ±1. EXP01's numbers are all from the
   stable side of a system that has an unstable side.
-- Only the 30 s pause point is a valid open-vs-closed comparison, and there the two
-  agree: the difference in token headroom is **−0.3 pp [−3.7, +3.1]**, an interval on
-  the difference rather than a pair of overlapping intervals. That is the one piece of
-  evidence that the EXP01 conclusions are not closed-loop artefacts, and it is a single
-  point.
+- Only the 30 s pause point is a valid open-vs-closed comparison (0% runaway on both
+  sides), and there the two agree with tight intervals on both: **35.2% [33.8, 36.4]**
+  closed against **36.6% [35.3, 37.9]** open. That is the one piece of evidence that the
+  EXP01 conclusions are not closed-loop artefacts, and it is a single point.
 - A "cache hit rate under load" figure for an open-loop agent workload near saturation
   is reporting a mixture of two regimes. Its mean is not a central tendency of anything.
 
