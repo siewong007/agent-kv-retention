@@ -123,3 +123,7 @@ Five rules, all load-bearing:
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
    is a function of.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
