@@ -1,0 +1,104 @@
+{
+  "sim_version": "0.1.0",
+  "created_utc": "2026-08-01T07:10:33Z",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 0,
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 200,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 12868,
+      "max_num_seqs": 64,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.009554,
+      "prefill_s_per_token": 6.669e-05,
+      "prefill_s_per_token2": 1.954e-09,
+      "decode_s_per_seq": 2.4e-05,
+      "decode_s_per_kv_token": 5.994e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 32,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "note": "CPU simulator output. Not comparable with measured GPU numbers.",
+  "experiment": "exp01_ttl_falsify",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "const_ttl_grid": [
+    1.0,
+    4.0,
+    16.0,
+    64.0,
+    256.0,
+    1000000000.0
+  ],
+  "concurrency_grid": [
+    8,
+    10,
+    12,
+    14,
+    16,
+    18
+  ],
+  "pause_grid": [],
+  "pause_sweep_concurrency": 16,
+  "min_reliable_headroom": 0.02,
+  "n_runs": 900,
+  "workload_summary": {
+    "n_sessions": 200,
+    "n_calls": 4292,
+    "turns_per_session_mean": 21.46,
+    "prompt_tokens_median": 15273.5,
+    "prompt_tokens_p95": 38560,
+    "final_context_tokens_median": 31228.5,
+    "final_context_tokens_p95": 49821,
+    "pause_s_median": 1.4535440223565717,
+    "pause_s_p95": 10.92709435478083,
+    "total_prompt_tokens": 73225713
+  }
+}

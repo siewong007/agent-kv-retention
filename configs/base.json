@@ -1,0 +1,48 @@
+{
+  "seed": 0,
+  "workload": {
+    "n_sessions": 200,
+    "turns_min": 12,
+    "turns_max": 30,
+    "system_prompt_tokens": 1200,
+    "task_tokens_median": 400.0,
+    "task_tokens_sigma": 0.5,
+    "output_tokens_median": 160.0,
+    "output_tokens_sigma": 0.6,
+    "tool_result_tokens_median": 700.0,
+    "tool_result_tokens_sigma": 1.1,
+    "pause_seconds_median": 2.0,
+    "pause_seconds_sigma": 1.0,
+    "n_tools": 8,
+    "tool_pause_spread": 0.9,
+    "tool_markov_self_prob": 0.45,
+    "termination_signal_strength": 0.0,
+    "finishing_tool_id": 0
+  },
+  "engine": {
+    "block_size": 16,
+    "kv_pool_blocks": 12868,
+    "max_num_seqs": 64,
+    "max_num_batched_tokens": 8192,
+    "step_overhead_s": 0.009554,
+    "prefill_s_per_token": 6.669e-05,
+    "prefill_s_per_token2": 1.954e-09,
+    "decode_s_per_seq": 2.4e-05,
+    "decode_s_per_kv_token": 5.994e-08,
+    "enable_prefix_caching": true
+  },
+  "policy": {
+    "kind": "lru",
+    "const_ttl_s": 0.0,
+    "oracle_ttl_scale": 1.0
+  },
+  "arrival": {
+    "mode": "closed",
+    "concurrency": 32,
+    "rate_per_s": 0.5
+  },
+  "cost": {
+    "rm_per_hour": 3.06,
+    "label": "T4-16GB"
+  }
+}

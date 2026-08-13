@@ -1,0 +1,125 @@
+{
+  "sim_version": "0.1.0",
+  "created_utc": "2026-08-06T12:08:31Z",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 0,
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 200,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45,
+      "termination_signal_strength": 0.0,
+      "finishing_tool_id": 0
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 12868,
+      "max_num_seqs": 64,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.009554,
+      "prefill_s_per_token": 6.669e-05,
+      "prefill_s_per_token2": 1.954e-09,
+      "decode_s_per_seq": 2.4e-05,
+      "decode_s_per_kv_token": 5.994e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 10,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "note": "CPU simulator output. Not comparable with measured GPU numbers.",
+  "experiment": "exp04_predictor",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "signal_grid": [
+    0.0,
+    0.75,
+    1.5,
+    3.0
+  ],
+  "arms": [
+    "lru",
+    "oracle_terminal",
+    "belady",
+    "belady_pause",
+    "predict_terminal",
+    "predict",
+    "predict_guarded"
+  ],
+  "concurrency": 10,
+  "train_seed_base": 9000,
+  "train_sessions": 600,
+  "features": [
+    "turn_index",
+    "prompt_tokens",
+    "output_tokens",
+    "prev_pause_s",
+    "tool_id",
+    "prev_tool_id"
+  ],
+  "predictor_quality": {
+    "0.0": {
+      "terminal_precision": 0.6885778427225796,
+      "terminal_recall": 0.096,
+      "pause_log_rmse": 1.3602740951637298,
+      "pause_median_ratio_error": 1.012305043236464,
+      "n_train_rows": 37972
+    },
+    "0.75": {
+      "terminal_precision": 0.6351988920729851,
+      "terminal_recall": 0.262,
+      "pause_log_rmse": 1.3605434377610128,
+      "pause_median_ratio_error": 0.9821360037905092,
+      "n_train_rows": 37685
+    },
+    "1.5": {
+      "terminal_precision": 0.7395398895110887,
+      "terminal_recall": 0.586,
+      "pause_log_rmse": 1.3469272604082179,
+      "pause_median_ratio_error": 0.9754381373314664,
+      "n_train_rows": 37685
+    },
+    "3.0": {
+      "terminal_precision": 0.8899713693745819,
+      "terminal_recall": 0.882,
+      "pause_log_rmse": 1.3286455602019687,
+      "pause_median_ratio_error": 0.9793092567215768,
+      "n_train_rows": 37685
+    }
+  }
+}

@@ -1,0 +1,496 @@
+{
+  "points": [
+    {
+      "loop": "closed",
+      "pause_median_s": 0.5,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9982849639070352,
+      "pressure_measured": 1.0902527743011756,
+      "mean_live_sessions": 15.736544799787136,
+      "median_live_sessions": 15.724541569927391,
+      "runaway_frac": 0.0,
+      "live_min": 15.574454665878315,
+      "live_max": 15.84231348109482,
+      "hit_rate_lru": 0.4762115445521066,
+      "prefill_tokens_computed": {
+        "lru": 38686521.4,
+        "belady": 36895581.666666664,
+        "oracle_terminal": 38112621.666666664,
+        "headroom_frac": 0.04629363583290108,
+        "terminal_share": 0.32044614492145984
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.8776306687734847,
+        "belady": 0.8460243275826149,
+        "oracle_terminal": 0.8663675777706412,
+        "headroom_frac": 0.03601325969503848,
+        "terminal_share": 0.3563554204147205
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.8761268548723874,
+        "belady": 0.8444232747875798,
+        "oracle_terminal": 0.8649419508322218,
+        "headroom_frac": 0.03618606130892467,
+        "terminal_share": 0.35279624604684395
+      },
+      "ttft_p95": {
+        "lru": 12.156454578890045,
+        "belady": 12.221864479698423,
+        "oracle_terminal": 12.230721472552476,
+        "headroom_frac": -0.005380672496565215,
+        "terminal_share": null
+      }
+    },
+    {
+      "loop": "closed",
+      "pause_median_s": 1.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.993771523166994,
+      "pressure_measured": 1.083668233541245,
+      "mean_live_sessions": 15.641556014298367,
+      "median_live_sessions": 15.681200204101437,
+      "runaway_frac": 0.0,
+      "live_min": 15.174786793337898,
+      "live_max": 15.789523727106898,
+      "hit_rate_lru": 0.5480802278901608,
+      "prefill_tokens_computed": {
+        "lru": 33381739.533333335,
+        "belady": 30018335.8,
+        "oracle_terminal": 32035027.0,
+        "headroom_frac": 0.10075579584385672,
+        "terminal_share": 0.40040168832145
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.8072753188449963,
+        "belady": 0.7514969346554632,
+        "oracle_terminal": 0.785285076967991,
+        "headroom_frac": 0.06909462346667258,
+        "terminal_share": 0.3942430781480361
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.802334687475123,
+        "belady": 0.7468291773816117,
+        "oracle_terminal": 0.7804277286561783,
+        "headroom_frac": 0.06917999553052145,
+        "terminal_share": 0.394680794429916
+      },
+      "ttft_p95": {
+        "lru": 11.45880968648085,
+        "belady": 11.369072852843782,
+        "oracle_terminal": 11.194907017695577,
+        "headroom_frac": 0.007831252642492096,
+        "terminal_share": 2.9408511320179147
+      }
+    },
+    {
+      "loop": "closed",
+      "pause_median_s": 2.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9781741866247804,
+      "pressure_measured": 1.0672952008790815,
+      "mean_live_sessions": 15.40667148688067,
+      "median_live_sessions": 15.547891774948802,
+      "runaway_frac": 0.0,
+      "live_min": 14.515617100060412,
+      "live_max": 15.759219978548245,
+      "hit_rate_lru": 0.6568389879117849,
+      "prefill_tokens_computed": {
+        "lru": 25353205.133333333,
+        "belady": 20918703.8,
+        "oracle_terminal": 23412865.933333334,
+        "headroom_frac": 0.17490890441710014,
+        "terminal_share": 0.43755521853490625
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.7354744806571551,
+        "belady": 0.6700516647276272,
+        "oracle_terminal": 0.7097026160706423,
+        "headroom_frac": 0.08895321000270719,
+        "terminal_share": 0.3939277791752915
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.718878987701153,
+        "belady": 0.6534051559946689,
+        "oracle_terminal": 0.6924792224556836,
+        "headroom_frac": 0.09107768181659863,
+        "terminal_share": 0.4032109402702777
+      },
+      "ttft_p95": {
+        "lru": 9.058915383557567,
+        "belady": 8.308648217604384,
+        "oracle_terminal": 9.057315004030215,
+        "headroom_frac": 0.08282086035541951,
+        "terminal_share": 0.0021330795215040196
+      }
+    },
+    {
+      "loop": "closed",
+      "pause_median_s": 5.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.871579469600301,
+      "pressure_measured": 1.033838446161701,
+      "mean_live_sessions": 14.922131112910469,
+      "median_live_sessions": 14.89445669908799,
+      "runaway_frac": 0.0,
+      "live_min": 13.683489349565702,
+      "live_max": 15.608644710700585,
+      "hit_rate_lru": 0.7711455886885787,
+      "prefill_tokens_computed": {
+        "lru": 16928634.466666665,
+        "belady": 11212320.866666667,
+        "oracle_terminal": 13476159.8,
+        "headroom_frac": 0.3376712759233893,
+        "terminal_share": 0.6039687302436776
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.9055318403684244,
+        "belady": 0.8503924481008952,
+        "oracle_terminal": 0.8758642301080264,
+        "headroom_frac": 0.06089172109629539,
+        "terminal_share": 0.5380474655298085
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.7734816741119338,
+        "belady": 0.7071763509772232,
+        "oracle_terminal": 0.7357870929976422,
+        "headroom_frac": 0.08572319856296334,
+        "terminal_share": 0.5685000740846794
+      },
+      "ttft_p95": {
+        "lru": 4.347567600121086,
+        "belady": 2.9665037416338618,
+        "oracle_terminal": 3.6435472305548804,
+        "headroom_frac": 0.3176635731779673,
+        "terminal_share": 0.509766702849909
+      }
+    },
+    {
+      "loop": "closed",
+      "pause_median_s": 10.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.667048700452194,
+      "pressure_measured": 1.021220354422854,
+      "mean_live_sessions": 14.739485170609878,
+      "median_live_sessions": 14.718550336568395,
+      "runaway_frac": 0.0,
+      "live_min": 13.493558422045151,
+      "live_max": 15.326998657547957,
+      "hit_rate_lru": 0.8134378926211421,
+      "prefill_tokens_computed": {
+        "lru": 13775750.2,
+        "belady": 8583628.6,
+        "oracle_terminal": 10264152.333333334,
+        "headroom_frac": 0.37690300162382445,
+        "terminal_share": 0.6763319770220069
+      },
+      "rm_per_1k_calls": {
+        "lru": 1.490173843382083,
+        "belady": 1.4604773655068473,
+        "oracle_terminal": 1.4715431980617275,
+        "headroom_frac": 0.019928196973204786,
+        "terminal_share": 0.6273688549405998
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.9381072872557311,
+        "belady": 0.8788500267689119,
+        "oracle_terminal": 0.8992121686214535,
+        "headroom_frac": 0.06316682674981236,
+        "terminal_share": 0.6563772660892616
+      },
+      "ttft_p95": {
+        "lru": 2.7025752468387356,
+        "belady": 1.3443162199111234,
+        "oracle_terminal": 1.904829212368574,
+        "headroom_frac": 0.5025795409457698,
+        "terminal_share": 0.5873298234392498
+      }
+    },
+    {
+      "loop": "closed",
+      "pause_median_s": 30.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.31642323228526775,
+      "pressure_measured": 1.0160360995675022,
+      "mean_live_sessions": 14.664428826544489,
+      "median_live_sessions": 14.552197123743955,
+      "runaway_frac": 0.0,
+      "live_min": 13.411344139265532,
+      "live_max": 15.330418038432285,
+      "hit_rate_lru": 0.8297041053530115,
+      "prefill_tokens_computed": {
+        "lru": 12566731.533333333,
+        "belady": 7905136.866666666,
+        "oracle_terminal": 9157337.4,
+        "headroom_frac": 0.3709472629618734,
+        "terminal_share": 0.7313793620266139
+      },
+      "rm_per_1k_calls": {
+        "lru": 4.137769806031007,
+        "belady": 4.127554026833248,
+        "oracle_terminal": 4.130466169060167,
+        "headroom_frac": 0.0024689095035855496,
+        "terminal_share": 0.7149368471513047
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 1.1847490055085037,
+        "belady": 1.1213144799156118,
+        "oracle_terminal": 1.1383151032253152,
+        "headroom_frac": 0.05354258606502502,
+        "terminal_share": 0.7319973129647191
+      },
+      "ttft_p95": {
+        "lru": 1.827639956637419,
+        "belady": 0.7495561356986574,
+        "oracle_terminal": 1.0522174747333792,
+        "headroom_frac": 0.5898775724526579,
+        "terminal_share": 0.7192599191673483
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 0.5,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9893692390109098,
+      "pressure_measured": 3.3118730501046576,
+      "mean_live_sessions": 47.46061106703754,
+      "median_live_sessions": 53.36747112149207,
+      "runaway_frac": 0.6,
+      "live_min": 5.592693796216943,
+      "live_max": 97.71745540823295,
+      "hit_rate_lru": 0.48665478580473626,
+      "prefill_tokens_computed": {
+        "lru": 38103094.2,
+        "belady": 37754660.06666667,
+        "oracle_terminal": 38001367.266666666,
+        "headroom_frac": 0.009144510193960384,
+        "terminal_share": 0.2919545578389683
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.9373496774840965,
+        "belady": 0.9317613535017649,
+        "oracle_terminal": 0.9351237332764611,
+        "headroom_frac": 0.005961834859036765,
+        "terminal_share": 0.3983205366533933
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.9300667178871037,
+        "belady": 0.9243452793871594,
+        "oracle_terminal": 0.9277459893336182,
+        "headroom_frac": 0.006151643091736596,
+        "terminal_share": 0.40561976739033545
+      },
+      "ttft_p95": {
+        "lru": 114.17354766972818,
+        "belady": 112.80706085026141,
+        "oracle_terminal": 113.5061515402992,
+        "headroom_frac": 0.011968506255228507,
+        "terminal_share": 0.488402902919627
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 1.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9703699510563891,
+      "pressure_measured": 2.7242419998204714,
+      "mean_live_sessions": 38.92738634505705,
+      "median_live_sessions": 46.88670540454864,
+      "runaway_frac": 0.5333333333333333,
+      "live_min": 5.31182657062698,
+      "live_max": 90.31642363667977,
+      "hit_rate_lru": 0.53432833915641,
+      "prefill_tokens_computed": {
+        "lru": 34726330.46666667,
+        "belady": 30588725.133333333,
+        "oracle_terminal": 34321957.13333333,
+        "headroom_frac": 0.11914893620288981,
+        "terminal_share": 0.09773124809068359
+      },
+      "rm_per_1k_calls": {
+        "lru": 0.9388091032248458,
+        "belady": 0.8841552763223831,
+        "oracle_terminal": 0.9332490106721113,
+        "headroom_frac": 0.05821612371964083,
+        "terminal_share": 0.10173290449829325
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 0.9181603324149157,
+        "belady": 0.8617893288194801,
+        "oracle_terminal": 0.9126793439186329,
+        "headroom_frac": 0.06139559900956554,
+        "terminal_share": 0.09723063537450591
+      },
+      "ttft_p95": {
+        "lru": 95.10708153381167,
+        "belady": 82.36454293499699,
+        "oracle_terminal": 93.90617766773325,
+        "headroom_frac": 0.13398096538462864,
+        "terminal_share": 0.09424369067166329
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 2.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9646043391653808,
+      "pressure_measured": 2.9768301112532507,
+      "mean_live_sessions": 42.58690844034937,
+      "median_live_sessions": 56.8673985940964,
+      "runaway_frac": 0.6,
+      "live_min": 6.351477214572402,
+      "live_max": 83.29518578003012,
+      "hit_rate_lru": 0.4307498334026883,
+      "prefill_tokens_computed": {
+        "lru": 42216111.8,
+        "belady": 36878302.733333334,
+        "oracle_terminal": 36556026.46666667,
+        "headroom_frac": 0.12644009216089538,
+        "terminal_share": 1.060376132349732
+      },
+      "rm_per_1k_calls": {
+        "lru": 1.0734060958223068,
+        "belady": 1.0101417937997996,
+        "oracle_terminal": 1.0064263677612535,
+        "headroom_frac": 0.05893790082684613,
+        "terminal_share": 1.058728633996852
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 1.0407450404718699,
+        "belady": 0.973185036245704,
+        "oracle_terminal": 0.9692143339075634,
+        "headroom_frac": 0.06491503836091736,
+        "terminal_share": 1.0587729735014244
+      },
+      "ttft_p95": {
+        "lru": 108.46892461940273,
+        "belady": 94.50428453600442,
+        "oracle_terminal": 95.1077654564002,
+        "headroom_frac": 0.128743233441261,
+        "terminal_share": 0.9567850716673162
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 5.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.9355623224674811,
+      "pressure_measured": 3.2849255569566327,
+      "mean_live_sessions": 47.16342951997893,
+      "median_live_sessions": 56.70338307760332,
+      "runaway_frac": 0.8,
+      "live_min": 9.787064221209752,
+      "live_max": 72.09501760138093,
+      "hit_rate_lru": 0.33648116876139916,
+      "prefill_tokens_computed": {
+        "lru": 49067656.333333336,
+        "belady": 45219178.46666667,
+        "oracle_terminal": 47570919.266666666,
+        "headroom_frac": 0.07843207021184471,
+        "terminal_share": 0.38891663627081186
+      },
+      "rm_per_1k_calls": {
+        "lru": 1.2368617283706407,
+        "belady": 1.1976443074750707,
+        "oracle_terminal": 1.22643499845274,
+        "headroom_frac": 0.031707198950389086,
+        "terminal_share": 0.2658698527285973
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 1.1607291651524783,
+        "belady": 1.1145887318967587,
+        "oracle_terminal": 1.1460610778553464,
+        "headroom_frac": 0.03975124830231899,
+        "terminal_share": 0.31790094418572906
+      },
+      "ttft_p95": {
+        "lru": 112.73139504641335,
+        "belady": 101.75677415689023,
+        "oracle_terminal": 109.65017697205167,
+        "headroom_frac": 0.09735194783143324,
+        "terminal_share": 0.28075849775395506
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 10.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.8534432471707066,
+      "pressure_measured": 2.483160089840095,
+      "mean_live_sessions": 35.645886687546366,
+      "median_live_sessions": 42.686152713554804,
+      "runaway_frac": 0.5333333333333333,
+      "live_min": 12.405590458669199,
+      "live_max": 54.7381046884221,
+      "hit_rate_lru": 0.34542402552097246,
+      "prefill_tokens_computed": {
+        "lru": 48428228.06666667,
+        "belady": 38225946.46666667,
+        "oracle_terminal": 45221436.6,
+        "headroom_frac": 0.21066807536206905,
+        "terminal_share": 0.31432101096549503
+      },
+      "rm_per_1k_calls": {
+        "lru": 1.4050626566445932,
+        "belady": 1.3334982979078114,
+        "oracle_terminal": 1.3870868778756176,
+        "headroom_frac": 0.05093321525438834,
+        "terminal_share": 0.2511833975218257
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 1.1995152273829133,
+        "belady": 1.087309878944621,
+        "oracle_terminal": 1.166095346576562,
+        "headroom_frac": 0.09354224596473068,
+        "terminal_share": 0.29784570229048074
+      },
+      "ttft_p95": {
+        "lru": 69.05739758748966,
+        "belady": 52.31668266193481,
+        "oracle_terminal": 65.35740342220885,
+        "headroom_frac": 0.24241740219570004,
+        "terminal_share": 0.22101769140293642
+      }
+    },
+    {
+      "loop": "open_matched",
+      "pause_median_s": 30.0,
+      "n_seeds": 15,
+      "gpu_busy_frac": 0.41900942236504185,
+      "pressure_measured": 1.3821898469651475,
+      "mean_live_sessions": 19.905098160717515,
+      "median_live_sessions": 19.94840258463959,
+      "runaway_frac": 0.0,
+      "live_min": 12.88981328479941,
+      "live_max": 28.676257304553012,
+      "hit_rate_lru": 0.6772230534447078,
+      "prefill_tokens_computed": {
+        "lru": 23920454.2,
+        "belady": 14489355.533333333,
+        "oracle_terminal": 20822304.866666667,
+        "headroom_frac": 0.39426921361161554,
+        "terminal_share": 0.32850354373700386
+      },
+      "rm_per_1k_calls": {
+        "lru": 2.9976875293792475,
+        "belady": 2.9958624588882743,
+        "oracle_terminal": 2.9965802301382625,
+        "headroom_frac": 0.0006088261278356709,
+        "terminal_share": 0.6067158756123372
+      },
+      "rm_gputime_per_1k_calls": {
+        "lru": 1.2428120490525538,
+        "belady": 1.1303424404769922,
+        "oracle_terminal": 1.203535214413738,
+        "headroom_frac": 0.09049607192117409,
+        "terminal_share": 0.3492217598714959
+      },
+      "ttft_p95": {
+        "lru": 3.367463284776871,
+        "belady": 2.1367553504799615,
+        "oracle_terminal": 2.9959606572675814,
+        "headroom_frac": 0.36547033485428376,
+        "terminal_share": 0.3018609185464665
+      }
+    }
+  ]
+}

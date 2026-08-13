@@ -1,0 +1,104 @@
+{
+  "server": {
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "num_requests_running": 0.0,
+    "metrics_available": true
+  },
+  "created_utc": "2026-08-01T06:46:17Z",
+  "args": {
+    "base_url": "http://localhost:8000",
+    "out": "results/calib",
+    "batches": "1,2,4,8,12,16,24,32,48",
+    "fit_min_batch": 8,
+    "ctx": 512,
+    "decode_tokens": 192,
+    "repeats": 3
+  },
+  "fit": {
+    "ctx_tokens": 513,
+    "kv_term_at_ctx": 3.074922e-05,
+    "decode_s_per_kv_token_used": 5.994e-08,
+    "all_batches": {
+      "min_batch": 1,
+      "n_points": 9,
+      "step_overhead_s": 0.00954525992414521,
+      "slope_s_per_seq_at_ctx": 5.547349116338535e-05,
+      "decode_s_per_seq": 2.4724271163385348e-05,
+      "r_squared": 0.9769887868595035
+    },
+    "loaded_regime": {
+      "min_batch": 8,
+      "n_points": 6,
+      "step_overhead_s": 0.00955393796698915,
+      "slope_s_per_seq_at_ctx": 5.509899606695769e-05,
+      "decode_s_per_seq": 2.4349776066957686e-05,
+      "r_squared": 0.9956905926210653
+    },
+    "note": "Step time is a staircase in batch size (CUDA-graph capture sizes), not a line. Use loaded_regime for the simulator; all_batches is kept to show how much the choice matters."
+  },
+  "samples": [
+    {
+      "batch": 1,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.04442797100000462,
+      "total_s": 1.8243601560000116,
+      "step_time_s": 0.009319016675392706
+    },
+    {
+      "batch": 2,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.08636315000001105,
+      "total_s": 1.9713554889999614,
+      "step_time_s": 0.009869069837696075
+    },
+    {
+      "batch": 4,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.15488523800001985,
+      "total_s": 2.033631670000034,
+      "step_time_s": 0.009836368753926775
+    },
+    {
+      "batch": 8,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.29396138099997415,
+      "total_s": 2.196645531999991,
+      "step_time_s": 0.009961697125654537
+    },
+    {
+      "batch": 12,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.4287322179999933,
+      "total_s": 2.3901329669999996,
+      "step_time_s": 0.01026911386910998
+    },
+    {
+      "batch": 16,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.560402119999992,
+      "total_s": 2.5633586129999912,
+      "step_time_s": 0.010486683209424079
+    },
+    {
+      "batch": 24,
+      "prompt_tokens": 513,
+      "prefill_only_s": 0.8345909280000114,
+      "total_s": 2.896298992000027,
+      "step_time_s": 0.010794283057591704
+    },
+    {
+      "batch": 32,
+      "prompt_tokens": 513,
+      "prefill_only_s": 1.1056454199999735,
+      "total_s": 3.2637426909999476,
+      "step_time_s": 0.011298938591622901
+    },
+    {
+      "batch": 48,
+      "prompt_tokens": 513,
+      "prefill_only_s": 1.6483281069999975,
+      "total_s": 3.983641444,
+      "step_time_s": 0.012226771397905772
+    }
+  ]
+}

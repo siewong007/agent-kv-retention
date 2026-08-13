@@ -1,0 +1,309 @@
+{
+  "server": {
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "num_requests_running": 0.0,
+    "metrics_available": true
+  },
+  "created_utc": "2026-08-01T02:01:06Z",
+  "args": {
+    "base_url": "http://localhost:8000",
+    "out": "results/calib",
+    "prefill_lengths": "512,1024,2048,4096,8192,16384",
+    "decode_contexts": "512,4096,8192,16384",
+    "decode_output_tokens": 64,
+    "repeats": 3,
+    "warmup": 2
+  },
+  "fit": {
+    "prefill": {
+      "linear_fit": {
+        "fixed_cost_s": -0.05080930635181241,
+        "seconds_per_prompt_token": 9.956661050496025e-05,
+        "prefill_tps": 10043.527593521741,
+        "r_squared": 0.9931026450641024
+      },
+      "quadratic_fit": {
+        "intercept_s": 0.009418703673324008,
+        "linear_s_per_token": 6.669049988213936e-05,
+        "quadratic_s_per_token2": 1.953893415478306e-09,
+        "r_squared": 0.9999932810382078
+      },
+      "prefill_tps_long_context": 9379.638195021118,
+      "n_points": 6,
+      "note": "A negative fixed_cost_s in the linear fit means prefill is superlinear over this range -- attention is quadratic in prompt length. The simulator's model is linear, so use prefill_tps_long_context, fitted over >=4k tokens, and record the linear model as a known fidelity limit."
+    },
+    "decode": {
+      "step_plus_seq_fixed_s": 0.009056589566773491,
+      "decode_s_per_kv_token": 5.993503800037021e-08,
+      "r_squared": 0.9723359963621357,
+      "n_points": 4,
+      "output_tokens": 64,
+      "per_token_samples": [
+        {
+          "ctx_tokens": 513,
+          "seconds_per_output_token": 0.009152092671882883,
+          "prefill_source": "measured"
+        },
+        {
+          "ctx_tokens": 4097,
+          "seconds_per_output_token": 0.009274750374991925,
+          "prefill_source": "measured"
+        },
+        {
+          "ctx_tokens": 8193,
+          "seconds_per_output_token": 0.009463261312497195,
+          "prefill_source": "measured"
+        },
+        {
+          "ctx_tokens": 16385,
+          "seconds_per_output_token": 0.010085637796876767,
+          "prefill_source": "measured"
+        }
+      ],
+      "note": "step_overhead_s and decode_s_per_seq are collinear at batch size 1; their sum is reported here. Sweep batch size to separate them."
+    }
+  },
+  "samples": [
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 1,
+      "elapsed_s": 0.04469746699987809,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 1,
+      "elapsed_s": 0.044334175999665604,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 1,
+      "elapsed_s": 0.0428489709997848,
+      "repeat": 2
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 1024,
+      "prompt_tokens": 1025,
+      "output_tokens": 1,
+      "elapsed_s": 0.07753254500039475,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 1024,
+      "prompt_tokens": 1025,
+      "output_tokens": 1,
+      "elapsed_s": 0.07751658300003328,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 1024,
+      "prompt_tokens": 1025,
+      "output_tokens": 1,
+      "elapsed_s": 0.0786139310002909,
+      "repeat": 2
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 2048,
+      "prompt_tokens": 2049,
+      "output_tokens": 1,
+      "elapsed_s": 0.1560757739998735,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 2048,
+      "prompt_tokens": 2049,
+      "output_tokens": 1,
+      "elapsed_s": 0.16201072500007285,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 2048,
+      "prompt_tokens": 2049,
+      "output_tokens": 1,
+      "elapsed_s": 0.15596037200020874,
+      "repeat": 2
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 1,
+      "elapsed_s": 0.31518021099964244,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 1,
+      "elapsed_s": 0.32060957900012,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 1,
+      "elapsed_s": 0.316854080000212,
+      "repeat": 2
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 1,
+      "elapsed_s": 0.6827937180000845,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 1,
+      "elapsed_s": 0.6856396409998524,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 1,
+      "elapsed_s": 0.6863264939997862,
+      "repeat": 2
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 1,
+      "elapsed_s": 1.6262993369996366,
+      "repeat": 0
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 1,
+      "elapsed_s": 1.6269259340001554,
+      "repeat": 1
+    },
+    {
+      "phase": "prefill",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 1,
+      "elapsed_s": 1.6296353480001926,
+      "repeat": 2
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 64,
+      "elapsed_s": 0.6299858850002238,
+      "repeat": 0
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 64,
+      "elapsed_s": 0.6300681070001701,
+      "repeat": 1
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 512,
+      "prompt_tokens": 513,
+      "output_tokens": 64,
+      "elapsed_s": 0.6312793209999654,
+      "repeat": 2
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 64,
+      "elapsed_s": 0.9155215229998248,
+      "repeat": 0
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 64,
+      "elapsed_s": 0.9093973600001846,
+      "repeat": 1
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 4096,
+      "prompt_tokens": 4097,
+      "output_tokens": 64,
+      "elapsed_s": 0.9104381039996952,
+      "repeat": 2
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 64,
+      "elapsed_s": 1.2910982420003165,
+      "repeat": 0
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 64,
+      "elapsed_s": 1.293602066999938,
+      "repeat": 1
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 8192,
+      "prompt_tokens": 8193,
+      "output_tokens": 64,
+      "elapsed_s": 1.291288364999673,
+      "repeat": 2
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 64,
+      "elapsed_s": 2.2724067530002685,
+      "repeat": 0
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 64,
+      "elapsed_s": 2.2715895719998116,
+      "repeat": 1
+    },
+    {
+      "phase": "decode",
+      "target_prompt_tokens": 16384,
+      "prompt_tokens": 16385,
+      "output_tokens": 64,
+      "elapsed_s": 2.274570302000029,
+      "repeat": 2
+    }
+  ],
+  "warning": "Fitted with prefix caching DISABLED. These constants describe the cost of a cache MISS, which is what the simulator charges."
+}

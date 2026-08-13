@@ -1,0 +1,260 @@
+{
+  "sim_version": "0.1.0",
+  "created_utc": "2026-07-31T17:43:16Z",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 0,
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 200,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 16000,
+      "max_num_seqs": 64,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.0064,
+      "prefill_tps": 12000.0,
+      "decode_s_per_seq": 0.0001,
+      "decode_s_per_kv_token": 3.8e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 32,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "note": "CPU simulator output. Not comparable with measured GPU numbers.",
+  "experiment": "exp03_pause_isolation",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "pause_grid": [
+    0.5,
+    1.0,
+    2.0,
+    5.0,
+    10.0,
+    30.0
+  ],
+  "arms": [
+    "lru",
+    "oracle_terminal",
+    "belady"
+  ],
+  "closed_concurrency": 16,
+  "target_live": 16.0,
+  "calibrated_rates": {
+    "0.5": 0.09745720019056328,
+    "1.0": 0.08141881906705112,
+    "2.0": 0.07245272701023418,
+    "5.0": 0.06045530512941314,
+    "10.0": 0.04458340477084783,
+    "30.0": 0.017909208637095754
+  },
+  "calibration": [
+    {
+      "pause_median_s": 0.5,
+      "rate_per_s": 0.09745720019056328,
+      "calibrated_live": 7.259170203770006,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.047586523530548465,
+          "live": 2.618470627335614
+        },
+        {
+          "rate": 0.07613843764887755,
+          "live": 5.04672179829797
+        },
+        {
+          "rate": 0.1218215002382041,
+          "live": 94.58974331710016
+        },
+        {
+          "rate": 0.06091075011910205,
+          "live": 3.579467256530665
+        },
+        {
+          "rate": 0.09745720019056328,
+          "live": 7.259170203770006
+        }
+      ]
+    },
+    {
+      "pause_median_s": 1.0,
+      "rate_per_s": 0.08141881906705112,
+      "calibrated_live": 6.5513903953321115,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.05088676191690695,
+          "live": 3.620631121842642
+        },
+        {
+          "rate": 0.08141881906705112,
+          "live": 6.5513903953321115
+        },
+        {
+          "rate": 0.1302701105072818,
+          "live": 99.90609145970558
+        },
+        {
+          "rate": 0.0651350552536409,
+          "live": 4.942470090716809
+        },
+        {
+          "rate": 0.10421608840582544,
+          "live": 86.88122442563579
+        }
+      ]
+    },
+    {
+      "pause_median_s": 2.0,
+      "rate_per_s": 0.07245272701023418,
+      "calibrated_live": 7.779653528773028,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.056603692976745446,
+          "live": 5.797608908765669
+        },
+        {
+          "rate": 0.09056590876279272,
+          "live": 77.4921571953979
+        },
+        {
+          "rate": 0.04528295438139636,
+          "live": 4.53558767827335
+        },
+        {
+          "rate": 0.07245272701023418,
+          "live": 7.779653528773028
+        },
+        {
+          "rate": 0.1159243632163747,
+          "live": 95.05655414557197
+        }
+      ]
+    },
+    {
+      "pause_median_s": 5.0,
+      "rate_per_s": 0.06045530512941314,
+      "calibrated_live": 13.748611736510236,
+      "target_live": 16.0,
+      "matched": false,
+      "trace": [
+        {
+          "rate": 0.05835219281245674,
+          "live": 12.354715047762703
+        },
+        {
+          "rate": 0.07556913141176642,
+          "live": 74.5364820821179
+        },
+        {
+          "rate": 0.03778456570588321,
+          "live": 7.129216445656307
+        },
+        {
+          "rate": 0.06045530512941314,
+          "live": 13.748611736510236
+        },
+        {
+          "rate": 0.07035509479854822,
+          "live": 69.26047858423271
+        }
+      ]
+    },
+    {
+      "pause_median_s": 10.0,
+      "rate_per_s": 0.04458340477084783,
+      "calibrated_live": 15.7900173854378,
+      "target_live": 16.0,
+      "matched": true,
+      "trace": [
+        {
+          "rate": 0.0395684135232389,
+          "live": 13.469260259355599
+        },
+        {
+          "rate": 0.047002924004834044,
+          "live": 17.549270118297493
+        },
+        {
+          "rate": 0.0428534508277489,
+          "live": 14.939753120415867
+        },
+        {
+          "rate": 0.045894681640153916,
+          "live": 16.47058832802774
+        },
+        {
+          "rate": 0.04458340477084783,
+          "live": 15.7900173854378
+        }
+      ]
+    },
+    {
+      "pause_median_s": 30.0,
+      "rate_per_s": 0.017909208637095754,
+      "calibrated_live": 15.711865158477886,
+      "target_live": 16.0,
+      "matched": true,
+      "trace": [
+        {
+          "rate": 0.01514329921908539,
+          "live": 13.528949961725258
+        },
+        {
+          "rate": 0.017909208637095754,
+          "live": 15.711865158477886
+        }
+      ]
+    }
+  ],
+  "calibration_seed": 0,
+  "max_calibration_refinements": 5
+}

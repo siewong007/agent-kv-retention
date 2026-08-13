@@ -1,0 +1,88 @@
+{
+  "sim_version": "0.1.0",
+  "created_utc": "2026-07-31T17:13:33Z",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 0,
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 200,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 16000,
+      "max_num_seqs": 256,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.0064,
+      "prefill_tps": 12000.0,
+      "decode_s_per_seq": 0.0001,
+      "decode_s_per_kv_token": 3.8e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 32,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "note": "CPU simulator output. Not comparable with measured GPU numbers.",
+  "experiment": "exp02_pressure_axis",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "target_pressures": [
+    0.5,
+    0.7,
+    0.85,
+    1.0,
+    1.15,
+    1.3,
+    1.6,
+    2.0
+  ],
+  "arms": [
+    "lru",
+    "oracle_terminal",
+    "belady"
+  ],
+  "mean_context_blocks": 1078.8021901211557,
+  "pool_16gb": 16000,
+  "pool_big": 40000,
+  "fixed_concurrency": 16,
+  "max_num_seqs": 256,
+  "sessions_per_slot": 10,
+  "min_sessions": 200
+}

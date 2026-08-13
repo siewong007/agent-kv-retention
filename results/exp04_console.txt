@@ -1,0 +1,42 @@
+training predictors at termination_signal_strength=0.0 ...
+  terminal precision 0.689 recall 0.096 | pause log-RMSE 1.360
+training predictors at termination_signal_strength=0.75 ...
+  terminal precision 0.635 recall 0.262 | pause log-RMSE 1.361
+training predictors at termination_signal_strength=1.5 ...
+  terminal precision 0.740 recall 0.586 | pause log-RMSE 1.347
+training predictors at termination_signal_strength=3.0 ...
+  terminal precision 0.890 recall 0.882 | pause log-RMSE 1.329
+EXP04: 280 runs on 14 workers
+  40/280
+  80/280
+  120/280
+  160/280
+  200/280
+  240/280
+  280/280
+
+====================================================================================================
+EXP04  share of the Belady headroom captured, as the world is made more learnable
+====================================================================================================
+ signal  headroom |  orc_term  bel_pause  pred_term  pred_grd    predict |   prec  recall
+----------------------------------------------------------------------------------------------------
+   0.00     13.7% |      80.9%     111.1%     -16.9%    -891.9%   -1534.5% |  0.689   0.096
+   0.75     17.7% |      57.1%      93.4%      -9.5%    -670.9%   -1183.5% |  0.635   0.262
+   1.50     17.3% |      83.5%     114.8%      32.8%    -461.2%    -868.4% |  0.740   0.586
+   3.00     16.2% |      64.9%     113.2%      57.9%    -168.9%    -466.3% |  0.890   0.882
+
+orc_term vs pred_term  = what the classifier loses against perfect termination knowledge.
+bel_pause vs belady    = ranking by pause alone versus by absolute next-use
+                         time. Values over 100% mean `belady` is NOT an
+                         upper bound in this system: it is myopic (next use
+                         only, not the whole future) and the reference
+                         stream is not fixed, since eviction changes when
+                         work is recomputed.
+pred_grd / predict     = pause-length prediction layered on top. Both go
+                         sharply negative: overriding LRU with a noisy
+                         ordering destroys the signal LRU already exploits,
+                         namely that an old block belongs to a dead session.
+At signal 0.00 termination is unlearnable by construction, so the predict
+arms there are a floor, not a result.
+
+wrote results/exp04\runs.csv
