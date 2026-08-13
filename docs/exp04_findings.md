@@ -69,6 +69,14 @@ degradation to the incumbent — it is a large loss.
 
 ## Finding 3: termination prediction has a precision floor, below which it also loses
 
+> **Refined by [EXP05](exp05_findings.md).** The floor is on the *operating point*, not
+> on the method. This experiment fixed the decision threshold at 0.5, which is close to
+> the worst defensible choice for an asymmetric-cost decision. Raising it removes the
+> loss at weak signal (−9.5% becomes +4.4% of the gap) — but does not turn it into a
+> gain, so the corrected weak-signal answer is ~0, not "negative". At strong signal 0.5
+> turns out to be near-optimal and raising it hurts. The optimum moves with classifier
+> quality and has to be measured, not assumed.
+
 **This corrects a claim made from a 3-seed smoke run.** `predict_terminal` is *not*
 unconditionally safe. At 10 seeds it is **negative at the two lowest signal strengths**:
 −16.9% at precision 0.689, −9.5% at precision 0.635. It turns positive only once
@@ -86,20 +94,26 @@ in three "this session is finished" calls destroys a cache that LRU would have k
 that outweighs the correct calls.
 
 **Practical consequence: the classifier must be tuned for precision, not accuracy, and a
-deployment must be able to measure its precision before trusting it.** The threshold was
-fixed at 0.5 here, which is the wrong default for an asymmetric-cost decision; sweeping
-it is the obvious next step and would likely move the crossover left.
+deployment must be able to measure its precision before trusting it.**
+
+[EXP05](exp05_findings.md) swept the threshold and the guess above was half right. It
+does remove the loss at weak signal, but it does not "move the crossover left" into a
+gain -- the corrected weak-signal answer is approximately zero. And at strong signal the
+0.5 used here turns out to be near-optimal, with higher thresholds hurting. The optimum
+reverses direction with classifier quality.
 
 ## What this means for the project
 
 The chain now reads: the gap exists (EXP01), no constant TTL reaches any of it (EXP01),
 most of it at the operating point comes from termination rather than pause length
-(EXP01), and a real classifier captures 33–58% of it **once it is accurate enough** and
-loses money below that (here).
+(EXP01), and a real classifier captures up to 58% of it -- 89% of what a perfect
+termination oracle delivers -- once the signal is there and the decision threshold is
+right ([EXP05](exp05_findings.md)).
 
 That is a defensible thesis result, and it is conditional in a way that is worth stating
-plainly: predictive KV retention pays only above a measurable prediction-quality
-threshold, and the naive furthest-in-future framing is actively harmful below it.
+plainly: predictive KV retention pays only when the workload carries a termination
+signal AND the classifier is operated at the right point on its own ROC curve. The naive
+furthest-in-future framing is actively harmful regardless.
 
 ## What is not established
 
@@ -108,11 +122,12 @@ threshold, and the naive furthest-in-future framing is actively harmful below it
   the method pays at all. `docs/trace_schema.md` and `bench/fit_workload.py` exist to
   answer that from a real trace; until then, every number here is "at synthetic signal
   strength X".
-- No bootstrap intervals. 10 seeds, point estimates only. The negative `predict_terminal`
-  values at low signal are large enough not to be noise, but the crossover point between
-  0.75 and 1.50 is not resolved.
-- The classifier threshold was not tuned (fixed 0.5), and the cost asymmetry says it
-  should be.
+- No bootstrap intervals. 10 seeds, point estimates only. [EXP05](exp05_findings.md)
+  later showed the weak-signal band is inside the noise once the threshold is chosen
+  sensibly, so the negative values in the 0.00 and 0.75 rows should be read as "this
+  operating point loses", not as "the method loses at this signal strength".
+- ~~The classifier threshold was not tuned (fixed 0.5)~~ — done in
+  [EXP05](exp05_findings.md), which changes the reading of Finding 3.
 - The pause regressor was not given the features that would most plausibly help it in
   reality — the tool's own historical runtime distribution, or a per-tool prior. It gets
   `tool_id` and has to learn that mapping from scratch.

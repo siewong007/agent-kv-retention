@@ -28,7 +28,8 @@ are kept in `results/exp0*` and should not be quoted.
 | [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
 | [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | headroom rides the pressure axis everywhere; absolute hit rate does not, above pressure 1.0 |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
-| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | 33–58% once the classifier is accurate enough — and **negative** below a precision of ~0.7. Ranking by predicted pause length is catastrophic at any accuracy |
+| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | up to 58%, which is 89% of what a perfect termination oracle delivers. Ranking by predicted *pause length* is catastrophic at any accuracy |
+| [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy: each false positive costs ~0.45% of the headroom, and the optimum reverses direction with classifier quality |
 | [calibration](docs/calibration.md) | were the derived constants any good? | no — all wrong by 20–58%, and one whole term was missing |
 
 ## Layout
@@ -71,6 +72,10 @@ python -m experiments.exp03_pause_isolation --sessions 200 --seeds 15 --out resu
 
 ```bash
 python -m experiments.exp04_predictor --sessions 200 --seeds 10 --out results/exp04
+```
+
+```bash
+python -m experiments.exp05_threshold --sessions 200 --seeds 10 --out results/exp05
 ```
 
 Add `--reanalyze` to any of them to redo the analysis over an existing `runs.csv`
@@ -119,6 +124,8 @@ Five rules, all load-bearing:
 4. **LRU is not a naive baseline.** Age correlates with termination on this workload,
    so LRU is already exploiting a real signal. Any arm that overrides its ordering must
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).
+   The corollary is that a predictor's *decision threshold* is not a hyperparameter, it
+   is the policy: see [EXP05](docs/exp05_findings.md).
 5. **Engine constants are measured; workload constants are not.** See
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
