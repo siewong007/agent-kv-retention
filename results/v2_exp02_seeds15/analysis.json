@@ -1,0 +1,710 @@
+{
+  "points": [
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 0.5,
+      "pressure_measured": 0.49674572653561644,
+      "concurrency": 19,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.9280542081083527,
+      "hit_rate_belady": 0.9283893430754205,
+      "headroom_frac": 0.004676162076508187,
+      "headroom_ci": {
+        "point": 0.004676162076508222,
+        "lo": 0.002421899170907685,
+        "hi": 0.00710916523710141,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 1.0,
+      "gpu_busy_frac": 0.9815979273858971,
+      "rm_per_1k_calls_lru": 0.49763958435990113,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 0.7,
+      "pressure_measured": 0.6789660172607079,
+      "concurrency": 26,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.9249463725379979,
+      "hit_rate_belady": 0.9282148111059261,
+      "headroom_frac": 0.04362918476632234,
+      "headroom_ci": {
+        "point": 0.043629184766322354,
+        "lo": 0.03300454821242229,
+        "hi": 0.057280634705037345,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 1.0133104673324171,
+      "gpu_busy_frac": 0.9820430998076508,
+      "rm_per_1k_calls_lru": 0.44316057715910645,
+      "n_sessions": 260,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 0.85,
+      "pressure_measured": 0.8387681065672434,
+      "concurrency": 32,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.8900183350303905,
+      "hit_rate_belady": 0.9069817337580852,
+      "headroom_frac": 0.15435038362940995,
+      "headroom_ci": {
+        "point": 0.1543503836294099,
+        "lo": 0.12596360312466873,
+        "hi": 0.18364467889745353,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.8586360885019578,
+      "gpu_busy_frac": 0.9887180943800278,
+      "rm_per_1k_calls_lru": 0.4806721256005642,
+      "n_sessions": 320,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 1.0,
+      "pressure_measured": 0.9895115506119311,
+      "concurrency": 37,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.7266609414026572,
+      "hit_rate_belady": 0.763216771777623,
+      "headroom_frac": 0.1335143952995547,
+      "headroom_ci": {
+        "point": 0.13351439529955467,
+        "lo": 0.11086914860354333,
+        "hi": 0.15771306001876928,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.6268680136741221,
+      "gpu_busy_frac": 0.9943602878428183,
+      "rm_per_1k_calls_lru": 0.7692357104614171,
+      "n_sessions": 370,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 1.15,
+      "pressure_measured": 1.1616110714526602,
+      "concurrency": 43,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.3619414109831552,
+      "hit_rate_belady": 0.4063727775936146,
+      "headroom_frac": 0.06922426562252419,
+      "headroom_ci": {
+        "point": 0.06922426562252412,
+        "lo": 0.05229062645496002,
+        "hi": 0.08987757142455331,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.3969718989504547,
+      "gpu_busy_frac": 0.9960173474375779,
+      "rm_per_1k_calls_lru": 1.4152538628058051,
+      "n_sessions": 430,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 1.3,
+      "pressure_measured": 1.3042011084592888,
+      "concurrency": 48,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.17648806742827527,
+      "hit_rate_belady": 0.19411176554452067,
+      "headroom_frac": 0.021374230795068953,
+      "headroom_ci": {
+        "point": 0.021374230795068953,
+        "lo": 0.01519650602998358,
+        "hi": 0.02771329110044404,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.3083882717799395,
+      "gpu_busy_frac": 0.9981814524498492,
+      "rm_per_1k_calls_lru": 1.7337309775330698,
+      "n_sessions": 480,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 1.6,
+      "pressure_measured": 1.597696276124513,
+      "concurrency": 59,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.10158839723335494,
+      "hit_rate_belady": 0.10294501963704507,
+      "headroom_frac": 0.0015255298654603927,
+      "headroom_ci": {
+        "point": 0.0015255298654603517,
+        "lo": 0.0004284554001668044,
+        "hi": 0.0025384646831777707,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.37201731838938945,
+      "gpu_busy_frac": 0.9989989492340993,
+      "rm_per_1k_calls_lru": 1.8560202129451564,
+      "n_sessions": 590,
+      "n_seeds": 15
+    },
+    {
+      "condition": "bigger_gpu",
+      "target_pressure": 2.0,
+      "pressure_measured": 1.988890864839407,
+      "concurrency": 74,
+      "pool_blocks": 40000,
+      "hit_rate_lru": 0.0879635981948581,
+      "hit_rate_belady": 0.0888296527472789,
+      "headroom_frac": 0.0009477246720995158,
+      "headroom_ci": {
+        "point": 0.0009477246720995883,
+        "lo": 0.000450917599197662,
+        "hi": 0.0015070613100151115,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.112088543519287,
+      "gpu_busy_frac": 0.9990980653695971,
+      "rm_per_1k_calls_lru": 1.8773859068819931,
+      "n_sessions": 740,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 0.5,
+      "pressure_measured": 0.4752586755828711,
+      "concurrency": 7,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.9275774912476714,
+      "hit_rate_belady": 0.9285850070014273,
+      "headroom_frac": 0.013998124271141972,
+      "headroom_ci": {
+        "point": 0.013998124271141903,
+        "lo": 0.009860337025036733,
+        "hi": 0.018272207539829305,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 1.0,
+      "gpu_busy_frac": 0.9489494508324577,
+      "rm_per_1k_calls_lru": 0.9388345888918858,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 0.7,
+      "pressure_measured": 0.6731348194150305,
+      "concurrency": 10,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.9102444020687697,
+      "hit_rate_belady": 0.9189942390305335,
+      "headroom_frac": 0.09648721941535901,
+      "headroom_ci": {
+        "point": 0.09648721941535902,
+        "lo": 0.058885900373255654,
+        "hi": 0.13205424906138685,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.914193001032109,
+      "gpu_busy_frac": 0.979382514370794,
+      "rm_per_1k_calls_lru": 0.74942974812035,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 0.85,
+      "pressure_measured": 0.8725026787780348,
+      "concurrency": 13,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.8128622496659434,
+      "hit_rate_belady": 0.8505279110057828,
+      "headroom_frac": 0.20143819714820657,
+      "headroom_ci": {
+        "point": 0.20143819714820646,
+        "lo": 0.17865746935623938,
+        "hi": 0.22481176556340673,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.5819517624154105,
+      "gpu_busy_frac": 0.9868360400831304,
+      "rm_per_1k_calls_lru": 0.8184715608540626,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 1.0,
+      "pressure_measured": 1.0115722019008142,
+      "concurrency": 15,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.6720405727665894,
+      "hit_rate_belady": 0.7106725690425664,
+      "headroom_frac": 0.11668123339407004,
+      "headroom_ci": {
+        "point": 0.11668123339407005,
+        "lo": 0.09143369610880232,
+        "hi": 0.14650757450782473,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.4675537383916187,
+      "gpu_busy_frac": 0.9917118440804406,
+      "rm_per_1k_calls_lru": 1.026793701945728,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 1.15,
+      "pressure_measured": 1.1496756348138266,
+      "concurrency": 17,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.49005379205046057,
+      "hit_rate_belady": 0.5375148783373486,
+      "headroom_frac": 0.0924037421675147,
+      "headroom_ci": {
+        "point": 0.09240374216751475,
+        "lo": 0.07514207950389983,
+        "hi": 0.11258445153822802,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.25650199784835276,
+      "gpu_busy_frac": 0.9933330652252669,
+      "rm_per_1k_calls_lru": 1.321515365400998,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 1.3,
+      "pressure_measured": 1.2869692894379792,
+      "concurrency": 19,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.32500876501566783,
+      "hit_rate_belady": 0.3616325632087698,
+      "headroom_frac": 0.05365176103644537,
+      "headroom_ci": {
+        "point": 0.053651761036445374,
+        "lo": 0.04009739419261273,
+        "hi": 0.06834109425951829,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.29128922891762377,
+      "gpu_busy_frac": 0.9951655449590916,
+      "rm_per_1k_calls_lru": 1.5891733854295935,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 1.6,
+      "pressure_measured": 1.6225618560456891,
+      "concurrency": 24,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.12579887567902456,
+      "hit_rate_belady": 0.13282463176929843,
+      "headroom_frac": 0.007915585376138552,
+      "headroom_ci": {
+        "point": 0.007915585376138437,
+        "lo": 0.0038319459883643355,
+        "hi": 0.012073221279080565,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.22820570448926839,
+      "gpu_busy_frac": 0.9965844963230321,
+      "rm_per_1k_calls_lru": 1.9142704156296226,
+      "n_sessions": 240,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_concurrency",
+      "target_pressure": 2.0,
+      "pressure_measured": 2.009237894764256,
+      "concurrency": 30,
+      "pool_blocks": 16000,
+      "hit_rate_lru": 0.09068362978688498,
+      "hit_rate_belady": 0.093226712831252,
+      "headroom_frac": 0.0027865555141856754,
+      "headroom_ci": {
+        "point": 0.002786555514185606,
+        "lo": 0.0013928857078146799,
+        "hi": 0.004359384377394188,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.24523977433003977,
+      "gpu_busy_frac": 0.9982065460034012,
+      "rm_per_1k_calls_lru": 1.9527664761215044,
+      "n_sessions": 300,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 0.5,
+      "pressure_measured": 0.48908520379400483,
+      "concurrency": 16,
+      "pool_blocks": 34522,
+      "hit_rate_lru": 0.9279530305159279,
+      "hit_rate_belady": 0.9284382590569222,
+      "headroom_frac": 0.006757531122839061,
+      "headroom_ci": {
+        "point": 0.006757531122838944,
+        "lo": 0.004190986663840862,
+        "hi": 0.009070152895700595,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 1.0,
+      "gpu_busy_frac": 0.982342021217338,
+      "rm_per_1k_calls_lru": 0.5397758935994881,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 0.7,
+      "pressure_measured": 0.6859054262401135,
+      "concurrency": 16,
+      "pool_blocks": 24658,
+      "hit_rate_lru": 0.9165220397868052,
+      "hit_rate_belady": 0.9242188755484089,
+      "headroom_frac": 0.0921864493398559,
+      "headroom_ci": {
+        "point": 0.0921864493398558,
+        "lo": 0.0648162909461384,
+        "hi": 0.12068043437707185,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.9133090441491639,
+      "gpu_busy_frac": 0.9839662239741791,
+      "rm_per_1k_calls_lru": 0.559713971897197,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 0.85,
+      "pressure_measured": 0.8394605857183062,
+      "concurrency": 16,
+      "pool_blocks": 20307,
+      "hit_rate_lru": 0.8448825429180952,
+      "hit_rate_belady": 0.876486424067451,
+      "headroom_frac": 0.20359539237341448,
+      "headroom_ci": {
+        "point": 0.2035953923734145,
+        "lo": 0.17160841888398282,
+        "hi": 0.2368009694906823,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.7442896951175303,
+      "gpu_busy_frac": 0.9875734100571301,
+      "rm_per_1k_calls_lru": 0.6942887368489515,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 1.0,
+      "pressure_measured": 0.9973410346947919,
+      "concurrency": 16,
+      "pool_blocks": 17261,
+      "hit_rate_lru": 0.6876835674634644,
+      "hit_rate_belady": 0.7371048528799137,
+      "headroom_frac": 0.15674046130253935,
+      "headroom_ci": {
+        "point": 0.15674046130253938,
+        "lo": 0.12748768136440516,
+        "hi": 0.18991701717935225,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.5371044504760475,
+      "gpu_busy_frac": 0.9900164079821229,
+      "rm_per_1k_calls_lru": 0.9832808666194421,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 1.15,
+      "pressure_measured": 1.1548034552780984,
+      "concurrency": 16,
+      "pool_blocks": 15009,
+      "hit_rate_lru": 0.4909874440129578,
+      "hit_rate_belady": 0.5367772629179188,
+      "headroom_frac": 0.08913152305926965,
+      "headroom_ci": {
+        "point": 0.0891315230592696,
+        "lo": 0.07053009102782744,
+        "hi": 0.10948348099464468,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.5114817209272886,
+      "gpu_busy_frac": 0.9935381306331529,
+      "rm_per_1k_calls_lru": 1.3335138023693696,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 1.3,
+      "pressure_measured": 1.3074151763377593,
+      "concurrency": 16,
+      "pool_blocks": 13278,
+      "hit_rate_lru": 0.32139725800742575,
+      "hit_rate_belady": 0.3634442711478235,
+      "headroom_frac": 0.061968126303583546,
+      "headroom_ci": {
+        "point": 0.06196812630358347,
+        "lo": 0.04856360994694822,
+        "hi": 0.07774607299993426,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.49119245358992913,
+      "gpu_busy_frac": 0.9951572453149412,
+      "rm_per_1k_calls_lru": 1.6368129061689227,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 1.6,
+      "pressure_measured": 1.6082027668427805,
+      "concurrency": 16,
+      "pool_blocks": 10788,
+      "hit_rate_lru": 0.1611589832910799,
+      "hit_rate_belady": 0.17648080334042718,
+      "headroom_frac": 0.018028155682751377,
+      "headroom_ci": {
+        "point": 0.018028155682751346,
+        "lo": 0.009656261204464393,
+        "hi": 0.026505144222853872,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": -0.07041257765846996,
+      "gpu_busy_frac": 0.995825365446314,
+      "rm_per_1k_calls_lru": 1.9275527189325827,
+      "n_sessions": 200,
+      "n_seeds": 15
+    },
+    {
+      "condition": "vary_pool",
+      "target_pressure": 2.0,
+      "pressure_measured": 2.0067611166573016,
+      "concurrency": 16,
+      "pool_blocks": 8630,
+      "hit_rate_lru": 0.09887689882896909,
+      "hit_rate_belady": 0.10567522573483991,
+      "headroom_frac": 0.007529101780187405,
+      "headroom_ci": {
+        "point": 0.007529101780187404,
+        "lo": 0.005017812237518037,
+        "hi": 0.009918962085968803,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "terminal_share": 0.11306944844431248,
+      "gpu_busy_frac": 0.9963961791222703,
+      "rm_per_1k_calls_lru": 2.0773327711316854,
+      "n_sessions": 200,
+      "n_seeds": 15
+    }
+  ],
+  "collapse": [
+    {
+      "target_pressure": 0.5,
+      "hit_rate_range": 0.00047671686068129215,
+      "hit_rate_mean": 0.927861576623984,
+      "headroom_range": 0.009321962194633784,
+      "headroom_mean": 0.008477272490163073,
+      "headroom_range_ci": {
+        "point": 0.009321962194633784,
+        "lo": 0.005665938909516687,
+        "hi": 0.013388491639002827,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.00047671686068129215,
+        "lo": 0.0002216923985944863,
+        "hi": 0.0007746920920612688,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 0.7,
+      "hit_rate_range": 0.014701970469228276,
+      "hit_rate_mean": 0.9172376047978577,
+      "headroom_range": 0.05285803464903667,
+      "headroom_mean": 0.07743428450717908,
+      "headroom_range_ci": {
+        "point": 0.05285803464903667,
+        "lo": 0.033203585179320545,
+        "hi": 0.08600981272007333,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.014701970469228276,
+        "lo": 0.010792055723418126,
+        "hi": 0.018793879531428748,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 0.85,
+      "hit_rate_range": 0.07715608536444707,
+      "hit_rate_mean": 0.8492543758714763,
+      "headroom_range": 0.04924500874400453,
+      "headroom_mean": 0.18646132438367702,
+      "headroom_range_ci": {
+        "point": 0.04924500874400453,
+        "lo": 0.024423349578063552,
+        "hi": 0.09549491307489877,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.07715608536444707,
+        "lo": 0.061772956458910344,
+        "hi": 0.0930010019177393,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 1.0,
+      "hit_rate_range": 0.054620368636067895,
+      "hit_rate_mean": 0.6954616938775704,
+      "headroom_range": 0.040059227908469316,
+      "headroom_mean": 0.1356453633320547,
+      "headroom_range_ci": {
+        "point": 0.040059227908469316,
+        "lo": 0.01986096245314871,
+        "hi": 0.06733309423991321,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.054620368636067895,
+        "lo": 0.03131312264845265,
+        "hi": 0.07823326429372313,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 1.15,
+      "hit_rate_range": 0.1290460330298026,
+      "hit_rate_mean": 0.44766088234885787,
+      "headroom_range": 0.0231794765449905,
+      "headroom_mean": 0.08358651028310284,
+      "headroom_range_ci": {
+        "point": 0.0231794765449905,
+        "lo": 0.00731684745998562,
+        "hi": 0.04809464844544191,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.1290460330298026,
+        "lo": 0.10592458153326506,
+        "hi": 0.1554868056522501,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 1.3,
+      "hit_rate_range": 0.14852069758739256,
+      "hit_rate_mean": 0.2742980301504563,
+      "headroom_range": 0.040593895508514596,
+      "headroom_mean": 0.04566470604503262,
+      "headroom_range_ci": {
+        "point": 0.040593895508514596,
+        "lo": 0.028961843847283026,
+        "hi": 0.05581152409424317,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.14852069758739256,
+        "lo": 0.1295432661544674,
+        "hi": 0.1674341853869584,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 1.6,
+      "hit_rate_range": 0.059570586057724945,
+      "hit_rate_mean": 0.12951541873448646,
+      "headroom_range": 0.016502625817290985,
+      "headroom_mean": 0.009156423641450107,
+      "headroom_range_ci": {
+        "point": 0.016502625817290985,
+        "lo": 0.008389690308944884,
+        "hi": 0.024918111267815856,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.059570586057724945,
+        "lo": 0.0478041886695373,
+        "hi": 0.07212265701513448,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    },
+    {
+      "target_pressure": 2.0,
+      "hit_rate_range": 0.010913300634110987,
+      "hit_rate_mean": 0.09250804227023739,
+      "headroom_range": 0.006581377108087889,
+      "headroom_mean": 0.0037544606554908654,
+      "headroom_range_ci": {
+        "point": 0.006581377108087889,
+        "lo": 0.004241253066204852,
+        "hi": 0.008819926870539277,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "hit_range_ci": {
+        "point": 0.010913300634110987,
+        "lo": 0.005445802352635545,
+        "hi": 0.016869333645687185,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "n_seeds": 15
+    }
+  ]
+}

@@ -37,7 +37,7 @@ so ringgit magnitudes remain provisional.
 
 Peak headroom (the `belady` oracle reference vs LRU, on prompt tokens recomputed) is **18.3%, 95% CI
 [15.9, 21.0]**, at concurrency 10 — which is memory pressure 0.84, exactly where
-[EXP02](exp02_findings.md) independently puts the peak. A tuned constant TTL captures
+[EXP02](exp02_findings.md) independently puts the peak (18.6% there, at 15 seeds). A tuned constant TTL captures
 **exactly 0%** of it, at every TTL value, bit-for-bit. So prediction is the only route
 to the headroom — but a large share of it is not the quantity the proposal planned to
 predict.

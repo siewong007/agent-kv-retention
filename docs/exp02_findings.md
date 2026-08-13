@@ -1,8 +1,10 @@
 # EXP02 findings — does the result belong to the hardware or to the pressure?
 
 **Date:** 2026-08-01 (rerun on measured constants) · **Platform:** CPU simulation
-**Data:** `results/v2_exp02/` — 720 runs, 10 seeds, 8 target pressures x 3 conditions x
-3 policy arms. The pre-calibration run is in `results/exp02/`; do not quote it. Session count scaled to 10 per concurrency slot so that every condition
+**Data:** `results/v2_exp02_seeds15/` — 1080 runs, **15 seeds**, 8 target pressures x 3
+conditions x 3 policy arms. Intervals are 95% paired bootstrap over seeds. The 10-seed
+run is in `results/v2_exp02/` and the pre-calibration run in `results/exp02/`; neither
+should be quoted. Session count scaled to 10 per concurrency slot so that every condition
 runs the same number of waves and transients cannot differ between them.
 
 
@@ -34,57 +36,59 @@ reaches each target pressure three different ways and measures whether they agre
 | `vary_pool` | scaled | fixed at 16 |
 | `bigger_gpu` | fixed at 40000 blocks (2.5x the KV capacity) | scaled |
 
-## Verdict: the axis holds below saturation and breaks above it
+## Verdict: pressure is necessary but not sufficient — session count is a second axis
 
 Disagreement between the three conditions at equal pressure:
 
-Disagreement between the three conditions, with 95% paired-bootstrap intervals over
-seeds (whole seeds resampled, the max-minus-min spread recomputed on each draw — the
-statistic has no closed-form standard error):
+At 10 seeds the disagreement between conditions looked like scatter that more seeds
+would resolve. It is not. At 15 seeds the intervals barely narrowed — the upper bound at
+pressure 0.85 moved only from 11.5 pp to 9.5 pp — and breaking the spread down by
+condition shows why: **it is not scatter, it is one condition sitting systematically
+below the other two.**
 
-| target pressure | headroom mean | headroom spread [95% CI] | hit-rate spread [95% CI] |
+| pressure | `bigger_gpu` (26–48 sessions) | `vary_concurrency` (10–19) | `vary_pool` (16) |
 |---|---|---|---|
-| 0.50 | 1.2% | 0.7 pp [0.3, 1.1] | 0.00 [0.00, 0.00] |
-| 0.70 | 9.0% | 5.9 pp [4.9, 7.2] | 0.00 [0.00, 0.00] |
-| 0.85 | **17.4%** | 5.3 pp **[1.7, 11.5]** | 0.07 [0.07, 0.07] |
-| 1.00 | 15.3% | 1.4 pp **[0.5, 7.3]** | 0.06 [0.04, 0.06] |
-| 1.15 | 8.8% | 2.5 pp [1.0, 5.3] | 0.13 [0.07, 0.15] |
-| 1.30 | 5.0% | 2.7 pp [2.1, 4.4] | 0.15 [0.12, 0.17] |
-| 1.60 | 1.4% | 2.6 pp [1.7, 3.4] | 0.06 [0.03, 0.10] |
-| 2.00 | 0.5% | 1.0 pp [0.5, 1.6] | 0.01 [0.00, 0.03] |
+| 0.70 | **4.4 [3.3, 5.7]** | 9.6 [5.9, 13.2] | 9.2 [6.5, 12.1] |
+| 0.85 | **15.4 [12.6, 18.4]** | 20.1 [17.9, 22.5] | 20.4 [17.2, 23.7] |
+| 1.00 | 13.4 [11.1, 15.8] | 11.7 [9.1, 14.7] | 15.7 [12.7, 19.0] |
+| 1.15 | **6.9 [5.2, 9.0]** | 9.2 [7.5, 11.3] | 8.9 [7.1, 10.9] |
+| 1.30 | **2.1 [1.5, 2.8]** | 5.4 [4.0, 6.8] | 6.2 [4.9, 7.8] |
 
-**The intervals change the reading, and they change it exactly where it matters.** An
-earlier draft of this document said "the spread never exceeds 5.9 pp, and is 1.4-2.7 pp
-through the whole pressured band", concluding that headroom transfers everywhere. That
-was a claim about point estimates. At pressure 0.85 and 1.00 — the two points where the
-headroom peaks and where the transfer claim is worth the most — the intervals reach
-**11.5 pp and 7.3 pp**. With 10 seeds the data is compatible with disagreement roughly
-twice as large as the point estimate suggests.
+Two readings fall out immediately:
 
-What survives:
+**Pressure transfers across pool size.** `vary_concurrency` (7–30 sessions, 16k-block
+pool) and `vary_pool` (16 sessions, pool scaled from 8.6k to 34.5k) agree to within
+about 1 pp at every pressure — 9.6 vs 9.2, 20.1 vs 20.4, 9.2 vs 8.9, 5.4 vs 6.2. A
+four-fold change in pool size, holding the session count near 16, changes nothing once
+pressure is matched. That is the part of the original claim that is solid.
 
-**Headroom transfers, but not tightly enough to quote at the peak.** At pressures away
-from the peak the upper bounds are 1.1-5.3 pp, which is small against headrooms of
-5-9%. At the peak the upper bound is comparable to a third of the effect itself.
-"Belady beats LRU by about 17% at pressure 0.85, on any of three hardware
-configurations" is supportable; "and the three agree to within 5 pp" is not, at this
-seed count.
+**Pressure does not transfer across session count.** `bigger_gpu` reaches the same
+pressure with 26–48 sessions on a 40k-block pool, and its headroom is systematically
+lower, with intervals disjoint from the other two at pressures 0.70, 0.85 and 1.30.
+At pressure 1.30 it is 2.1% against 5.4–6.2%: less than half.
 
-**Hit rate does not transfer above pressure 1.0**, and this part is firm. The spread
-grows to 0.13 [0.07, 0.15] and 0.15 [0.12, 0.17] at pressures 1.15 and 1.30, intervals
-well clear of the sub-0.01 spreads below saturation. The direction is systematic: at
-equal pressure, *more concurrent sessions collapse harder*. Thrashing depends on how
-many ways the deficit is split, not only on how big the deficit is.
+The mechanism is the same one the hit-rate spread already showed, and it turns out to
+apply to the headroom too, at *every* pressure rather than only above saturation:
+**splitting the same deficit across more sessions behaves like higher pressure.** With
+48 sessions competing, even a perfect eviction order cannot keep enough of any one
+context intact, so the configuration is already close to the regime where every policy
+ties — while 19 sessions at the same nominal pressure still has room for ordering to
+matter.
 
-The asymmetry is still convenient for the project. The quantity actually claimed — how
-much a better policy is worth — rides the pressure axis well enough to state with a
-number and an interval. The quantity reported only as context — absolute hit rate —
-needs the concurrency stated alongside it once pressure exceeds 1.
+**So the pressure ratio is necessary but not sufficient.** The transferable statement is
+narrower than the earlier drafts of this document claimed, and needs both terms:
+
+> at a given memory pressure *and* a comparable number of concurrent sessions, the
+> headroom transfers across hardware.
+
+A result measured at 16 sessions does not carry to a machine running 48 sessions at the
+same pressure, even though the pressure ratio was constructed precisely to make those
+two comparable.
 
 ## The second useful result: the peak is at working set ≈ pool
 
-Headroom is not monotone in pressure. It is near zero at 0.5, peaks at **17.4%** at
-pressure 0.85, and decays back to 1.4% by pressure 1.6.
+Headroom is not monotone in pressure. It is near zero at 0.5, peaks at **18.6%** at
+pressure 0.85, and decays back to 0.9% by pressure 1.6.
 
 That shape has a clean reading. Below saturation there is nothing to evict, so no policy
 can beat any other. Far above it, nothing survives a pause under any policy, so again no
@@ -108,12 +112,19 @@ what makes the positive result credible.
 
 ## What is not established
 
-- 10 seeds. The collapse test now carries bootstrap intervals, and they are wide at the
-  peak: the tightness of the agreement at pressures 0.85 and 1.00 is not resolved at this
-  seed count. Raising to 15+ seeds is the cheap fix and has not been done.
+- Going from 10 to 15 seeds narrowed the peak interval by only about 2 pp, which is the
+  evidence that the residual disagreement is a real effect rather than noise. More seeds
+  will keep shrinking it as sqrt(n) and will not make the `bigger_gpu` condition line up.
+- The session-count effect is established as a direction, not as a functional form. How
+  headroom depends on session count at fixed pressure — whether it is a second
+  multiplicative term, a saturating one, or something else — was not measured, and would
+  need a grid over both axes rather than three points on one.
 - GPU utilisation is not held constant across the three conditions (0.856 to 0.998 at
   the same pressure), because more sessions means more offered work. That does not
   affect the token metrics used for the collapse test, but it does mean the cost and
   TTFT columns of this experiment are not a clean comparison.
 - `bigger_gpu` models a larger KV pool but keeps every timing constant unchanged. A real
-  96 GB card is also faster, so this condition isolates capacity, not hardware.
+  96 GB card is also faster, so this condition isolates capacity, not hardware. It is
+  also the condition that runs the most sessions, so "bigger pool" and "more sessions"
+  are confounded within it — the two could be separated with a fourth condition holding
+  the pool at 40k while capping sessions at 16, and that was not run.

@@ -19,14 +19,14 @@ is not.**
 
 ## Where this is
 
-Week 0. A CPU simulator, three experiments, and one calibration pass against real vLLM.
+Week 0. A CPU simulator, five experiments, and one calibration pass against real vLLM.
 All experiment numbers below were **rerun after calibration**; the pre-calibration runs
 are kept in `results/exp0*` and should not be quoted.
 
 | experiment | question | verdict |
 |---|---|---|
 | [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
-| [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | headroom rides the pressure axis, but at the peak the agreement is only resolved to ±11 pp; absolute hit rate does not transfer above pressure 1.0 |
+| [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | pressure is necessary but **not sufficient**: it transfers across a 4x change in pool size, but not across a 2.5x change in session count |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
 | [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | about 50% — 70% of what a perfect termination oracle delivers, +7.4% [+2.3, +12.6] over LRU. Ranking by predicted *pause length* is catastrophic at any accuracy |
 | [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
@@ -63,7 +63,7 @@ python -m experiments.exp01_ttl_falsify --sessions 200 --seeds 15 --concurrency 
 ```
 
 ```bash
-python -m experiments.exp02_pressure_axis --sessions 200 --seeds 10 --out results/v2_exp02
+python -m experiments.exp02_pressure_axis --sessions 200 --seeds 15 --out results/v2_exp02_seeds15
 ```
 
 ```bash
@@ -108,7 +108,7 @@ with each other. Only the oracle arms may look at the future.
 
 ## Reading the numbers
 
-Five rules, all load-bearing:
+Six rules, all load-bearing:
 
 1. **A cache win is not a cost win.** Conversion runs about 20–60%: a 35% cut in
    recomputed tokens is worth roughly 7% of cost. Always check `gpu_busy_frac` before
@@ -118,17 +118,22 @@ Five rules, all load-bearing:
    only seconds the GPU worked (shared or autoscaled). They disagree, and under
    open-loop arrivals the wall-clock one cannot move at all because the makespan is
    pinned by the arrival schedule.
-3. **Report pressure, not concurrency.** `pressure = live sessions x context blocks /
-   pool blocks`. Below 1.0 the results transfer between hardware configurations; above
-   it, concurrency has to be stated too. See [EXP02](docs/exp02_findings.md).
-   Every experiment reports 95% paired-bootstrap intervals over seeds, and every
-   headline in this project that was ever quoted without one turned out to be wrong.
-4. **LRU is not a naive baseline.** Age correlates with termination on this workload,
+3. **Report pressure AND session count.** `pressure = live sessions x context blocks /
+   pool blocks` transfers across pool size, but not across session count: at equal
+   pressure, 48 sessions show less than half the headroom of 19. Splitting the same
+   deficit more ways behaves like higher pressure. See
+   [EXP02](docs/exp02_findings.md).
+4. **Never quote a point estimate without its interval.** Every experiment reports 95%
+   paired-bootstrap intervals over seeds. Every headline in this project that was once
+   quoted without one later turned out to be wrong — see the corrections in
+   [EXP02](docs/exp02_findings.md), [EXP04](docs/exp04_findings.md) and
+   [EXP05](docs/exp05_findings.md).
+5. **LRU is not a naive baseline.** Age correlates with termination on this workload,
    so LRU is already exploiting a real signal. Any arm that overrides its ordering must
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).
    The corollary is that a predictor's *decision threshold* is not a hyperparameter, it
    is the policy: see [EXP05](docs/exp05_findings.md).
-5. **Engine constants are measured; workload constants are not.** See
+6. **Engine constants are measured; workload constants are not.** See
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
    is a function of.
