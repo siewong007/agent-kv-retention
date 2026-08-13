@@ -69,13 +69,15 @@ degradation to the incumbent — it is a large loss.
 
 ## Finding 3: termination prediction has a precision floor, below which it also loses
 
-> **Refined by [EXP05](exp05_findings.md).** The floor is on the *operating point*, not
-> on the method. This experiment fixed the decision threshold at 0.5, which is close to
-> the worst defensible choice for an asymmetric-cost decision. Raising it removes the
-> loss at weak signal (−9.5% becomes +4.4% of the gap) — but does not turn it into a
-> gain, so the corrected weak-signal answer is ~0, not "negative". At strong signal 0.5
-> turns out to be near-optimal and raising it hurts. The optimum moves with classifier
-> quality and has to be measured, not assumed.
+> **Refined by [EXP05](exp05_findings.md), at 15 seeds with intervals.** This experiment
+> fixed the decision threshold at 0.5, which is close to the worst defensible choice for
+> a decision whose two error types cost wildly different amounts. Correcting the
+> threshold changes the weak-signal reading from "loses" to "indistinguishable from LRU
+> at every threshold above 0.5" — the threshold controls how much you lose, not whether
+> you win. At strong signal 0.5 turns out to be near-optimal, and the optimum reverses
+> direction with classifier quality, so it has to be measured rather than assumed.
+> The numbers on this page are 10-seed point estimates and run high; the 15-seed run
+> puts the strong-signal share at 49.6% rather than 57.9%.
 
 **This corrects a claim made from a 3-seed smoke run.** `predict_terminal` is *not*
 unconditionally safe. At 10 seeds it is **negative at the two lowest signal strengths**:
@@ -106,9 +108,10 @@ reverses direction with classifier quality.
 
 The chain now reads: the gap exists (EXP01), no constant TTL reaches any of it (EXP01),
 most of it at the operating point comes from termination rather than pause length
-(EXP01), and a real classifier captures up to 58% of it -- 89% of what a perfect
-termination oracle delivers -- once the signal is there and the decision threshold is
-right ([EXP05](exp05_findings.md)).
+(EXP01), and a real classifier captures about 50% of it -- 70% of what a perfect
+termination oracle delivers, for a gain of +7.4% [+2.3, +12.6] over LRU -- once the
+signal is there and the decision threshold is right ([EXP05](exp05_findings.md) at 15
+seeds; the 10-seed numbers on this page run high).
 
 That is a defensible thesis result, and it is conditional in a way that is worth stating
 plainly: predictive KV retention pays only when the workload carries a termination

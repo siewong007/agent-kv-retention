@@ -1,0 +1,40 @@
+training at termination_signal_strength=0.75 ...
+training at termination_signal_strength=3.0 ...
+EXP05: 270 runs on 14 workers
+  40/270
+  80/270
+  120/270
+  160/270
+  200/270
+  240/270
+  270/270
+
+================================================================================================
+EXP05  decision threshold for the termination classifier
+================================================================================================
+
+  termination_signal_strength = 0.75   (oracle_terminal captures 65.0% of the gap)
+   thresh   prec  recall  FP/seed     gain vs LRU % [95% CI]  share of gap %
+  ------------------------------------------------------------------------
+     0.30  0.471   0.494      112    -9.08 [-14.31, -4.76] *          -55.4%
+     0.50  0.644   0.256       29    -1.91 [ -4.37,  0.42]            -11.7%
+     0.70  0.838   0.100        4    -0.24 [ -2.40,  2.23]             -1.4%
+     0.85  0.962   0.056        1    -0.48 [ -2.56,  1.42]             -2.9%
+     0.95  0.996   0.051        0     1.18 [ -0.74,  2.94]              7.2%  <-- best
+     0.99  0.933   0.016        0     0.74 [ -0.69,  2.06]              4.5%
+
+  termination_signal_strength = 3.0   (oracle_terminal captures 70.8% of the gap)
+   thresh   prec  recall  FP/seed     gain vs LRU % [95% CI]  share of gap %
+  ------------------------------------------------------------------------
+     0.30  0.832   0.931       38     6.61 [  1.97, 11.68] *           44.0%
+     0.50  0.889   0.887       22     7.44 [  2.27, 12.62] *           49.6%  <-- best
+     0.70  0.923   0.832       14     6.93 [  2.50, 11.52] *           46.1%
+     0.85  0.952   0.735        7     5.94 [  1.37, 10.82] *           39.5%
+     0.95  0.984   0.514        2     4.26 [  0.43,  8.28] *           28.3%
+     0.99  0.994   0.280        0     2.11 [ -0.63,  4.52]             14.1%
+
+'*' marks rows whose 95% interval excludes zero, i.e. the predictor measurably beats
+doing nothing. Rows without it are not distinguishable from LRU no matter what their
+point estimate says. Intervals are paired bootstrap over seeds, 5000 resamples, seeded.
+
+wrote results/exp05_seeds15\runs.csv

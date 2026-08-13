@@ -28,8 +28,8 @@ are kept in `results/exp0*` and should not be quoted.
 | [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
 | [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | headroom rides the pressure axis everywhere; absolute hit rate does not, above pressure 1.0 |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
-| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | up to 58%, which is 89% of what a perfect termination oracle delivers. Ranking by predicted *pause length* is catastrophic at any accuracy |
-| [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy: each false positive costs ~0.45% of the headroom, and the optimum reverses direction with classifier quality |
+| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | about 50% — 70% of what a perfect termination oracle delivers, +7.4% [+2.3, +12.6] over LRU. Ranking by predicted *pause length* is catastrophic at any accuracy |
+| [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
 | [calibration](docs/calibration.md) | were the derived constants any good? | no — all wrong by 20–58%, and one whole term was missing |
 
 ## Layout
@@ -75,7 +75,7 @@ python -m experiments.exp04_predictor --sessions 200 --seeds 10 --out results/ex
 ```
 
 ```bash
-python -m experiments.exp05_threshold --sessions 200 --seeds 10 --out results/exp05
+python -m experiments.exp05_threshold --sessions 200 --seeds 15 --out results/exp05_seeds15
 ```
 
 Add `--reanalyze` to any of them to redo the analysis over an existing `runs.csv`

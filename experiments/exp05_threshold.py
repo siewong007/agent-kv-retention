@@ -35,6 +35,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from experiments.common import (  # noqa: E402
     default_workers, read_results, run_grid, write_results,
 )
+from experiments.exp01_ttl_falsify import _bootstrap_ratio  # noqa: E402
 from experiments.exp04_predictor import CONCURRENCY, predict_table, train  # noqa: E402
 from sim.config import Config  # noqa: E402
 from sim.workload import generate_sessions  # noqa: E402
@@ -86,28 +87,40 @@ def build_jobs(base: Config, seeds: list[int]) -> tuple[list[dict], dict]:
 
 
 def analyze(rows: list[dict], quality: dict, out_dir: str) -> dict:
-    ref = {}
+    # Keyed by seed, not pooled, because the share is a ratio of two differences and its
+    # uncertainty has to come from resampling whole seeds. Pooling first and dividing
+    # afterwards throws away the pairing that makes the comparison paired in the first
+    # place.
+    ref: dict = {}
     for r in rows:
         if r["threshold"] < 0:
-            ref.setdefault((r["signal"], r["policy"]), []).append(
-                r["prefill_tokens_computed"])
+            ref[(r["signal"], r["policy"], r["seed"])] = r["prefill_tokens_computed"]
 
-    out = []
     by_point: dict = {}
     for r in rows:
         if r["threshold"] >= 0:
-            by_point.setdefault((r["signal"], r["threshold"]), []).append(r)
+            by_point.setdefault((r["signal"], r["threshold"]), {})[r["seed"]] = \
+                r["prefill_tokens_computed"]
 
-    for (signal, thr), group in sorted(by_point.items()):
-        lru = st.fmean(ref[(signal, "lru")])
-        bel = st.fmean(ref[(signal, "belady")])
-        term = st.fmean(ref[(signal, "oracle_terminal")])
-        got = st.fmean([r["prefill_tokens_computed"] for r in group])
+    out = []
+    for (signal, thr), got_by_seed in sorted(by_point.items()):
+        seeds = sorted(got_by_seed)
+        lru_s = [ref[(signal, "lru", sd)] for sd in seeds]
+        bel_s = [ref[(signal, "belady", sd)] for sd in seeds]
+        term_s = [ref[(signal, "oracle_terminal", sd)] for sd in seeds]
+        got_s = [got_by_seed[sd] for sd in seeds]
+
+        lru, bel, term, got = (st.fmean(v) for v in (lru_s, bel_s, term_s, got_s))
         gap = lru - bel
         q = quality.get(f"{signal}|{thr}", {})
+
+        share_ci = _bootstrap_ratio(list(zip(lru_s, got_s)), list(zip(lru_s, bel_s)))
+        gain_ci = _bootstrap_ratio(list(zip(lru_s, got_s)),
+                                   [(v, 0.0) for v in lru_s])
         out.append({
             "signal": signal,
             "threshold": thr,
+            "n_seeds": len(seeds),
             "lru": lru,
             "belady": bel,
             "oracle_terminal": term,
@@ -115,10 +128,11 @@ def analyze(rows: list[dict], quality: dict, out_dir: str) -> dict:
             "share_of_gap": ((lru - got) / gap) if gap else None,
             "share_oracle_terminal": ((lru - term) / gap) if gap else None,
             "gain_vs_lru_frac": (lru - got) / lru if lru else None,
+            "share_ci": share_ci,
+            "gain_ci": gain_ci,
             "precision": q.get("precision"),
             "recall": q.get("recall"),
             "false_positives_per_seed": q.get("false_positives_per_seed"),
-            "n_seeds": len({r["seed"] for r in group}),
         })
 
     report = {"points": out}
@@ -138,19 +152,29 @@ def print_report(report: dict) -> None:
         orc = pts[0]["share_oracle_terminal"]
         print(f"\n  termination_signal_strength = {signal}   "
               f"(oracle_terminal captures {100*orc:.1f}% of the gap)")
-        print(f"  {'thresh':>7} {'precision':>10} {'recall':>8} {'FP/seed':>9} "
-              f"{'share of gap':>13} {'vs LRU':>9}")
-        print("  " + "-" * 62)
+        print(f"  {'thresh':>7} {'prec':>6} {'recall':>7} {'FP/seed':>8} "
+              f"{'gain vs LRU % [95% CI]':>26}  {'share of gap %':>14}")
+        print("  " + "-" * 72)
         best = max(pts, key=lambda p: p["share_of_gap"])
         for p in pts:
+            g = p.get("gain_ci") or {}
+            lo, hi = g.get("lo"), g.get("hi")
+            if lo is None:
+                ci = f"{100*p['gain_vs_lru_frac']:>8.2f}"
+            else:
+                beats = "  " if (lo <= 0 <= hi) else " *"
+                ci = (f"{100*p['gain_vs_lru_frac']:>7.2f} "
+                      f"[{100*lo:>6.2f},{100*hi:>6.2f}]{beats}")
             mark = "  <-- best" if p is best else ""
-            print(f"  {p['threshold']:>7.2f} {p['precision']:>10.3f} "
-                  f"{p['recall']:>8.3f} {p['false_positives_per_seed']:>9.0f} "
-                  f"{100*p['share_of_gap']:>12.1f}% "
-                  f"{100*p['gain_vs_lru_frac']:>8.1f}%{mark}")
-    print("\nA positive 'vs LRU' means the predictor beats doing nothing. EXP04 measured")
-    print("only the 0.50 row; if higher thresholds turn a negative row positive, EXP04's")
-    print("precision floor was an artefact of the operating point, not of the method.")
+            print(f"  {p['threshold']:>7.2f} {p['precision']:>6.3f} "
+                  f"{p['recall']:>7.3f} {p['false_positives_per_seed']:>8.0f} "
+                  f"{ci:>26}  {100*p['share_of_gap']:>13.1f}%{mark}")
+    print("\n'*' marks rows whose 95% interval excludes zero, i.e. the predictor "
+          "measurably beats")
+    print("doing nothing. Rows without it are not distinguishable from LRU no matter "
+          "what their")
+    print("point estimate says. Intervals are paired bootstrap over seeds, 5000 "
+          "resamples, seeded.")
 
 
 def main(argv=None) -> int:
