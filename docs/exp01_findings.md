@@ -101,16 +101,19 @@ An oracle that knows *only* whether a session is over, and otherwise falls back 
 | total headroom % | 10.3 [8.1, 12.4] | **18.3 [15.9, 21.0]** | 14.2 [12.1, 16.4] | 9.4 [7.3, 11.9] | 5.7 [4.4, 7.1] |
 | share from termination % | **87.9 [62.6, 105]** | **70.9 [55.1, 88.1]** | 53.1 [36.0, 68.3] | 35.9 [25.1, 45.0] | 22.9 [-1.4, 43.7] |
 
-The decline is monotone and the endpoints do not overlap, so this is a real trend, not
-noise. It also has a mechanical explanation: at low pressure the only thing worth doing
+The decline is monotone and the endpoints do not overlap — 87.9 [62.6, 105] at
+concurrency 8 against 22.9 [−1.4, 43.7] at 16 — so the *trend* is real. The individual
+values are not well resolved: those intervals are 20–55 percentage points wide, and the
+concurrency-16 one includes zero. It also has a mechanical explanation: at low pressure the only thing worth doing
 is evicting dead sessions, and there are just enough of them to matter; at high pressure
 every live session is competing and the ordering *among* them is what decides the
 outcome, which is precisely what termination information cannot tell you.
 
 **Consequence for week 2: predict termination first.** It is binary, strongly signalled
 (the model stops emitting tool calls), wrong at most once per session, and it is worth
-71% of the available gain at the headroom peak, which is where a 16 GB card running
-this workload actually sits.
+roughly **55–88%** of the available gain at the headroom peak — the interval, not the
+70.9% point estimate, is the honest quantity here, for reasons set out in the seed
+sufficiency section below.
 Pause-length regression is the harder half and pays only under heavier pressure.
 
 Note the estimator: this is a ratio of means with a bootstrap interval over seeds, not
@@ -151,6 +154,40 @@ points later. The window is narrower than for tokens. Any "TTFT explodes" figure
 state where on this axis it was measured.
 
 ---
+
+
+## Is 15 seeds enough? Per claim, checked rather than assumed
+
+`experiments/seed_sufficiency.py` recomputes each interval on random subsets of the
+seeds, fits how the width actually shrinks, and projects the seeds needed for a target
+precision. Pure sampling noise shrinks as n^-0.5; a decay much shallower than that means
+the width is held up by something seeds cannot remove.
+
+| claim | width at 15 seeds | decay | seeds for ±5 pp | verdict |
+|---|---|---|---|---|
+| headroom vs LRU (all concurrencies) | 1.8–5.1 pp | n^-0.26 … n^-0.46 | 1–3 | **enough** |
+| `ttl_oracle` vs LRU (Finding 2) | 1.9–9.1 pp | n^-0.37 … n^-0.48 | 1–12 | **enough** |
+| termination share (Finding 3) | **19.9–55.4 pp** | n^-0.37 … n^-0.66 | **98–360** | **not enough** |
+
+**The headroom numbers are settled.** Every concurrency has an interval excluding zero,
+widths of a few percentage points, and shrinkage close to the ideal rate. Nothing is
+bought by more seeds here.
+
+**Finding 2 now has intervals for the first time**, and they support it including its
+qualification: at concurrency 8 `ttl_oracle` is *better* than LRU by 6.9% with an
+interval excluding zero, and at every concurrency from 10 up it is worse by 3.7–15.9%,
+also excluding zero. The claim "right information, wrong mechanism — but only under
+scarcity" is statistically supported at both ends, not just at the point estimates.
+
+**Finding 3's share is not settled and cannot cheaply be.** The termination share is a
+ratio of two differences, so its interval is far wider than either difference alone —
+19.9 to 55.4 percentage points. Reaching ±5 pp would take 98–360 seeds, i.e. 7–24x the
+current cost, and at concurrency 16 the interval still includes zero. **The share should
+be quoted as a range and never as a point.** "Termination is worth roughly 55–88% of the
+headroom at the peak" is supportable; "70.9%" is not.
+
+That asymmetry is worth stating generally, because it recurs across this project:
+proving that an arm *beats* another is cheap, and estimating *by how much* is expensive.
 
 ## The regime where any of this matters is narrow
 

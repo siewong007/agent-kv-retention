@@ -82,6 +82,16 @@ Add `--reanalyze` to any of them to redo the analysis over an existing `runs.csv
 without simulating anything, then `python -m experiments.plot_exp0N --results <dir>`
 for the figure.
 
+Before buying more seeds, check whether they would help:
+
+```bash
+python -m experiments.seed_sufficiency --results results/v2_exp01_seeds15 --exp exp01
+```
+
+It fits how each interval actually shrinks under subsampling and projects the seeds
+needed for a target precision. A decay much shallower than n^-0.5 means the width is
+held up by something seeds cannot remove.
+
 To recalibrate against real hardware (needs the GPU; releases it when done):
 
 ```bash
@@ -127,7 +137,9 @@ Six rules, all load-bearing:
    paired-bootstrap intervals over seeds. Every headline in this project that was once
    quoted without one later turned out to be wrong — see the corrections in
    [EXP02](docs/exp02_findings.md), [EXP04](docs/exp04_findings.md) and
-   [EXP05](docs/exp05_findings.md).
+   [EXP05](docs/exp05_findings.md). Proving that one arm *beats* another is cheap;
+   estimating *by how much* is expensive, and some quantities here would need 300+ seeds
+   to pin down. `experiments/seed_sufficiency.py` says which is which.
 5. **LRU is not a naive baseline.** Age correlates with termination on this workload,
    so LRU is already exploiting a real signal. Any arm that overrides its ordering must
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).

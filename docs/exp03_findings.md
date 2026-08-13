@@ -120,13 +120,50 @@ a threshold it does not recover.
   0% runaway rate and a live-session range of ±1. EXP01's numbers are all from the
   stable side of a system that has an unstable side.
 - Only the 30 s pause point is a valid open-vs-closed comparison, and there the two
-  agree with overlapping intervals: tokens headroom **34.3% [30.3, 38.6] open against
-  35.2% [34.3, 36.1] closed**, and GPU-time cost headroom 9.9% open against 7.2% closed.
-  That is the one piece of evidence that the EXP01 conclusions are not closed-loop
-  artefacts, and it is a single point — but it is now a point with an interval around it
-  rather than two bare numbers that happened to look similar.
+  agree: the difference in token headroom is **−0.3 pp [−3.7, +3.1]**, an interval on
+  the difference rather than a pair of overlapping intervals. That is the one piece of
+  evidence that the EXP01 conclusions are not closed-loop artefacts, and it is a single
+  point.
 - A "cache hit rate under load" figure for an open-loop agent workload near saturation
   is reporting a mixture of two regimes. Its mean is not a central tendency of anything.
+
+
+## Is 15 seeds enough? The two arms answer differently
+
+`experiments/seed_sufficiency.py` fits how each interval shrinks as seeds are subsampled.
+Pure sampling noise gives n^-0.5.
+
+| arm / pause | width at 15 seeds | decay | seeds for ±5 pp |
+|---|---|---|---|
+| closed, all pauses | 1.5–8.1 pp | n^-0.16 … n^-0.46 | 0–4 |
+| open, 0.5 s and 1 s (low runaway) | 0.7–1.7 pp | n^-0.32 … n^-0.37 | 0 |
+| open, 5 s | 5.9 pp | n^-0.41 | 4 |
+| open, 10 s (53% runaway) | **21.5 pp** | **n^-0.26** | **337** |
+| open, 2 s (73% runaway) | **18.8 pp** | **n^-0.10** | **5295** |
+
+**The closed loop is settled everywhere.** Widths of a few percentage points, intervals
+excluding zero, shrinkage near the ideal rate.
+
+**The open-loop runaway rows are not, and no realistic seed count fixes them.** The decay
+exponents on those rows are 0.10 and 0.26 against an ideal of 0.5, which is the numerical
+signature of the bimodal mixture described above: adding seeds estimates the *mixture*
+more precisely without converging on an operating point, because there is no single
+operating point to converge on. The projection of 5295 seeds for the 2 s row is not a
+plan, it is a demonstration that the quantity is the wrong thing to estimate.
+
+## The open-vs-closed agreement, tested properly
+
+The claim that EXP01's conclusions are not closed-loop artefacts rested on the 30 s pause
+point, where the two arms' intervals overlapped. Overlapping intervals are weak evidence
+of agreement — two quantities can overlap and still differ. The right test is an interval
+on the **difference**:
+
+> closed minus open headroom at 30 s: **−0.3 pp [−3.7, +3.1]** → indistinguishable.
+
+That is a genuinely stronger statement than the overlap, and it is the one the finding
+should rest on. The caveat is that the two loops schedule the same sessions differently,
+so seeds pair only by index and this is a two-sample comparison; a truly paired design
+would give a tighter interval.
 
 ## What is not established
 
@@ -138,7 +175,8 @@ a threshold it does not recover.
   admission and preemption rules is untested. Recompute-preemption in particular
   amplifies the feedback, and a swap-based preemption might not.
 - The open-vs-closed agreement rests on one pause point.
-- The open-loop intervals are wide by construction on the runaway rows. Widening them
-  further with more seeds would not help: sampling a bimodal mixture more finely
-  estimates the mixture better, not the operating point, because there is no single
-  operating point to estimate.
+- The open-loop intervals are wide by construction on the runaway rows, and the fitted
+  decay exponents (0.10 and 0.26 against an ideal of 0.5) confirm quantitatively that
+  more seeds will not close them. Sampling a bimodal mixture more finely estimates the
+  mixture better, not an operating point, because there is no single operating point to
+  estimate.
