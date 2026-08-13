@@ -70,7 +70,7 @@ rate at every pause, so its seeds are a single population rather than a mixture.
 median pause, tool execution is most of a session's wall clock and no retention policy
 can touch it, so the reserved-box cost saving goes to 0.8%. That is arithmetic, not a
 measurement, and no experimental design removes it. Under utilisation billing the same
-runs save 7.1% -- nearly nine times more, from identical simulator runs. The billing model is
+runs save 7.1% -- 8.6x more, from identical simulator runs. The billing model is
 not a presentation choice; it changes the conclusion.
 
 **The robust core survives in both.** Conversion efficiency — how much of a token saving

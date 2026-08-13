@@ -99,7 +99,7 @@ random eviction.
 probably ended, so LRU is already exploiting real information. Any policy overriding its
 ordering must beat that, and a pause regressor at this accuracy does not.
 
-### 6. A cache win is not a cost win, and the billing model changes the answer eightfold
+### 6. A cache win is not a cost win, and the billing model changes the answer 8.6-fold
 
 Closed loop, concurrency 16, sweeping the median tool pause. Cost conversion falls as
 pauses lengthen under either billing model, and the two models diverge sharply at the
@@ -108,8 +108,8 @@ long end:
 - **wall-clock billing** (a reserved box, how the Sunway HPC session is charged): at a
   30 s median pause, tool execution is most of the wall clock and no retention policy can
   touch it. The saving goes to under 1%. This is arithmetic, not a measurement.
-- **GPU-time billing** (shared or autoscaled): the same runs hold 7.1%, nearly nine
-  times more from identical simulator runs.
+- **GPU-time billing** (shared or autoscaled): the same runs hold 7.1% — **8.6x more,
+  from identical simulator runs.** The billing model is not a presentation choice.
 
 Numbers refreshed from `results/v3_exp03`; see [exp03_findings.md](exp03_findings.md).
 

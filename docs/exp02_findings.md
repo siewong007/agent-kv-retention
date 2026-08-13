@@ -87,8 +87,11 @@ two comparable.
 
 ## The second useful result: the peak is at working set ≈ pool
 
-Headroom is not monotone in pressure. It is near zero at 0.5, peaks at **18.6%** at
-pressure 0.85, and decays back to 0.9% by pressure 1.6.
+Headroom is not monotone in pressure. Averaged across the three conditions it is near
+zero at 0.5, peaks at **18.6%** at pressure 0.85, and decays back to 0.9% by pressure
+1.6. That average is over conditions that differ systematically — at pressure 0.85 the
+individual values are 15.4%, 20.1% and 20.4% — so it is a summary of the shape, not a
+figure to quote on its own. The per-condition numbers are the ones with meaning.
 
 That shape has a clean reading. Below saturation there is nothing to evict, so no policy
 can beat any other. Far above it, nothing survives a pause under any policy, so again no
