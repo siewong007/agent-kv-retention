@@ -1,0 +1,212 @@
+{
+  "points": [
+    {
+      "termination_signal_strength": 0.0,
+      "n_seeds": 15,
+      "lru": 12669070.733333332,
+      "belady": 11004532.066666666,
+      "oracle_terminal": 11249034.466666667,
+      "belady_pause": 10690134.2,
+      "predict_terminal": 12856853.133333333,
+      "predict": 40106597.13333333,
+      "predict_guarded": 28424935.266666666,
+      "headroom_frac": 0.13138601099503947,
+      "headroom_ci": {
+        "point": 0.13138601099503952,
+        "lo": 0.10289794710302347,
+        "hi": 0.16117030581716027,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "share_oracle_terminal": 0.8531110121403005,
+      "share_belady_pause": 1.188879881833125,
+      "share_predict_terminal": -0.1128134802515855,
+      "share_predict": -16.483562052028034,
+      "share_predict_guarded": -9.46560440370265,
+      "ci_oracle_terminal": {
+        "point": 0.8531110121403007,
+        "lo": 0.7284287777674526,
+        "hi": 1.0174684219174084,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_belady_pause": {
+        "point": 1.1888798818331245,
+        "lo": 1.0382187955699964,
+        "hi": 1.38561457961201,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_predict_terminal": {
+        "point": -0.11281348025158522,
+        "lo": -0.4215387705508178,
+        "hi": 0.10735820835100025,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "quality": {
+        "terminal_precision": 0.6841450042652646,
+        "terminal_recall": 0.09266666666666667,
+        "pause_log_rmse": 1.3587758384638053,
+        "pause_median_ratio_error": 1.0181219540674766,
+        "n_train_rows": 37972
+      }
+    },
+    {
+      "termination_signal_strength": 0.75,
+      "n_seeds": 15,
+      "lru": 10791642.666666666,
+      "belady": 9024002.133333333,
+      "oracle_terminal": 9642601.6,
+      "belady_pause": 9060762.666666666,
+      "predict_terminal": 10998004.266666668,
+      "predict": 34167957.333333336,
+      "predict_guarded": 24295361.066666666,
+      "headroom_frac": 0.16379717045239453,
+      "headroom_ci": {
+        "point": 0.16379717045239453,
+        "lo": 0.12206392684222042,
+        "hi": 0.21069685117044473,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "share_oracle_terminal": 0.6500422710379122,
+      "share_belady_pause": 0.9792036148526126,
+      "share_predict_terminal": -0.11674409819673828,
+      "share_predict": -13.22458623563283,
+      "share_predict_guarded": -7.639403003808317,
+      "ci_oracle_terminal": {
+        "point": 0.6500422710379123,
+        "lo": 0.5155596657569087,
+        "hi": 0.8228500973413571,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_belady_pause": {
+        "point": 0.9792036148526125,
+        "lo": 0.872631441764351,
+        "hi": 1.0967646747327633,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_predict_terminal": {
+        "point": -0.11674409819673744,
+        "lo": -0.3181634980929424,
+        "hi": 0.02158918391578406,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "quality": {
+        "terminal_precision": 0.6435519400375306,
+        "terminal_recall": 0.25633333333333336,
+        "pause_log_rmse": 1.360489170372943,
+        "pause_median_ratio_error": 1.0127058255717258,
+        "n_train_rows": 37685
+      }
+    },
+    {
+      "termination_signal_strength": 1.5,
+      "n_seeds": 15,
+      "lru": 9977783.6,
+      "belady": 8475990.533333333,
+      "oracle_terminal": 8804200.666666666,
+      "belady_pause": 8251864.666666667,
+      "predict_terminal": 9700999.6,
+      "predict": 25172179.333333332,
+      "predict_guarded": 18393768.666666668,
+      "headroom_frac": 0.15051369390960398,
+      "headroom_ci": {
+        "point": 0.150513693909604,
+        "lo": 0.09748583036027056,
+        "hi": 0.20616640565592037,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "share_oracle_terminal": 0.7814544888918565,
+      "share_belady_pause": 1.1492388476423914,
+      "share_predict_terminal": 0.18430235572623946,
+      "share_predict": -10.117502917401493,
+      "share_predict_guarded": -5.603957864412392,
+      "ci_oracle_terminal": {
+        "point": 0.7814544888918562,
+        "lo": 0.6242231446032411,
+        "hi": 0.9462365918045585,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_belady_pause": {
+        "point": 1.1492388476423916,
+        "lo": 0.9548503369290615,
+        "hi": 1.481255764656386,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_predict_terminal": {
+        "point": 0.18430235572623943,
+        "lo": -0.1387310708158708,
+        "hi": 0.36027009494604,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "quality": {
+        "terminal_precision": 0.7422201446334549,
+        "terminal_recall": 0.5936666666666667,
+        "pause_log_rmse": 1.3475605229721321,
+        "pause_median_ratio_error": 1.027391456966407,
+        "n_train_rows": 37685
+      }
+    },
+    {
+      "termination_signal_strength": 3.0,
+      "n_seeds": 15,
+      "lru": 8729557.066666666,
+      "belady": 7418474.4,
+      "oracle_terminal": 7801237.066666666,
+      "belady_pause": 7260922.4,
+      "predict_terminal": 8079840.8,
+      "predict": 15219151.733333332,
+      "predict_guarded": 11212084.0,
+      "headroom_frac": 0.15018891069203993,
+      "headroom_ci": {
+        "point": 0.15018891069204,
+        "lo": 0.1046489614997187,
+        "hi": 0.2010606809843159,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "share_oracle_terminal": 0.7080560391818673,
+      "share_belady_pause": 1.1201693867256781,
+      "share_predict_terminal": 0.4955570561530828,
+      "share_predict": -4.949798232910817,
+      "share_predict_guarded": -1.8934938249507798,
+      "ci_oracle_terminal": {
+        "point": 0.708056039181867,
+        "lo": 0.495461966731564,
+        "hi": 0.8618229084480485,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_belady_pause": {
+        "point": 1.1201693867256781,
+        "lo": 0.9525644639658342,
+        "hi": 1.2984884922091278,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "ci_predict_terminal": {
+        "point": 0.49555705615308265,
+        "lo": 0.20856413542730454,
+        "hi": 0.6720269344982543,
+        "n_seeds": 15,
+        "n_boot": 5000
+      },
+      "quality": {
+        "terminal_precision": 0.8890985787911414,
+        "terminal_recall": 0.887,
+        "pause_log_rmse": 1.3283255084569547,
+        "pause_median_ratio_error": 1.060963838541641,
+        "n_train_rows": 37685
+      }
+    }
+  ]
+}

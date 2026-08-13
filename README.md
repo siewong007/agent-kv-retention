@@ -28,7 +28,7 @@ are kept in `results/exp0*` and should not be quoted.
 | [EXP01](docs/exp01_findings.md) | is predictive retention worth anything a tuned constant cannot get? | yes — a constant TTL gets exactly 0% of it. Peak headroom 18.3% [15.9, 21.0] |
 | [EXP02](docs/exp02_findings.md) | does the result belong to the hardware or to the memory pressure? | pressure is necessary but **not sufficient**: it transfers across a 4x change in pool size, but not across a 2.5x change in session count |
 | [EXP03](docs/exp03_findings.md) | was EXP01's pause sweep confounded by falling load? | half of it was the billing model; open-loop turns out to be metastable |
-| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | about 50% — 70% of what a perfect termination oracle delivers, +7.4% [+2.3, +12.6] over LRU. Ranking by predicted *pause length* is catastrophic at any accuracy |
+| [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | 49.6% [20.9, 67.2] at the strongest signal tested, and indistinguishable from LRU at the other three. Ranking by predicted *pause length* is catastrophic at any accuracy |
 | [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
 | [calibration](docs/calibration.md) | were the derived constants any good? | no — all wrong by 20–58%, and one whole term was missing |
 
@@ -71,7 +71,7 @@ python -m experiments.exp03_pause_isolation --sessions 200 --seeds 15 --out resu
 ```
 
 ```bash
-python -m experiments.exp04_predictor --sessions 200 --seeds 10 --out results/exp04
+python -m experiments.exp04_predictor --sessions 200 --seeds 15 --out results/exp04_seeds15
 ```
 
 ```bash
@@ -102,7 +102,7 @@ with each other. Only the oracle arms may look at the future.
 | `oracle_terminal` | priority | oracle, session-ended only | isolates termination prediction |
 | `belady` | priority | oracle, full | strong oracle reference. **Not** an upper bound: it is myopic and the reference stream is not fixed, see [EXP04](docs/exp04_findings.md) |
 | `predict` | priority | learned | the deployable version of `belady` |
-| `predict_terminal` | priority | learned, session-ended only | the deployable version of `oracle_terminal`; the only predict arm that ever beats LRU, and only above ~0.7 precision |
+| `predict_terminal` | priority | learned, session-ended only | the deployable version of `oracle_terminal`; the only predict arm that ever measurably beats LRU, and only at ~0.89 precision |
 | `predict_guarded` | priority | learned | ranks by predicted pause alone, ties break LRU |
 | `belady_pause` | priority | oracle, pause only | oracle counterpart of `predict_guarded`; beats `belady` |
 

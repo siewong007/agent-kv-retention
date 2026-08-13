@@ -1,0 +1,50 @@
+training predictors at termination_signal_strength=0.0 ...
+  terminal precision 0.684 recall 0.093 | pause log-RMSE 1.359
+training predictors at termination_signal_strength=0.75 ...
+  terminal precision 0.644 recall 0.256 | pause log-RMSE 1.360
+training predictors at termination_signal_strength=1.5 ...
+  terminal precision 0.742 recall 0.594 | pause log-RMSE 1.348
+training predictors at termination_signal_strength=3.0 ...
+  terminal precision 0.889 recall 0.887 | pause log-RMSE 1.328
+EXP04: 420 runs on 14 workers
+  40/420
+  80/420
+  120/420
+  160/420
+  200/420
+  240/420
+  280/420
+  320/420
+  360/420
+  400/420
+  420/420
+
+====================================================================================================
+EXP04  share of the Belady headroom captured, as the world is made more learnable
+====================================================================================================
+ signal    headroom % [95% CI] |     orc_term % [95% CI]     pred_term % [95% CI]  bel_pause   pred_grd    predict
+----------------------------------------------------------------------------------------------------------------------
+   0.00    13.1 [  10.3,  16.1]* |    85.3 [  72.8, 101.7]*   -11.3 [ -42.2,  10.7]      118.9%    -946.6%   -1648.4%
+                               | precision 0.684  recall 0.093
+   0.75    16.4 [  12.2,  21.1]* |    65.0 [  51.6,  82.3]*   -11.7 [ -31.8,   2.2]       97.9%    -763.9%   -1322.5%
+                               | precision 0.644  recall 0.256
+   1.50    15.1 [   9.7,  20.6]* |    78.1 [  62.4,  94.6]*    18.4 [ -13.9,  36.0]      114.9%    -560.4%   -1011.8%
+                               | precision 0.742  recall 0.594
+   3.00    15.0 [  10.5,  20.1]* |    70.8 [  49.5,  86.2]*    49.6 [  20.9,  67.2]*     112.0%    -189.3%    -495.0%
+                               | precision 0.889  recall 0.887
+
+orc_term vs pred_term  = what the classifier loses against perfect termination knowledge.
+bel_pause vs belady    = ranking by pause alone versus by absolute next-use
+                         time. Values over 100% mean `belady` is NOT an
+                         upper bound in this system: it is myopic (next use
+                         only, not the whole future) and the reference
+                         stream is not fixed, since eviction changes when
+                         work is recomputed.
+pred_grd / predict     = pause-length prediction layered on top. Both go
+                         sharply negative: overriding LRU with a noisy
+                         ordering destroys the signal LRU already exploits,
+                         namely that an old block belongs to a dead session.
+At signal 0.00 termination is unlearnable by construction, so the predict
+arms there are a floor, not a result.
+
+wrote results/exp04_seeds15\runs.csv

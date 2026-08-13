@@ -45,7 +45,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments.common import (  # noqa: E402
-    default_workers, read_results, run_grid, write_results,
+    bootstrap_ratio, default_workers, read_results, run_grid, write_results,
 )
 from sim.config import Config  # noqa: E402
 from sim.workload import Session, generate_sessions  # noqa: E402
@@ -206,13 +206,29 @@ def analyze(rows: list[dict], quality: dict, out_dir: str) -> dict:
             vals = [r[metric] for r in group if r["policy"] == policy]
             return st.fmean(vals) if vals else None
 
+        def by_seed(policy, metric="prefill_tokens_computed"):
+            return {r["seed"]: r[metric] for r in group if r["policy"] == policy}
+
         lru = mean_of("lru")
         bel = mean_of("belady")
         gap = lru - bel if (lru and bel) else 0.0
+        lru_s, bel_s = by_seed("lru"), by_seed("belady")
+        seeds = sorted(set(lru_s) & set(bel_s))
 
         def share(policy):
             v = mean_of(policy)
             return ((lru - v) / gap) if (gap > 0 and v is not None) else None
+
+        def share_ci(policy):
+            # Paired over seeds: the share is a ratio of two differences that share the
+            # same LRU baseline within each seed, so the pairing has to survive into the
+            # resampling or the interval is wider than the claim warrants.
+            arm_s = by_seed(policy)
+            pair = [sd for sd in seeds if sd in arm_s]
+            if len(pair) < 2:
+                return None
+            return bootstrap_ratio([(lru_s[sd], arm_s[sd]) for sd in pair],
+                                   [(lru_s[sd], bel_s[sd]) for sd in pair])
 
         entry = {
             "termination_signal_strength": spread,
@@ -225,11 +241,17 @@ def analyze(rows: list[dict], quality: dict, out_dir: str) -> dict:
             "predict": mean_of("predict"),
             "predict_guarded": mean_of("predict_guarded"),
             "headroom_frac": gap / lru if lru else 0.0,
+            "headroom_ci": bootstrap_ratio(
+                [(lru_s[sd], bel_s[sd]) for sd in seeds],
+                [(lru_s[sd], 0.0) for sd in seeds]) if len(seeds) >= 2 else None,
             "share_oracle_terminal": share("oracle_terminal"),
             "share_belady_pause": share("belady_pause"),
             "share_predict_terminal": share("predict_terminal"),
             "share_predict": share("predict"),
             "share_predict_guarded": share("predict_guarded"),
+            "ci_oracle_terminal": share_ci("oracle_terminal"),
+            "ci_belady_pause": share_ci("belady_pause"),
+            "ci_predict_terminal": share_ci("predict_terminal"),
             "quality": quality.get(spread) or quality.get(str(spread)),
         }
         out.append(entry)
@@ -246,25 +268,34 @@ def print_report(report: dict) -> None:
     print("EXP04  share of the Belady headroom captured, as the world is made more "
           "learnable")
     print("=" * 100)
-    print(f"{'signal':>7} {'headroom':>9} | {'orc_term':>9} {'bel_pause':>10} "
-          f"{'pred_term':>10} {'pred_grd':>9} {'predict':>10} | "
-          f"{'prec':>6} {'recall':>7}")
-    print("-" * 100)
+    print(f"{'signal':>7} {'headroom % [95% CI]':>22} | "
+          f"{'orc_term % [95% CI]':>23} {'pred_term % [95% CI]':>24} "
+          f"{'bel_pause':>10} {'pred_grd':>10} {'predict':>10}")
+    print("-" * 118)
     for p in report["points"]:
         q = p["quality"] or {}
 
         def pct(v):
             return f"{100 * v:>9.1f}%" if v is not None else "        --"
 
+        def with_ci(val, ci):
+            if val is None:
+                return " " * 22
+            if not ci or ci.get("lo") is None:
+                return f"{100*val:>20.1f} "
+            sig = "*" if not (ci["lo"] <= 0 <= ci["hi"]) else " "
+            return f"{100*val:>7.1f} [{100*ci['lo']:>6.1f},{100*ci['hi']:>6.1f}]{sig}"
+
         print(f"{p['termination_signal_strength']:>7.2f} "
-              f"{100*p['headroom_frac']:>8.1f}% | "
-              f"{pct(p['share_oracle_terminal']):>9} "
+              f"{with_ci(p['headroom_frac'], p.get('headroom_ci')):>22} | "
+              f"{with_ci(p['share_oracle_terminal'], p.get('ci_oracle_terminal')):>23} "
+              f"{with_ci(p['share_predict_terminal'], p.get('ci_predict_terminal')):>24} "
               f"{pct(p['share_belady_pause']):>10} "
-              f"{pct(p['share_predict_terminal']):>10} "
-              f"{pct(p['share_predict_guarded']):>9} "
-              f"{pct(p['share_predict']):>10} | "
-              f"{q.get('terminal_precision', float('nan')):>6.3f} "
-              f"{q.get('terminal_recall', float('nan')):>7.3f}")
+              f"{pct(p['share_predict_guarded']):>10} "
+              f"{pct(p['share_predict']):>10}")
+        print(f"{'':>7} {'':>23}| precision "
+              f"{q.get('terminal_precision', float('nan')):.3f}  recall "
+              f"{q.get('terminal_recall', float('nan')):.3f}")
     print()
     print("orc_term vs pred_term  = what the classifier loses against perfect "
           "termination knowledge.")
