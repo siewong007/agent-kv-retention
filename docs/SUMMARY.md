@@ -7,6 +7,15 @@ that contains the config and seed that produced it.
 **Read the caveats section before quoting anything.** The engine is calibrated against
 real hardware; the workload is not.
 
+> **2026-08-02, from [validation_findings.md](validation_findings.md):** the simulator
+> has now been compared to vLLM end-to-end. The **timing model is validated** — makespan
+> agrees within 2% at two pressures. The **eviction model is refuted**: at pressure 1.02
+> the simulator reports a 0.804 hit rate where vLLM measures 0.550, because it loses only
+> 11.4 pp to eviction where vLLM loses 36.8. Every absolute hit rate under pressure in
+> this document is therefore optimistic, and the pressure axis is shifted. Cost and
+> latency conclusions are unaffected; headroom figures should be read in simulator
+> pressure units until the eviction model is fixed.
+
 ---
 
 ## The question and the answer in one paragraph
@@ -133,9 +142,11 @@ Ordered by how much damage each would do to the report.
    the fitted interval-shrinkage exponent is 0.10 against an ideal 0.5.
 4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080. Nothing
    here has been checked against a second model or a headless server.
-5. **The simulator has never been validated against vLLM end-to-end.** Its *constants*
-   are fitted to vLLM; its *behaviour* — hit rate and TTFT under load — has not been
-   compared.
+5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, and it
+   half failed.** Timing agrees within 2%; the eviction model under-evicts by 3.2x at
+   pressure 1.02. See [validation_findings.md](validation_findings.md). This is now the
+   *second* most damaging open item, above everything below it — whether the policy
+   ranking survives the shift is untested.
 6. **`predict_terminal`'s neutrality at weak signal is unresolved, not proved.** Showing
    an arm is neutral needs far more seeds than showing it wins; those intervals are
    30–60 pp wide.

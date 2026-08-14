@@ -34,6 +34,7 @@ are kept in `results/exp0*` and should not be quoted.
 | [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | 49.6% [20.9, 67.2] at the strongest signal tested, and indistinguishable from LRU at the other three. Ranking by predicted *pause length* is catastrophic at any accuracy |
 | [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
 | [calibration](docs/calibration.md) | were the derived constants any good? | no — all wrong by 20–58%, and one whole term was missing |
+| [validation](docs/validation_findings.md) | does the simulator behave like vLLM? | timing yes (2%); **eviction no** — it under-evicts by 3.2x under pressure |
 
 ## Layout
 
@@ -121,7 +122,7 @@ with each other. Only the oracle arms may look at the future.
 
 ## Reading the numbers
 
-Six rules, all load-bearing:
+Seven rules, all load-bearing:
 
 1. **A cache win is not a cost win.** Conversion runs about 20–60%: a 35% cut in
    recomputed tokens is worth roughly 7% of cost. Always check `gpu_busy_frac` before
@@ -148,7 +149,11 @@ Six rules, all load-bearing:
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).
    The corollary is that a predictor's *decision threshold* is not a hyperparameter, it
    is the policy: see [EXP05](docs/exp05_findings.md).
-6. **Engine constants are measured; workload constants are not.** See
+6. **The eviction model is known to be wrong under pressure.** vLLM evicts 3.2x more
+   than the simulator at the same pool size and workload. Timing and cost conclusions are
+   validated; absolute hit rates under pressure are optimistic and the pressure axis is
+   shifted. See [validation](docs/validation_findings.md).
+7. **Engine constants are measured; workload constants are not.** See
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
    is a function of.

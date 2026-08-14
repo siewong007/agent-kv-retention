@@ -1,0 +1,5826 @@
+{
+  "created_utc": "2026-08-14T19:07:33Z",
+  "server": {
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "num_requests_running": 0.0,
+    "metrics_available": true
+  },
+  "config": {
+    "seed": 0,
+    "workload": {
+      "n_sessions": 40,
+      "turns_min": 12,
+      "turns_max": 30,
+      "system_prompt_tokens": 1200,
+      "task_tokens_median": 400.0,
+      "task_tokens_sigma": 0.5,
+      "output_tokens_median": 160.0,
+      "output_tokens_sigma": 0.6,
+      "tool_result_tokens_median": 700.0,
+      "tool_result_tokens_sigma": 1.1,
+      "pause_seconds_median": 2.0,
+      "pause_seconds_sigma": 1.0,
+      "n_tools": 8,
+      "tool_pause_spread": 0.9,
+      "tool_markov_self_prob": 0.45,
+      "termination_signal_strength": 0.0,
+      "finishing_tool_id": 0
+    },
+    "engine": {
+      "block_size": 16,
+      "kv_pool_blocks": 13663,
+      "max_num_seqs": 64,
+      "max_num_batched_tokens": 8192,
+      "step_overhead_s": 0.009554,
+      "prefill_s_per_token": 6.669e-05,
+      "prefill_s_per_token2": 1.954e-09,
+      "decode_s_per_seq": 2.4e-05,
+      "decode_s_per_kv_token": 5.994e-08,
+      "enable_prefix_caching": true
+    },
+    "policy": {
+      "kind": "lru",
+      "const_ttl_s": 0.0,
+      "oracle_ttl_scale": 1.0
+    },
+    "arrival": {
+      "mode": "closed",
+      "concurrency": 10,
+      "rate_per_s": 0.5
+    },
+    "cost": {
+      "rm_per_hour": 3.06,
+      "label": "T4-16GB"
+    }
+  },
+  "offered_pressure": 0.6373943250349591,
+  "turns_kept": 718,
+  "turns_dropped_for_context_limit": 139,
+  "max_prompt_tokens": 30000,
+  "vllm": {
+    "prefix_cache_queries": 9854329.0,
+    "prefix_cache_hits": 8879024.0,
+    "hit_rate": 0.9010277615046138,
+    "metric_used": "vllm:prefix_cache_queries_total",
+    "wall_s": 651.9433581300002,
+    "n_calls": 718,
+    "ttft_proxy_p50_s": 2.9470743914999957
+  },
+  "simulator": {
+    "hit_rate": 0.9150593612208401,
+    "makespan_s": 639.1960143259787,
+    "n_calls": 718,
+    "prefill_tokens_computed": 837033
+  },
+  "tokenisation": {
+    "intended_prompt_tokens": 9854329,
+    "actual_prompt_tokens": 9854329,
+    "ratio_actual_over_intended": 1.0
+  },
+  "records": [
+    {
+      "session_id": 8,
+      "turn": 0,
+      "intended_prompt_tokens": 1480,
+      "actual_prompt_tokens": 1480,
+      "output_tokens": 69,
+      "elapsed_s": 1.3313029760001882
+    },
+    {
+      "session_id": 5,
+      "turn": 0,
+      "intended_prompt_tokens": 1561,
+      "actual_prompt_tokens": 1561,
+      "output_tokens": 102,
+      "elapsed_s": 1.6629762119998759
+    },
+    {
+      "session_id": 6,
+      "turn": 0,
+      "intended_prompt_tokens": 1377,
+      "actual_prompt_tokens": 1377,
+      "output_tokens": 104,
+      "elapsed_s": 1.6826325130000441
+    },
+    {
+      "session_id": 1,
+      "turn": 0,
+      "intended_prompt_tokens": 1703,
+      "actual_prompt_tokens": 1703,
+      "output_tokens": 114,
+      "elapsed_s": 1.787182281000014
+    },
+    {
+      "session_id": 7,
+      "turn": 0,
+      "intended_prompt_tokens": 1999,
+      "actual_prompt_tokens": 1999,
+      "output_tokens": 190,
+      "elapsed_s": 2.6557743930000015
+    },
+    {
+      "session_id": 4,
+      "turn": 0,
+      "intended_prompt_tokens": 1975,
+      "actual_prompt_tokens": 1975,
+      "output_tokens": 221,
+      "elapsed_s": 3.6382975129999977
+    },
+    {
+      "session_id": 9,
+      "turn": 0,
+      "intended_prompt_tokens": 2136,
+      "actual_prompt_tokens": 2136,
+      "output_tokens": 221,
+      "elapsed_s": 3.653224307000073
+    },
+    {
+      "session_id": 2,
+      "turn": 0,
+      "intended_prompt_tokens": 1416,
+      "actual_prompt_tokens": 1416,
+      "output_tokens": 269,
+      "elapsed_s": 4.156150977999914
+    },
+    {
+      "session_id": 8,
+      "turn": 1,
+      "intended_prompt_tokens": 6953,
+      "actual_prompt_tokens": 6953,
+      "output_tokens": 65,
+      "elapsed_s": 1.396098678000044
+    },
+    {
+      "session_id": 3,
+      "turn": 0,
+      "intended_prompt_tokens": 1553,
+      "actual_prompt_tokens": 1553,
+      "output_tokens": 286,
+      "elapsed_s": 4.342982643999903
+    },
+    {
+      "session_id": 7,
+      "turn": 1,
+      "intended_prompt_tokens": 4946,
+      "actual_prompt_tokens": 4946,
+      "output_tokens": 84,
+      "elapsed_s": 1.3261638750000202
+    },
+    {
+      "session_id": 6,
+      "turn": 1,
+      "intended_prompt_tokens": 1649,
+      "actual_prompt_tokens": 1649,
+      "output_tokens": 145,
+      "elapsed_s": 2.176942327000006
+    },
+    {
+      "session_id": 0,
+      "turn": 0,
+      "intended_prompt_tokens": 1406,
+      "actual_prompt_tokens": 1406,
+      "output_tokens": 428,
+      "elapsed_s": 6.553612209999983
+    },
+    {
+      "session_id": 1,
+      "turn": 1,
+      "intended_prompt_tokens": 3032,
+      "actual_prompt_tokens": 3032,
+      "output_tokens": 304,
+      "elapsed_s": 4.709412702000009
+    },
+    {
+      "session_id": 7,
+      "turn": 2,
+      "intended_prompt_tokens": 5514,
+      "actual_prompt_tokens": 5514,
+      "output_tokens": 80,
+      "elapsed_s": 0.9573185679998915
+    },
+    {
+      "session_id": 6,
+      "turn": 2,
+      "intended_prompt_tokens": 3398,
+      "actual_prompt_tokens": 3398,
+      "output_tokens": 193,
+      "elapsed_s": 2.93760822299987
+    },
+    {
+      "session_id": 3,
+      "turn": 1,
+      "intended_prompt_tokens": 4181,
+      "actual_prompt_tokens": 4181,
+      "output_tokens": 229,
+      "elapsed_s": 3.34860758800005
+    },
+    {
+      "session_id": 4,
+      "turn": 1,
+      "intended_prompt_tokens": 6323,
+      "actual_prompt_tokens": 6323,
+      "output_tokens": 304,
+      "elapsed_s": 4.2888199559999975
+    },
+    {
+      "session_id": 2,
+      "turn": 1,
+      "intended_prompt_tokens": 2387,
+      "actual_prompt_tokens": 2387,
+      "output_tokens": 216,
+      "elapsed_s": 2.5493702670000857
+    },
+    {
+      "session_id": 8,
+      "turn": 2,
+      "intended_prompt_tokens": 7838,
+      "actual_prompt_tokens": 7838,
+      "output_tokens": 370,
+      "elapsed_s": 5.000104538999949
+    },
+    {
+      "session_id": 9,
+      "turn": 1,
+      "intended_prompt_tokens": 2601,
+      "actual_prompt_tokens": 2601,
+      "output_tokens": 73,
+      "elapsed_s": 1.1566661310000654
+    },
+    {
+      "session_id": 6,
+      "turn": 3,
+      "intended_prompt_tokens": 4120,
+      "actual_prompt_tokens": 4120,
+      "output_tokens": 279,
+      "elapsed_s": 3.417008700999986
+    },
+    {
+      "session_id": 0,
+      "turn": 1,
+      "intended_prompt_tokens": 2515,
+      "actual_prompt_tokens": 2515,
+      "output_tokens": 334,
+      "elapsed_s": 4.063062453000157
+    },
+    {
+      "session_id": 3,
+      "turn": 2,
+      "intended_prompt_tokens": 4871,
+      "actual_prompt_tokens": 4871,
+      "output_tokens": 154,
+      "elapsed_s": 2.2144587620000493
+    },
+    {
+      "session_id": 9,
+      "turn": 2,
+      "intended_prompt_tokens": 4168,
+      "actual_prompt_tokens": 4168,
+      "output_tokens": 61,
+      "elapsed_s": 1.7161677159999726
+    },
+    {
+      "session_id": 0,
+      "turn": 2,
+      "intended_prompt_tokens": 3311,
+      "actual_prompt_tokens": 3311,
+      "output_tokens": 73,
+      "elapsed_s": 1.295363253000005
+    },
+    {
+      "session_id": 8,
+      "turn": 3,
+      "intended_prompt_tokens": 12294,
+      "actual_prompt_tokens": 12294,
+      "output_tokens": 90,
+      "elapsed_s": 1.9367246399999658
+    },
+    {
+      "session_id": 6,
+      "turn": 4,
+      "intended_prompt_tokens": 5432,
+      "actual_prompt_tokens": 5432,
+      "output_tokens": 75,
+      "elapsed_s": 1.0482429090000096
+    },
+    {
+      "session_id": 7,
+      "turn": 3,
+      "intended_prompt_tokens": 5936,
+      "actual_prompt_tokens": 5936,
+      "output_tokens": 87,
+      "elapsed_s": 1.4752571770000031
+    },
+    {
+      "session_id": 1,
+      "turn": 2,
+      "intended_prompt_tokens": 8219,
+      "actual_prompt_tokens": 8219,
+      "output_tokens": 86,
+      "elapsed_s": 1.6105466879998858
+    },
+    {
+      "session_id": 2,
+      "turn": 2,
+      "intended_prompt_tokens": 3544,
+      "actual_prompt_tokens": 3544,
+      "output_tokens": 259,
+      "elapsed_s": 4.6016444559998035
+    },
+    {
+      "session_id": 4,
+      "turn": 2,
+      "intended_prompt_tokens": 9650,
+      "actual_prompt_tokens": 9650,
+      "output_tokens": 424,
+      "elapsed_s": 6.721967446999997
+    },
+    {
+      "session_id": 9,
+      "turn": 3,
+      "intended_prompt_tokens": 4664,
+      "actual_prompt_tokens": 4664,
+      "output_tokens": 86,
+      "elapsed_s": 1.1128079579998484
+    },
+    {
+      "session_id": 0,
+      "turn": 3,
+      "intended_prompt_tokens": 4283,
+      "actual_prompt_tokens": 4283,
+      "output_tokens": 121,
+      "elapsed_s": 1.6458609049998358
+    },
+    {
+      "session_id": 3,
+      "turn": 3,
+      "intended_prompt_tokens": 6933,
+      "actual_prompt_tokens": 6933,
+      "output_tokens": 283,
+      "elapsed_s": 4.327031593999891
+    },
+    {
+      "session_id": 7,
+      "turn": 4,
+      "intended_prompt_tokens": 6585,
+      "actual_prompt_tokens": 6585,
+      "output_tokens": 107,
+      "elapsed_s": 1.7072945519998939
+    },
+    {
+      "session_id": 5,
+      "turn": 1,
+      "intended_prompt_tokens": 2225,
+      "actual_prompt_tokens": 2225,
+      "output_tokens": 112,
+      "elapsed_s": 1.791656390999833
+    },
+    {
+      "session_id": 3,
+      "turn": 4,
+      "intended_prompt_tokens": 10772,
+      "actual_prompt_tokens": 10772,
+      "output_tokens": 40,
+      "elapsed_s": 1.1061200219999137
+    },
+    {
+      "session_id": 1,
+      "turn": 3,
+      "intended_prompt_tokens": 10867,
+      "actual_prompt_tokens": 10867,
+      "output_tokens": 51,
+      "elapsed_s": 0.9999068930001158
+    },
+    {
+      "session_id": 3,
+      "turn": 5,
+      "intended_prompt_tokens": 11687,
+      "actual_prompt_tokens": 11687,
+      "output_tokens": 116,
+      "elapsed_s": 1.5037359680000009
+    },
+    {
+      "session_id": 6,
+      "turn": 5,
+      "intended_prompt_tokens": 5944,
+      "actual_prompt_tokens": 5944,
+      "output_tokens": 359,
+      "elapsed_s": 5.028219060000083
+    },
+    {
+      "session_id": 1,
+      "turn": 4,
+      "intended_prompt_tokens": 10973,
+      "actual_prompt_tokens": 10973,
+      "output_tokens": 95,
+      "elapsed_s": 1.131390058000079
+    },
+    {
+      "session_id": 4,
+      "turn": 3,
+      "intended_prompt_tokens": 10474,
+      "actual_prompt_tokens": 10474,
+      "output_tokens": 308,
+      "elapsed_s": 4.588812199999893
+    },
+    {
+      "session_id": 8,
+      "turn": 4,
+      "intended_prompt_tokens": 14029,
+      "actual_prompt_tokens": 14029,
+      "output_tokens": 51,
+      "elapsed_s": 0.9770258650000869
+    },
+    {
+      "session_id": 0,
+      "turn": 4,
+      "intended_prompt_tokens": 4579,
+      "actual_prompt_tokens": 4579,
+      "output_tokens": 222,
+      "elapsed_s": 2.9470899000000372
+    },
+    {
+      "session_id": 6,
+      "turn": 6,
+      "intended_prompt_tokens": 7199,
+      "actual_prompt_tokens": 7199,
+      "output_tokens": 141,
+      "elapsed_s": 2.0006704029999582
+    },
+    {
+      "session_id": 1,
+      "turn": 5,
+      "intended_prompt_tokens": 11510,
+      "actual_prompt_tokens": 11510,
+      "output_tokens": 234,
+      "elapsed_s": 3.3196820449998086
+    },
+    {
+      "session_id": 7,
+      "turn": 5,
+      "intended_prompt_tokens": 7528,
+      "actual_prompt_tokens": 7528,
+      "output_tokens": 132,
+      "elapsed_s": 1.5768398419997993
+    },
+    {
+      "session_id": 2,
+      "turn": 3,
+      "intended_prompt_tokens": 6296,
+      "actual_prompt_tokens": 6296,
+      "output_tokens": 243,
+      "elapsed_s": 3.2927536079998845
+    },
+    {
+      "session_id": 9,
+      "turn": 4,
+      "intended_prompt_tokens": 5160,
+      "actual_prompt_tokens": 5160,
+      "output_tokens": 221,
+      "elapsed_s": 2.827042700999982
+    },
+    {
+      "session_id": 1,
+      "turn": 6,
+      "intended_prompt_tokens": 12343,
+      "actual_prompt_tokens": 12343,
+      "output_tokens": 112,
+      "elapsed_s": 1.586305290999917
+    },
+    {
+      "session_id": 5,
+      "turn": 2,
+      "intended_prompt_tokens": 2614,
+      "actual_prompt_tokens": 2614,
+      "output_tokens": 134,
+      "elapsed_s": 2.457686767000041
+    },
+    {
+      "session_id": 4,
+      "turn": 4,
+      "intended_prompt_tokens": 11209,
+      "actual_prompt_tokens": 11209,
+      "output_tokens": 171,
+      "elapsed_s": 3.1402630139998564
+    },
+    {
+      "session_id": 7,
+      "turn": 6,
+      "intended_prompt_tokens": 8683,
+      "actual_prompt_tokens": 8683,
+      "output_tokens": 66,
+      "elapsed_s": 1.677827599000011
+    },
+    {
+      "session_id": 3,
+      "turn": 6,
+      "intended_prompt_tokens": 16704,
+      "actual_prompt_tokens": 16704,
+      "output_tokens": 69,
+      "elapsed_s": 1.6574522879998312
+    },
+    {
+      "session_id": 1,
+      "turn": 7,
+      "intended_prompt_tokens": 12949,
+      "actual_prompt_tokens": 12949,
+      "output_tokens": 119,
+      "elapsed_s": 2.070355027000005
+    },
+    {
+      "session_id": 0,
+      "turn": 5,
+      "intended_prompt_tokens": 5921,
+      "actual_prompt_tokens": 5921,
+      "output_tokens": 512,
+      "elapsed_s": 7.3628438709999955
+    },
+    {
+      "session_id": 2,
+      "turn": 4,
+      "intended_prompt_tokens": 6647,
+      "actual_prompt_tokens": 6647,
+      "output_tokens": 218,
+      "elapsed_s": 5.587321297000017
+    },
+    {
+      "session_id": 9,
+      "turn": 5,
+      "intended_prompt_tokens": 7098,
+      "actual_prompt_tokens": 7098,
+      "output_tokens": 94,
+      "elapsed_s": 4.226976071000081
+    },
+    {
+      "session_id": 7,
+      "turn": 7,
+      "intended_prompt_tokens": 9280,
+      "actual_prompt_tokens": 9280,
+      "output_tokens": 84,
+      "elapsed_s": 3.9355133859999114
+    },
+    {
+      "session_id": 6,
+      "turn": 7,
+      "intended_prompt_tokens": 7738,
+      "actual_prompt_tokens": 7738,
+      "output_tokens": 410,
+      "elapsed_s": 8.960631664999937
+    },
+    {
+      "session_id": 1,
+      "turn": 8,
+      "intended_prompt_tokens": 13327,
+      "actual_prompt_tokens": 13327,
+      "output_tokens": 146,
+      "elapsed_s": 4.648594541999955
+    },
+    {
+      "session_id": 8,
+      "turn": 5,
+      "intended_prompt_tokens": 28617,
+      "actual_prompt_tokens": 28617,
+      "output_tokens": 229,
+      "elapsed_s": 5.806950108000137
+    },
+    {
+      "session_id": 0,
+      "turn": 6,
+      "intended_prompt_tokens": 10480,
+      "actual_prompt_tokens": 10480,
+      "output_tokens": 302,
+      "elapsed_s": 7.2863139029998365
+    },
+    {
+      "session_id": 2,
+      "turn": 5,
+      "intended_prompt_tokens": 6997,
+      "actual_prompt_tokens": 6997,
+      "output_tokens": 223,
+      "elapsed_s": 3.3630353680000553
+    },
+    {
+      "session_id": 7,
+      "turn": 8,
+      "intended_prompt_tokens": 10966,
+      "actual_prompt_tokens": 10966,
+      "output_tokens": 209,
+      "elapsed_s": 3.5757033130000764
+    },
+    {
+      "session_id": 9,
+      "turn": 6,
+      "intended_prompt_tokens": 8224,
+      "actual_prompt_tokens": 8224,
+      "output_tokens": 160,
+      "elapsed_s": 2.6765249820000463
+    },
+    {
+      "session_id": 1,
+      "turn": 9,
+      "intended_prompt_tokens": 15339,
+      "actual_prompt_tokens": 15339,
+      "output_tokens": 136,
+      "elapsed_s": 2.308868291999943
+    },
+    {
+      "session_id": 2,
+      "turn": 6,
+      "intended_prompt_tokens": 8178,
+      "actual_prompt_tokens": 8178,
+      "output_tokens": 163,
+      "elapsed_s": 3.1485364269999536
+    },
+    {
+      "session_id": 5,
+      "turn": 3,
+      "intended_prompt_tokens": 4421,
+      "actual_prompt_tokens": 4421,
+      "output_tokens": 509,
+      "elapsed_s": 11.289550618000021
+    },
+    {
+      "session_id": 3,
+      "turn": 7,
+      "intended_prompt_tokens": 16801,
+      "actual_prompt_tokens": 16801,
+      "output_tokens": 184,
+      "elapsed_s": 4.260490609000044
+    },
+    {
+      "session_id": 0,
+      "turn": 7,
+      "intended_prompt_tokens": 10966,
+      "actual_prompt_tokens": 10966,
+      "output_tokens": 142,
+      "elapsed_s": 3.2723239290000947
+    },
+    {
+      "session_id": 5,
+      "turn": 4,
+      "intended_prompt_tokens": 5895,
+      "actual_prompt_tokens": 5895,
+      "output_tokens": 97,
+      "elapsed_s": 1.585178016999862
+    },
+    {
+      "session_id": 9,
+      "turn": 7,
+      "intended_prompt_tokens": 9267,
+      "actual_prompt_tokens": 9267,
+      "output_tokens": 113,
+      "elapsed_s": 2.0883890810000594
+    },
+    {
+      "session_id": 1,
+      "turn": 10,
+      "intended_prompt_tokens": 20979,
+      "actual_prompt_tokens": 20979,
+      "output_tokens": 140,
+      "elapsed_s": 3.204089854000131
+    },
+    {
+      "session_id": 9,
+      "turn": 8,
+      "intended_prompt_tokens": 9604,
+      "actual_prompt_tokens": 9604,
+      "output_tokens": 98,
+      "elapsed_s": 1.5620604399998683
+    },
+    {
+      "session_id": 6,
+      "turn": 8,
+      "intended_prompt_tokens": 8737,
+      "actual_prompt_tokens": 8737,
+      "output_tokens": 412,
+      "elapsed_s": 8.066420022000102
+    },
+    {
+      "session_id": 5,
+      "turn": 5,
+      "intended_prompt_tokens": 6273,
+      "actual_prompt_tokens": 6273,
+      "output_tokens": 217,
+      "elapsed_s": 3.9767524349999803
+    },
+    {
+      "session_id": 1,
+      "turn": 11,
+      "intended_prompt_tokens": 21296,
+      "actual_prompt_tokens": 21296,
+      "output_tokens": 249,
+      "elapsed_s": 4.445144917000107
+    },
+    {
+      "session_id": 0,
+      "turn": 8,
+      "intended_prompt_tokens": 17847,
+      "actual_prompt_tokens": 17847,
+      "output_tokens": 268,
+      "elapsed_s": 5.195426133999945
+    },
+    {
+      "session_id": 6,
+      "turn": 9,
+      "intended_prompt_tokens": 9736,
+      "actual_prompt_tokens": 9736,
+      "output_tokens": 127,
+      "elapsed_s": 1.9026694589999806
+    },
+    {
+      "session_id": 3,
+      "turn": 8,
+      "intended_prompt_tokens": 17836,
+      "actual_prompt_tokens": 17836,
+      "output_tokens": 286,
+      "elapsed_s": 5.235066715999892
+    },
+    {
+      "session_id": 7,
+      "turn": 9,
+      "intended_prompt_tokens": 13836,
+      "actual_prompt_tokens": 13836,
+      "output_tokens": 462,
+      "elapsed_s": 8.153219574000104
+    },
+    {
+      "session_id": 9,
+      "turn": 9,
+      "intended_prompt_tokens": 11384,
+      "actual_prompt_tokens": 11384,
+      "output_tokens": 309,
+      "elapsed_s": 4.681554798999969
+    },
+    {
+      "session_id": 5,
+      "turn": 6,
+      "intended_prompt_tokens": 7576,
+      "actual_prompt_tokens": 7576,
+      "output_tokens": 165,
+      "elapsed_s": 2.3852903590000096
+    },
+    {
+      "session_id": 3,
+      "turn": 9,
+      "intended_prompt_tokens": 18632,
+      "actual_prompt_tokens": 18632,
+      "output_tokens": 96,
+      "elapsed_s": 1.750164494000046
+    },
+    {
+      "session_id": 1,
+      "turn": 12,
+      "intended_prompt_tokens": 23315,
+      "actual_prompt_tokens": 23315,
+      "output_tokens": 109,
+      "elapsed_s": 1.8173499619999802
+    },
+    {
+      "session_id": 5,
+      "turn": 7,
+      "intended_prompt_tokens": 9107,
+      "actual_prompt_tokens": 9107,
+      "output_tokens": 104,
+      "elapsed_s": 2.0174286360002043
+    },
+    {
+      "session_id": 4,
+      "turn": 5,
+      "intended_prompt_tokens": 12333,
+      "actual_prompt_tokens": 12333,
+      "output_tokens": 122,
+      "elapsed_s": 2.1231291560000045
+    },
+    {
+      "session_id": 1,
+      "turn": 13,
+      "intended_prompt_tokens": 25347,
+      "actual_prompt_tokens": 25347,
+      "output_tokens": 92,
+      "elapsed_s": 1.579022453999869
+    },
+    {
+      "session_id": 9,
+      "turn": 10,
+      "intended_prompt_tokens": 11823,
+      "actual_prompt_tokens": 11823,
+      "output_tokens": 185,
+      "elapsed_s": 3.4133505899999363
+    },
+    {
+      "session_id": 1,
+      "turn": 14,
+      "intended_prompt_tokens": 27315,
+      "actual_prompt_tokens": 27315,
+      "output_tokens": 145,
+      "elapsed_s": 2.825295773999869
+    },
+    {
+      "session_id": 6,
+      "turn": 10,
+      "intended_prompt_tokens": 10572,
+      "actual_prompt_tokens": 10572,
+      "output_tokens": 306,
+      "elapsed_s": 5.994511222000028
+    },
+    {
+      "session_id": 5,
+      "turn": 8,
+      "intended_prompt_tokens": 9632,
+      "actual_prompt_tokens": 9632,
+      "output_tokens": 229,
+      "elapsed_s": 4.895795485999997
+    },
+    {
+      "session_id": 9,
+      "turn": 11,
+      "intended_prompt_tokens": 13526,
+      "actual_prompt_tokens": 13526,
+      "output_tokens": 208,
+      "elapsed_s": 4.109809767999877
+    },
+    {
+      "session_id": 3,
+      "turn": 10,
+      "intended_prompt_tokens": 20370,
+      "actual_prompt_tokens": 20370,
+      "output_tokens": 154,
+      "elapsed_s": 3.1642099629998484
+    },
+    {
+      "session_id": 6,
+      "turn": 11,
+      "intended_prompt_tokens": 11503,
+      "actual_prompt_tokens": 11503,
+      "output_tokens": 104,
+      "elapsed_s": 1.9074349620000248
+    },
+    {
+      "session_id": 0,
+      "turn": 9,
+      "intended_prompt_tokens": 18508,
+      "actual_prompt_tokens": 18508,
+      "output_tokens": 253,
+      "elapsed_s": 5.032936730000074
+    },
+    {
+      "session_id": 8,
+      "turn": 6,
+      "intended_prompt_tokens": 28953,
+      "actual_prompt_tokens": 28953,
+      "output_tokens": 163,
+      "elapsed_s": 3.044058156000119
+    },
+    {
+      "session_id": 1,
+      "turn": 15,
+      "intended_prompt_tokens": 27773,
+      "actual_prompt_tokens": 27773,
+      "output_tokens": 187,
+      "elapsed_s": 3.4748272020001423
+    },
+    {
+      "session_id": 4,
+      "turn": 6,
+      "intended_prompt_tokens": 13798,
+      "actual_prompt_tokens": 13798,
+      "output_tokens": 429,
+      "elapsed_s": 8.625736009000093
+    },
+    {
+      "session_id": 9,
+      "turn": 12,
+      "intended_prompt_tokens": 15690,
+      "actual_prompt_tokens": 15690,
+      "output_tokens": 90,
+      "elapsed_s": 2.0120205890000307
+    },
+    {
+      "session_id": 7,
+      "turn": 10,
+      "intended_prompt_tokens": 14511,
+      "actual_prompt_tokens": 14511,
+      "output_tokens": 410,
+      "elapsed_s": 7.895463467000127
+    },
+    {
+      "session_id": 0,
+      "turn": 10,
+      "intended_prompt_tokens": 18815,
+      "actual_prompt_tokens": 18815,
+      "output_tokens": 149,
+      "elapsed_s": 3.1930201069999384
+    },
+    {
+      "session_id": 4,
+      "turn": 7,
+      "intended_prompt_tokens": 14478,
+      "actual_prompt_tokens": 14478,
+      "output_tokens": 63,
+      "elapsed_s": 1.4404324409999845
+    },
+    {
+      "session_id": 5,
+      "turn": 9,
+      "intended_prompt_tokens": 10634,
+      "actual_prompt_tokens": 10634,
+      "output_tokens": 93,
+      "elapsed_s": 2.1759713750000174
+    },
+    {
+      "session_id": 8,
+      "turn": 7,
+      "intended_prompt_tokens": 29209,
+      "actual_prompt_tokens": 29209,
+      "output_tokens": 124,
+      "elapsed_s": 2.947058882999954
+    },
+    {
+      "session_id": 6,
+      "turn": 12,
+      "intended_prompt_tokens": 13698,
+      "actual_prompt_tokens": 13698,
+      "output_tokens": 217,
+      "elapsed_s": 4.734983247000173
+    },
+    {
+      "session_id": 1,
+      "turn": 16,
+      "intended_prompt_tokens": 28522,
+      "actual_prompt_tokens": 28522,
+      "output_tokens": 269,
+      "elapsed_s": 5.431593475999989
+    },
+    {
+      "session_id": 4,
+      "turn": 8,
+      "intended_prompt_tokens": 15108,
+      "actual_prompt_tokens": 15108,
+      "output_tokens": 98,
+      "elapsed_s": 1.599074198999915
+    },
+    {
+      "session_id": 7,
+      "turn": 11,
+      "intended_prompt_tokens": 15199,
+      "actual_prompt_tokens": 15199,
+      "output_tokens": 157,
+      "elapsed_s": 2.6296614899999895
+    },
+    {
+      "session_id": 3,
+      "turn": 11,
+      "intended_prompt_tokens": 21687,
+      "actual_prompt_tokens": 21687,
+      "output_tokens": 274,
+      "elapsed_s": 4.932833901000095
+    },
+    {
+      "session_id": 2,
+      "turn": 7,
+      "intended_prompt_tokens": 8638,
+      "actual_prompt_tokens": 8638,
+      "output_tokens": 382,
+      "elapsed_s": 6.505838320000066
+    },
+    {
+      "session_id": 0,
+      "turn": 11,
+      "intended_prompt_tokens": 19369,
+      "actual_prompt_tokens": 19369,
+      "output_tokens": 354,
+      "elapsed_s": 5.6890743550000025
+    },
+    {
+      "session_id": 8,
+      "turn": 8,
+      "intended_prompt_tokens": 29392,
+      "actual_prompt_tokens": 29392,
+      "output_tokens": 162,
+      "elapsed_s": 2.5578763969999727
+    },
+    {
+      "session_id": 2,
+      "turn": 8,
+      "intended_prompt_tokens": 9276,
+      "actual_prompt_tokens": 9276,
+      "output_tokens": 103,
+      "elapsed_s": 1.364079244000095
+    },
+    {
+      "session_id": 5,
+      "turn": 10,
+      "intended_prompt_tokens": 11835,
+      "actual_prompt_tokens": 11835,
+      "output_tokens": 148,
+      "elapsed_s": 2.2267059359999166
+    },
+    {
+      "session_id": 3,
+      "turn": 12,
+      "intended_prompt_tokens": 22508,
+      "actual_prompt_tokens": 22508,
+      "output_tokens": 122,
+      "elapsed_s": 2.0123452030002227
+    },
+    {
+      "session_id": 2,
+      "turn": 9,
+      "intended_prompt_tokens": 9687,
+      "actual_prompt_tokens": 9687,
+      "output_tokens": 112,
+      "elapsed_s": 2.040978412999948
+    },
+    {
+      "session_id": 1,
+      "turn": 17,
+      "intended_prompt_tokens": 29228,
+      "actual_prompt_tokens": 29228,
+      "output_tokens": 298,
+      "elapsed_s": 4.703765026999918
+    },
+    {
+      "session_id": 4,
+      "turn": 9,
+      "intended_prompt_tokens": 15273,
+      "actual_prompt_tokens": 15273,
+      "output_tokens": 56,
+      "elapsed_s": 1.1078287759999057
+    },
+    {
+      "session_id": 0,
+      "turn": 12,
+      "intended_prompt_tokens": 19976,
+      "actual_prompt_tokens": 19976,
+      "output_tokens": 113,
+      "elapsed_s": 1.9981139700000767
+    },
+    {
+      "session_id": 10,
+      "turn": 0,
+      "intended_prompt_tokens": 1489,
+      "actual_prompt_tokens": 1489,
+      "output_tokens": 130,
+      "elapsed_s": 2.1435629069999322
+    },
+    {
+      "session_id": 6,
+      "turn": 13,
+      "intended_prompt_tokens": 15705,
+      "actual_prompt_tokens": 15705,
+      "output_tokens": 108,
+      "elapsed_s": 1.9356406929998684
+    },
+    {
+      "session_id": 7,
+      "turn": 12,
+      "intended_prompt_tokens": 16003,
+      "actual_prompt_tokens": 16003,
+      "output_tokens": 134,
+      "elapsed_s": 2.320376554000177
+    },
+    {
+      "session_id": 5,
+      "turn": 11,
+      "intended_prompt_tokens": 12964,
+      "actual_prompt_tokens": 12964,
+      "output_tokens": 192,
+      "elapsed_s": 3.2499351999999817
+    },
+    {
+      "session_id": 9,
+      "turn": 13,
+      "intended_prompt_tokens": 16616,
+      "actual_prompt_tokens": 16616,
+      "output_tokens": 154,
+      "elapsed_s": 2.4623330869999336
+    },
+    {
+      "session_id": 0,
+      "turn": 13,
+      "intended_prompt_tokens": 21567,
+      "actual_prompt_tokens": 21567,
+      "output_tokens": 171,
+      "elapsed_s": 2.7825900660000116
+    },
+    {
+      "session_id": 4,
+      "turn": 10,
+      "intended_prompt_tokens": 16762,
+      "actual_prompt_tokens": 16762,
+      "output_tokens": 422,
+      "elapsed_s": 7.527322181999807
+    },
+    {
+      "session_id": 9,
+      "turn": 14,
+      "intended_prompt_tokens": 17042,
+      "actual_prompt_tokens": 17042,
+      "output_tokens": 186,
+      "elapsed_s": 3.6557042399999773
+    },
+    {
+      "session_id": 6,
+      "turn": 14,
+      "intended_prompt_tokens": 16004,
+      "actual_prompt_tokens": 16004,
+      "output_tokens": 277,
+      "elapsed_s": 5.0144106520001515
+    },
+    {
+      "session_id": 3,
+      "turn": 13,
+      "intended_prompt_tokens": 23585,
+      "actual_prompt_tokens": 23585,
+      "output_tokens": 130,
+      "elapsed_s": 2.7057487370000217
+    },
+    {
+      "session_id": 5,
+      "turn": 12,
+      "intended_prompt_tokens": 13310,
+      "actual_prompt_tokens": 13310,
+      "output_tokens": 294,
+      "elapsed_s": 5.446533702999886
+    },
+    {
+      "session_id": 2,
+      "turn": 10,
+      "intended_prompt_tokens": 11029,
+      "actual_prompt_tokens": 11029,
+      "output_tokens": 230,
+      "elapsed_s": 4.274009608000142
+    },
+    {
+      "session_id": 0,
+      "turn": 14,
+      "intended_prompt_tokens": 23372,
+      "actual_prompt_tokens": 23372,
+      "output_tokens": 151,
+      "elapsed_s": 2.851376269999946
+    },
+    {
+      "session_id": 7,
+      "turn": 13,
+      "intended_prompt_tokens": 16891,
+      "actual_prompt_tokens": 16891,
+      "output_tokens": 273,
+      "elapsed_s": 5.204107760999932
+    },
+    {
+      "session_id": 6,
+      "turn": 15,
+      "intended_prompt_tokens": 17195,
+      "actual_prompt_tokens": 17195,
+      "output_tokens": 89,
+      "elapsed_s": 1.9342532210000627
+    },
+    {
+      "session_id": 9,
+      "turn": 15,
+      "intended_prompt_tokens": 17678,
+      "actual_prompt_tokens": 17678,
+      "output_tokens": 192,
+      "elapsed_s": 3.5173146069998893
+    },
+    {
+      "session_id": 5,
+      "turn": 13,
+      "intended_prompt_tokens": 15949,
+      "actual_prompt_tokens": 15949,
+      "output_tokens": 95,
+      "elapsed_s": 1.8108891619999667
+    },
+    {
+      "session_id": 7,
+      "turn": 14,
+      "intended_prompt_tokens": 17378,
+      "actual_prompt_tokens": 17378,
+      "output_tokens": 164,
+      "elapsed_s": 3.165685508000024
+    },
+    {
+      "session_id": 3,
+      "turn": 14,
+      "intended_prompt_tokens": 23970,
+      "actual_prompt_tokens": 23970,
+      "output_tokens": 185,
+      "elapsed_s": 3.375366152999959
+    },
+    {
+      "session_id": 0,
+      "turn": 15,
+      "intended_prompt_tokens": 23937,
+      "actual_prompt_tokens": 23937,
+      "output_tokens": 203,
+      "elapsed_s": 4.375529997000058
+    },
+    {
+      "session_id": 9,
+      "turn": 16,
+      "intended_prompt_tokens": 18793,
+      "actual_prompt_tokens": 18793,
+      "output_tokens": 114,
+      "elapsed_s": 3.2854492870001195
+    },
+    {
+      "session_id": 2,
+      "turn": 11,
+      "intended_prompt_tokens": 12263,
+      "actual_prompt_tokens": 12263,
+      "output_tokens": 226,
+      "elapsed_s": 5.148032091999994
+    },
+    {
+      "session_id": 6,
+      "turn": 16,
+      "intended_prompt_tokens": 17384,
+      "actual_prompt_tokens": 17384,
+      "output_tokens": 209,
+      "elapsed_s": 4.948896354999988
+    },
+    {
+      "session_id": 4,
+      "turn": 11,
+      "intended_prompt_tokens": 17392,
+      "actual_prompt_tokens": 17392,
+      "output_tokens": 555,
+      "elapsed_s": 11.02179150500001
+    },
+    {
+      "session_id": 7,
+      "turn": 15,
+      "intended_prompt_tokens": 23006,
+      "actual_prompt_tokens": 23006,
+      "output_tokens": 218,
+      "elapsed_s": 4.9288499599999795
+    },
+    {
+      "session_id": 9,
+      "turn": 17,
+      "intended_prompt_tokens": 19718,
+      "actual_prompt_tokens": 19718,
+      "output_tokens": 98,
+      "elapsed_s": 1.6376730980000502
+    },
+    {
+      "session_id": 12,
+      "turn": 0,
+      "intended_prompt_tokens": 1923,
+      "actual_prompt_tokens": 1923,
+      "output_tokens": 181,
+      "elapsed_s": 3.343400223999879
+    },
+    {
+      "session_id": 0,
+      "turn": 16,
+      "intended_prompt_tokens": 24506,
+      "actual_prompt_tokens": 24506,
+      "output_tokens": 54,
+      "elapsed_s": 0.8946359120000125
+    },
+    {
+      "session_id": 7,
+      "turn": 16,
+      "intended_prompt_tokens": 23373,
+      "actual_prompt_tokens": 23373,
+      "output_tokens": 77,
+      "elapsed_s": 1.5867989340001714
+    },
+    {
+      "session_id": 11,
+      "turn": 0,
+      "intended_prompt_tokens": 1745,
+      "actual_prompt_tokens": 1745,
+      "output_tokens": 432,
+      "elapsed_s": 9.569976859999997
+    },
+    {
+      "session_id": 5,
+      "turn": 14,
+      "intended_prompt_tokens": 19439,
+      "actual_prompt_tokens": 19439,
+      "output_tokens": 269,
+      "elapsed_s": 5.907093700999894
+    },
+    {
+      "session_id": 10,
+      "turn": 1,
+      "intended_prompt_tokens": 2092,
+      "actual_prompt_tokens": 2092,
+      "output_tokens": 153,
+      "elapsed_s": 3.4681462870000814
+    },
+    {
+      "session_id": 0,
+      "turn": 17,
+      "intended_prompt_tokens": 25187,
+      "actual_prompt_tokens": 25187,
+      "output_tokens": 98,
+      "elapsed_s": 1.7064321590000873
+    },
+    {
+      "session_id": 4,
+      "turn": 12,
+      "intended_prompt_tokens": 19533,
+      "actual_prompt_tokens": 19533,
+      "output_tokens": 179,
+      "elapsed_s": 3.7556201110000984
+    },
+    {
+      "session_id": 13,
+      "turn": 0,
+      "intended_prompt_tokens": 1709,
+      "actual_prompt_tokens": 1709,
+      "output_tokens": 254,
+      "elapsed_s": 4.810566808999965
+    },
+    {
+      "session_id": 12,
+      "turn": 1,
+      "intended_prompt_tokens": 9601,
+      "actual_prompt_tokens": 9601,
+      "output_tokens": 240,
+      "elapsed_s": 4.364996003999977
+    },
+    {
+      "session_id": 9,
+      "turn": 18,
+      "intended_prompt_tokens": 20002,
+      "actual_prompt_tokens": 20002,
+      "output_tokens": 201,
+      "elapsed_s": 3.1214598800002022
+    },
+    {
+      "session_id": 0,
+      "turn": 18,
+      "intended_prompt_tokens": 25608,
+      "actual_prompt_tokens": 25608,
+      "output_tokens": 202,
+      "elapsed_s": 3.09955637500002
+    },
+    {
+      "session_id": 5,
+      "turn": 15,
+      "intended_prompt_tokens": 19952,
+      "actual_prompt_tokens": 19952,
+      "output_tokens": 117,
+      "elapsed_s": 1.7701280349999706
+    },
+    {
+      "session_id": 3,
+      "turn": 15,
+      "intended_prompt_tokens": 24715,
+      "actual_prompt_tokens": 24715,
+      "output_tokens": 75,
+      "elapsed_s": 1.3527692299999217
+    },
+    {
+      "session_id": 10,
+      "turn": 2,
+      "intended_prompt_tokens": 2645,
+      "actual_prompt_tokens": 2645,
+      "output_tokens": 162,
+      "elapsed_s": 2.5430657910001173
+    },
+    {
+      "session_id": 11,
+      "turn": 1,
+      "intended_prompt_tokens": 2380,
+      "actual_prompt_tokens": 2380,
+      "output_tokens": 75,
+      "elapsed_s": 2.561704567000106
+    },
+    {
+      "session_id": 4,
+      "turn": 13,
+      "intended_prompt_tokens": 20296,
+      "actual_prompt_tokens": 20296,
+      "output_tokens": 403,
+      "elapsed_s": 7.5635083080001095
+    },
+    {
+      "session_id": 7,
+      "turn": 17,
+      "intended_prompt_tokens": 24279,
+      "actual_prompt_tokens": 24279,
+      "output_tokens": 207,
+      "elapsed_s": 4.535469375000048
+    },
+    {
+      "session_id": 3,
+      "turn": 16,
+      "intended_prompt_tokens": 26554,
+      "actual_prompt_tokens": 26554,
+      "output_tokens": 98,
+      "elapsed_s": 1.7136033870001484
+    },
+    {
+      "session_id": 11,
+      "turn": 2,
+      "intended_prompt_tokens": 2553,
+      "actual_prompt_tokens": 2553,
+      "output_tokens": 118,
+      "elapsed_s": 1.5472908550000284
+    },
+    {
+      "session_id": 10,
+      "turn": 3,
+      "intended_prompt_tokens": 3350,
+      "actual_prompt_tokens": 3350,
+      "output_tokens": 297,
+      "elapsed_s": 4.242021827999906
+    },
+    {
+      "session_id": 11,
+      "turn": 3,
+      "intended_prompt_tokens": 3133,
+      "actual_prompt_tokens": 3133,
+      "output_tokens": 107,
+      "elapsed_s": 1.5821951830000671
+    },
+    {
+      "session_id": 9,
+      "turn": 19,
+      "intended_prompt_tokens": 27336,
+      "actual_prompt_tokens": 27336,
+      "output_tokens": 495,
+      "elapsed_s": 8.983295881000004
+    },
+    {
+      "session_id": 0,
+      "turn": 19,
+      "intended_prompt_tokens": 27291,
+      "actual_prompt_tokens": 27291,
+      "output_tokens": 205,
+      "elapsed_s": 3.269372593000071
+    },
+    {
+      "session_id": 13,
+      "turn": 1,
+      "intended_prompt_tokens": 7516,
+      "actual_prompt_tokens": 7516,
+      "output_tokens": 265,
+      "elapsed_s": 4.684470164000004
+    },
+    {
+      "session_id": 13,
+      "turn": 2,
+      "intended_prompt_tokens": 7972,
+      "actual_prompt_tokens": 7972,
+      "output_tokens": 76,
+      "elapsed_s": 1.3449599900000067
+    },
+    {
+      "session_id": 10,
+      "turn": 4,
+      "intended_prompt_tokens": 4092,
+      "actual_prompt_tokens": 4092,
+      "output_tokens": 235,
+      "elapsed_s": 3.7571492469999157
+    },
+    {
+      "session_id": 0,
+      "turn": 20,
+      "intended_prompt_tokens": 28152,
+      "actual_prompt_tokens": 28152,
+      "output_tokens": 118,
+      "elapsed_s": 2.0358027229999607
+    },
+    {
+      "session_id": 11,
+      "turn": 4,
+      "intended_prompt_tokens": 4594,
+      "actual_prompt_tokens": 4594,
+      "output_tokens": 85,
+      "elapsed_s": 2.1245549029999893
+    },
+    {
+      "session_id": 12,
+      "turn": 2,
+      "intended_prompt_tokens": 11633,
+      "actual_prompt_tokens": 11633,
+      "output_tokens": 38,
+      "elapsed_s": 0.7951704719998816
+    },
+    {
+      "session_id": 4,
+      "turn": 14,
+      "intended_prompt_tokens": 23725,
+      "actual_prompt_tokens": 23725,
+      "output_tokens": 81,
+      "elapsed_s": 1.9228427450000254
+    },
+    {
+      "session_id": 9,
+      "turn": 20,
+      "intended_prompt_tokens": 28114,
+      "actual_prompt_tokens": 28114,
+      "output_tokens": 300,
+      "elapsed_s": 5.5461214209999525
+    },
+    {
+      "session_id": 7,
+      "turn": 18,
+      "intended_prompt_tokens": 24569,
+      "actual_prompt_tokens": 24569,
+      "output_tokens": 757,
+      "elapsed_s": 13.516148918999988
+    },
+    {
+      "session_id": 3,
+      "turn": 17,
+      "intended_prompt_tokens": 26675,
+      "actual_prompt_tokens": 26675,
+      "output_tokens": 41,
+      "elapsed_s": 1.1543689529999028
+    },
+    {
+      "session_id": 5,
+      "turn": 16,
+      "intended_prompt_tokens": 20339,
+      "actual_prompt_tokens": 20339,
+      "output_tokens": 92,
+      "elapsed_s": 2.0543405329999587
+    },
+    {
+      "session_id": 4,
+      "turn": 15,
+      "intended_prompt_tokens": 24427,
+      "actual_prompt_tokens": 24427,
+      "output_tokens": 260,
+      "elapsed_s": 5.321139092000067
+    },
+    {
+      "session_id": 0,
+      "turn": 21,
+      "intended_prompt_tokens": 28540,
+      "actual_prompt_tokens": 28540,
+      "output_tokens": 204,
+      "elapsed_s": 4.495603371000016
+    },
+    {
+      "session_id": 11,
+      "turn": 5,
+      "intended_prompt_tokens": 9322,
+      "actual_prompt_tokens": 9322,
+      "output_tokens": 235,
+      "elapsed_s": 4.354491648000021
+    },
+    {
+      "session_id": 12,
+      "turn": 3,
+      "intended_prompt_tokens": 18333,
+      "actual_prompt_tokens": 18333,
+      "output_tokens": 296,
+      "elapsed_s": 6.4933261600001515
+    },
+    {
+      "session_id": 5,
+      "turn": 17,
+      "intended_prompt_tokens": 20642,
+      "actual_prompt_tokens": 20642,
+      "output_tokens": 88,
+      "elapsed_s": 1.7756446790001519
+    },
+    {
+      "session_id": 14,
+      "turn": 0,
+      "intended_prompt_tokens": 1684,
+      "actual_prompt_tokens": 1684,
+      "output_tokens": 143,
+      "elapsed_s": 2.7191938430000846
+    },
+    {
+      "session_id": 7,
+      "turn": 19,
+      "intended_prompt_tokens": 25613,
+      "actual_prompt_tokens": 25613,
+      "output_tokens": 181,
+      "elapsed_s": 3.2708666000000903
+    },
+    {
+      "session_id": 4,
+      "turn": 16,
+      "intended_prompt_tokens": 25781,
+      "actual_prompt_tokens": 25781,
+      "output_tokens": 184,
+      "elapsed_s": 3.038548503000129
+    },
+    {
+      "session_id": 11,
+      "turn": 6,
+      "intended_prompt_tokens": 10097,
+      "actual_prompt_tokens": 10097,
+      "output_tokens": 142,
+      "elapsed_s": 2.535254446999943
+    },
+    {
+      "session_id": 10,
+      "turn": 5,
+      "intended_prompt_tokens": 5537,
+      "actual_prompt_tokens": 5537,
+      "output_tokens": 52,
+      "elapsed_s": 2.610141169999906
+    },
+    {
+      "session_id": 14,
+      "turn": 1,
+      "intended_prompt_tokens": 3989,
+      "actual_prompt_tokens": 3989,
+      "output_tokens": 113,
+      "elapsed_s": 3.537742818999959
+    },
+    {
+      "session_id": 4,
+      "turn": 17,
+      "intended_prompt_tokens": 26934,
+      "actual_prompt_tokens": 26934,
+      "output_tokens": 90,
+      "elapsed_s": 2.5297399390001374
+    },
+    {
+      "session_id": 11,
+      "turn": 7,
+      "intended_prompt_tokens": 10307,
+      "actual_prompt_tokens": 10307,
+      "output_tokens": 78,
+      "elapsed_s": 1.4780919509998967
+    },
+    {
+      "session_id": 13,
+      "turn": 3,
+      "intended_prompt_tokens": 17506,
+      "actual_prompt_tokens": 17506,
+      "output_tokens": 103,
+      "elapsed_s": 3.360569648999899
+    },
+    {
+      "session_id": 7,
+      "turn": 20,
+      "intended_prompt_tokens": 25947,
+      "actual_prompt_tokens": 25947,
+      "output_tokens": 195,
+      "elapsed_s": 5.10361369400016
+    },
+    {
+      "session_id": 5,
+      "turn": 18,
+      "intended_prompt_tokens": 21329,
+      "actual_prompt_tokens": 21329,
+      "output_tokens": 145,
+      "elapsed_s": 3.8759446269998534
+    },
+    {
+      "session_id": 0,
+      "turn": 22,
+      "intended_prompt_tokens": 29783,
+      "actual_prompt_tokens": 29783,
+      "output_tokens": 473,
+      "elapsed_s": 9.832387292000021
+    },
+    {
+      "session_id": 10,
+      "turn": 6,
+      "intended_prompt_tokens": 5720,
+      "actual_prompt_tokens": 5720,
+      "output_tokens": 62,
+      "elapsed_s": 0.8369370289999551
+    },
+    {
+      "session_id": 14,
+      "turn": 2,
+      "intended_prompt_tokens": 4276,
+      "actual_prompt_tokens": 4276,
+      "output_tokens": 154,
+      "elapsed_s": 1.8780956200000674
+    },
+    {
+      "session_id": 15,
+      "turn": 0,
+      "intended_prompt_tokens": 1658,
+      "actual_prompt_tokens": 1658,
+      "output_tokens": 225,
+      "elapsed_s": 2.8396911309998814
+    },
+    {
+      "session_id": 4,
+      "turn": 18,
+      "intended_prompt_tokens": 27101,
+      "actual_prompt_tokens": 27101,
+      "output_tokens": 164,
+      "elapsed_s": 2.101976048999859
+    },
+    {
+      "session_id": 14,
+      "turn": 3,
+      "intended_prompt_tokens": 5974,
+      "actual_prompt_tokens": 5974,
+      "output_tokens": 122,
+      "elapsed_s": 2.6683792400001494
+    },
+    {
+      "session_id": 16,
+      "turn": 0,
+      "intended_prompt_tokens": 1911,
+      "actual_prompt_tokens": 1911,
+      "output_tokens": 88,
+      "elapsed_s": 2.062913971999933
+    },
+    {
+      "session_id": 12,
+      "turn": 4,
+      "intended_prompt_tokens": 19044,
+      "actual_prompt_tokens": 19044,
+      "output_tokens": 113,
+      "elapsed_s": 2.5272318310001083
+    },
+    {
+      "session_id": 13,
+      "turn": 4,
+      "intended_prompt_tokens": 17990,
+      "actual_prompt_tokens": 17990,
+      "output_tokens": 110,
+      "elapsed_s": 2.517495024999789
+    },
+    {
+      "session_id": 4,
+      "turn": 19,
+      "intended_prompt_tokens": 29216,
+      "actual_prompt_tokens": 29216,
+      "output_tokens": 131,
+      "elapsed_s": 2.527380480000147
+    },
+    {
+      "session_id": 7,
+      "turn": 21,
+      "intended_prompt_tokens": 26961,
+      "actual_prompt_tokens": 26961,
+      "output_tokens": 152,
+      "elapsed_s": 2.971014703000037
+    },
+    {
+      "session_id": 11,
+      "turn": 8,
+      "intended_prompt_tokens": 11352,
+      "actual_prompt_tokens": 11352,
+      "output_tokens": 175,
+      "elapsed_s": 2.5837276859999747
+    },
+    {
+      "session_id": 5,
+      "turn": 19,
+      "intended_prompt_tokens": 22159,
+      "actual_prompt_tokens": 22159,
+      "output_tokens": 331,
+      "elapsed_s": 5.439422798999885
+    },
+    {
+      "session_id": 17,
+      "turn": 0,
+      "intended_prompt_tokens": 1403,
+      "actual_prompt_tokens": 1403,
+      "output_tokens": 228,
+      "elapsed_s": 3.3464672479999535
+    },
+    {
+      "session_id": 14,
+      "turn": 4,
+      "intended_prompt_tokens": 8102,
+      "actual_prompt_tokens": 8102,
+      "output_tokens": 114,
+      "elapsed_s": 1.93597193100004
+    },
+    {
+      "session_id": 16,
+      "turn": 1,
+      "intended_prompt_tokens": 2349,
+      "actual_prompt_tokens": 2349,
+      "output_tokens": 271,
+      "elapsed_s": 4.54404105399999
+    },
+    {
+      "session_id": 14,
+      "turn": 5,
+      "intended_prompt_tokens": 12013,
+      "actual_prompt_tokens": 12013,
+      "output_tokens": 53,
+      "elapsed_s": 1.3740626000001157
+    },
+    {
+      "session_id": 13,
+      "turn": 5,
+      "intended_prompt_tokens": 18416,
+      "actual_prompt_tokens": 18416,
+      "output_tokens": 194,
+      "elapsed_s": 3.5562484090000908
+    },
+    {
+      "session_id": 5,
+      "turn": 20,
+      "intended_prompt_tokens": 22616,
+      "actual_prompt_tokens": 22616,
+      "output_tokens": 224,
+      "elapsed_s": 3.906251687999884
+    },
+    {
+      "session_id": 7,
+      "turn": 22,
+      "intended_prompt_tokens": 27588,
+      "actual_prompt_tokens": 27588,
+      "output_tokens": 416,
+      "elapsed_s": 6.66484372900004
+    },
+    {
+      "session_id": 17,
+      "turn": 1,
+      "intended_prompt_tokens": 1702,
+      "actual_prompt_tokens": 1702,
+      "output_tokens": 139,
+      "elapsed_s": 2.2391330400000697
+    },
+    {
+      "session_id": 11,
+      "turn": 9,
+      "intended_prompt_tokens": 11767,
+      "actual_prompt_tokens": 11767,
+      "output_tokens": 140,
+      "elapsed_s": 1.915882306999947
+    },
+    {
+      "session_id": 12,
+      "turn": 5,
+      "intended_prompt_tokens": 19615,
+      "actual_prompt_tokens": 19615,
+      "output_tokens": 245,
+      "elapsed_s": 3.3750529390001702
+    },
+    {
+      "session_id": 14,
+      "turn": 6,
+      "intended_prompt_tokens": 12584,
+      "actual_prompt_tokens": 12584,
+      "output_tokens": 275,
+      "elapsed_s": 3.444184856999982
+    },
+    {
+      "session_id": 11,
+      "turn": 10,
+      "intended_prompt_tokens": 12789,
+      "actual_prompt_tokens": 12789,
+      "output_tokens": 110,
+      "elapsed_s": 1.5014177259999997
+    },
+    {
+      "session_id": 13,
+      "turn": 6,
+      "intended_prompt_tokens": 19199,
+      "actual_prompt_tokens": 19199,
+      "output_tokens": 180,
+      "elapsed_s": 2.8818908619998638
+    },
+    {
+      "session_id": 17,
+      "turn": 2,
+      "intended_prompt_tokens": 2443,
+      "actual_prompt_tokens": 2443,
+      "output_tokens": 287,
+      "elapsed_s": 4.262588281000035
+    },
+    {
+      "session_id": 10,
+      "turn": 7,
+      "intended_prompt_tokens": 6027,
+      "actual_prompt_tokens": 6027,
+      "output_tokens": 126,
+      "elapsed_s": 2.1910626390001653
+    },
+    {
+      "session_id": 11,
+      "turn": 11,
+      "intended_prompt_tokens": 13986,
+      "actual_prompt_tokens": 13986,
+      "output_tokens": 230,
+      "elapsed_s": 3.9565403120000155
+    },
+    {
+      "session_id": 12,
+      "turn": 6,
+      "intended_prompt_tokens": 20473,
+      "actual_prompt_tokens": 20473,
+      "output_tokens": 229,
+      "elapsed_s": 3.7566385889999765
+    },
+    {
+      "session_id": 7,
+      "turn": 23,
+      "intended_prompt_tokens": 28457,
+      "actual_prompt_tokens": 28457,
+      "output_tokens": 342,
+      "elapsed_s": 5.650809248999849
+    },
+    {
+      "session_id": 17,
+      "turn": 3,
+      "intended_prompt_tokens": 5606,
+      "actual_prompt_tokens": 5606,
+      "output_tokens": 224,
+      "elapsed_s": 3.447095189000038
+    },
+    {
+      "session_id": 18,
+      "turn": 0,
+      "intended_prompt_tokens": 1617,
+      "actual_prompt_tokens": 1617,
+      "output_tokens": 107,
+      "elapsed_s": 1.7329003450001892
+    },
+    {
+      "session_id": 16,
+      "turn": 2,
+      "intended_prompt_tokens": 2758,
+      "actual_prompt_tokens": 2758,
+      "output_tokens": 165,
+      "elapsed_s": 2.564150246999816
+    },
+    {
+      "session_id": 13,
+      "turn": 7,
+      "intended_prompt_tokens": 20933,
+      "actual_prompt_tokens": 20933,
+      "output_tokens": 76,
+      "elapsed_s": 1.3144599519998792
+    },
+    {
+      "session_id": 14,
+      "turn": 7,
+      "intended_prompt_tokens": 13369,
+      "actual_prompt_tokens": 13369,
+      "output_tokens": 527,
+      "elapsed_s": 8.301872178999929
+    },
+    {
+      "session_id": 5,
+      "turn": 21,
+      "intended_prompt_tokens": 23053,
+      "actual_prompt_tokens": 23053,
+      "output_tokens": 194,
+      "elapsed_s": 2.8494259990000046
+    },
+    {
+      "session_id": 18,
+      "turn": 1,
+      "intended_prompt_tokens": 1978,
+      "actual_prompt_tokens": 1978,
+      "output_tokens": 153,
+      "elapsed_s": 3.174249275000193
+    },
+    {
+      "session_id": 12,
+      "turn": 7,
+      "intended_prompt_tokens": 27226,
+      "actual_prompt_tokens": 27226,
+      "output_tokens": 73,
+      "elapsed_s": 2.6079366330000084
+    },
+    {
+      "session_id": 17,
+      "turn": 4,
+      "intended_prompt_tokens": 6164,
+      "actual_prompt_tokens": 6164,
+      "output_tokens": 305,
+      "elapsed_s": 5.91354030399998
+    },
+    {
+      "session_id": 11,
+      "turn": 12,
+      "intended_prompt_tokens": 14846,
+      "actual_prompt_tokens": 14846,
+      "output_tokens": 147,
+      "elapsed_s": 3.765670967999995
+    },
+    {
+      "session_id": 15,
+      "turn": 1,
+      "intended_prompt_tokens": 3014,
+      "actual_prompt_tokens": 3014,
+      "output_tokens": 117,
+      "elapsed_s": 2.171269575999986
+    },
+    {
+      "session_id": 16,
+      "turn": 3,
+      "intended_prompt_tokens": 3831,
+      "actual_prompt_tokens": 3831,
+      "output_tokens": 110,
+      "elapsed_s": 2.1011223919999793
+    },
+    {
+      "session_id": 10,
+      "turn": 8,
+      "intended_prompt_tokens": 6531,
+      "actual_prompt_tokens": 6531,
+      "output_tokens": 111,
+      "elapsed_s": 2.0379785679999713
+    },
+    {
+      "session_id": 14,
+      "turn": 8,
+      "intended_prompt_tokens": 14020,
+      "actual_prompt_tokens": 14020,
+      "output_tokens": 111,
+      "elapsed_s": 2.0036616429999867
+    },
+    {
+      "session_id": 13,
+      "turn": 8,
+      "intended_prompt_tokens": 22016,
+      "actual_prompt_tokens": 22016,
+      "output_tokens": 228,
+      "elapsed_s": 4.30058116400005
+    },
+    {
+      "session_id": 10,
+      "turn": 9,
+      "intended_prompt_tokens": 6927,
+      "actual_prompt_tokens": 6927,
+      "output_tokens": 96,
+      "elapsed_s": 2.081564637999918
+    },
+    {
+      "session_id": 11,
+      "turn": 13,
+      "intended_prompt_tokens": 15956,
+      "actual_prompt_tokens": 15956,
+      "output_tokens": 216,
+      "elapsed_s": 4.316519427999992
+    },
+    {
+      "session_id": 15,
+      "turn": 2,
+      "intended_prompt_tokens": 4474,
+      "actual_prompt_tokens": 4474,
+      "output_tokens": 76,
+      "elapsed_s": 1.9321706050000103
+    },
+    {
+      "session_id": 16,
+      "turn": 4,
+      "intended_prompt_tokens": 5176,
+      "actual_prompt_tokens": 5176,
+      "output_tokens": 174,
+      "elapsed_s": 3.5851258509999298
+    },
+    {
+      "session_id": 5,
+      "turn": 22,
+      "intended_prompt_tokens": 23876,
+      "actual_prompt_tokens": 23876,
+      "output_tokens": 334,
+      "elapsed_s": 6.405684258000065
+    },
+    {
+      "session_id": 20,
+      "turn": 0,
+      "intended_prompt_tokens": 1667,
+      "actual_prompt_tokens": 1667,
+      "output_tokens": 64,
+      "elapsed_s": 1.183743112000002
+    },
+    {
+      "session_id": 13,
+      "turn": 9,
+      "intended_prompt_tokens": 22751,
+      "actual_prompt_tokens": 22751,
+      "output_tokens": 329,
+      "elapsed_s": 6.434796504999895
+    },
+    {
+      "session_id": 19,
+      "turn": 0,
+      "intended_prompt_tokens": 1515,
+      "actual_prompt_tokens": 1515,
+      "output_tokens": 228,
+      "elapsed_s": 4.146686576000093
+    },
+    {
+      "session_id": 10,
+      "turn": 10,
+      "intended_prompt_tokens": 7513,
+      "actual_prompt_tokens": 7513,
+      "output_tokens": 165,
+      "elapsed_s": 3.0271416519999548
+    },
+    {
+      "session_id": 12,
+      "turn": 8,
+      "intended_prompt_tokens": 28801,
+      "actual_prompt_tokens": 28801,
+      "output_tokens": 314,
+      "elapsed_s": 5.837953935000087
+    },
+    {
+      "session_id": 14,
+      "turn": 9,
+      "intended_prompt_tokens": 14519,
+      "actual_prompt_tokens": 14519,
+      "output_tokens": 302,
+      "elapsed_s": 5.325380755999959
+    },
+    {
+      "session_id": 18,
+      "turn": 2,
+      "intended_prompt_tokens": 3530,
+      "actual_prompt_tokens": 3530,
+      "output_tokens": 691,
+      "elapsed_s": 12.530865220000123
+    },
+    {
+      "session_id": 17,
+      "turn": 5,
+      "intended_prompt_tokens": 7173,
+      "actual_prompt_tokens": 7173,
+      "output_tokens": 579,
+      "elapsed_s": 10.387374879999925
+    },
+    {
+      "session_id": 13,
+      "turn": 10,
+      "intended_prompt_tokens": 23648,
+      "actual_prompt_tokens": 23648,
+      "output_tokens": 94,
+      "elapsed_s": 1.8219948109999677
+    },
+    {
+      "session_id": 10,
+      "turn": 11,
+      "intended_prompt_tokens": 8017,
+      "actual_prompt_tokens": 8017,
+      "output_tokens": 131,
+      "elapsed_s": 2.22982637899986
+    },
+    {
+      "session_id": 15,
+      "turn": 3,
+      "intended_prompt_tokens": 4887,
+      "actual_prompt_tokens": 4887,
+      "output_tokens": 403,
+      "elapsed_s": 6.8349549730000945
+    },
+    {
+      "session_id": 16,
+      "turn": 5,
+      "intended_prompt_tokens": 5698,
+      "actual_prompt_tokens": 5698,
+      "output_tokens": 341,
+      "elapsed_s": 5.567641194000089
+    },
+    {
+      "session_id": 10,
+      "turn": 12,
+      "intended_prompt_tokens": 8737,
+      "actual_prompt_tokens": 8737,
+      "output_tokens": 62,
+      "elapsed_s": 0.9888800020000872
+    },
+    {
+      "session_id": 14,
+      "turn": 10,
+      "intended_prompt_tokens": 15569,
+      "actual_prompt_tokens": 15569,
+      "output_tokens": 323,
+      "elapsed_s": 5.231450700999858
+    },
+    {
+      "session_id": 15,
+      "turn": 4,
+      "intended_prompt_tokens": 6600,
+      "actual_prompt_tokens": 6600,
+      "output_tokens": 186,
+      "elapsed_s": 3.1480071980001867
+    },
+    {
+      "session_id": 20,
+      "turn": 1,
+      "intended_prompt_tokens": 2521,
+      "actual_prompt_tokens": 2521,
+      "output_tokens": 226,
+      "elapsed_s": 4.181676811999978
+    },
+    {
+      "session_id": 12,
+      "turn": 9,
+      "intended_prompt_tokens": 29814,
+      "actual_prompt_tokens": 29814,
+      "output_tokens": 439,
+      "elapsed_s": 7.566437006000115
+    },
+    {
+      "session_id": 18,
+      "turn": 3,
+      "intended_prompt_tokens": 5603,
+      "actual_prompt_tokens": 5603,
+      "output_tokens": 158,
+      "elapsed_s": 2.8985220189999836
+    },
+    {
+      "session_id": 19,
+      "turn": 1,
+      "intended_prompt_tokens": 1853,
+      "actual_prompt_tokens": 1853,
+      "output_tokens": 337,
+      "elapsed_s": 5.6240647949998674
+    },
+    {
+      "session_id": 14,
+      "turn": 11,
+      "intended_prompt_tokens": 18386,
+      "actual_prompt_tokens": 18386,
+      "output_tokens": 245,
+      "elapsed_s": 3.8939216270000543
+    },
+    {
+      "session_id": 15,
+      "turn": 5,
+      "intended_prompt_tokens": 7223,
+      "actual_prompt_tokens": 7223,
+      "output_tokens": 240,
+      "elapsed_s": 3.3425955739999154
+    },
+    {
+      "session_id": 16,
+      "turn": 6,
+      "intended_prompt_tokens": 6518,
+      "actual_prompt_tokens": 6518,
+      "output_tokens": 388,
+      "elapsed_s": 5.947718830999975
+    },
+    {
+      "session_id": 18,
+      "turn": 4,
+      "intended_prompt_tokens": 7111,
+      "actual_prompt_tokens": 7111,
+      "output_tokens": 247,
+      "elapsed_s": 2.9181142120000914
+    },
+    {
+      "session_id": 10,
+      "turn": 13,
+      "intended_prompt_tokens": 9472,
+      "actual_prompt_tokens": 9472,
+      "output_tokens": 552,
+      "elapsed_s": 7.784026598999844
+    },
+    {
+      "session_id": 14,
+      "turn": 12,
+      "intended_prompt_tokens": 18773,
+      "actual_prompt_tokens": 18773,
+      "output_tokens": 253,
+      "elapsed_s": 3.1157450919999974
+    },
+    {
+      "session_id": 10,
+      "turn": 14,
+      "intended_prompt_tokens": 10834,
+      "actual_prompt_tokens": 10834,
+      "output_tokens": 159,
+      "elapsed_s": 2.0447353690001364
+    },
+    {
+      "session_id": 18,
+      "turn": 5,
+      "intended_prompt_tokens": 7892,
+      "actual_prompt_tokens": 7892,
+      "output_tokens": 533,
+      "elapsed_s": 6.503340040000012
+    },
+    {
+      "session_id": 19,
+      "turn": 2,
+      "intended_prompt_tokens": 3946,
+      "actual_prompt_tokens": 3946,
+      "output_tokens": 475,
+      "elapsed_s": 7.508670913999822
+    },
+    {
+      "session_id": 16,
+      "turn": 7,
+      "intended_prompt_tokens": 9231,
+      "actual_prompt_tokens": 9231,
+      "output_tokens": 88,
+      "elapsed_s": 2.7962710950000655
+    },
+    {
+      "session_id": 21,
+      "turn": 0,
+      "intended_prompt_tokens": 2126,
+      "actual_prompt_tokens": 2126,
+      "output_tokens": 210,
+      "elapsed_s": 4.199942582999938
+    },
+    {
+      "session_id": 14,
+      "turn": 13,
+      "intended_prompt_tokens": 28092,
+      "actual_prompt_tokens": 28092,
+      "output_tokens": 91,
+      "elapsed_s": 2.6699536039998293
+    },
+    {
+      "session_id": 20,
+      "turn": 2,
+      "intended_prompt_tokens": 3628,
+      "actual_prompt_tokens": 3628,
+      "output_tokens": 229,
+      "elapsed_s": 4.651828585999965
+    },
+    {
+      "session_id": 19,
+      "turn": 3,
+      "intended_prompt_tokens": 7283,
+      "actual_prompt_tokens": 7283,
+      "output_tokens": 156,
+      "elapsed_s": 2.5320336570000563
+    },
+    {
+      "session_id": 19,
+      "turn": 4,
+      "intended_prompt_tokens": 8379,
+      "actual_prompt_tokens": 8379,
+      "output_tokens": 55,
+      "elapsed_s": 0.9150080189999699
+    },
+    {
+      "session_id": 16,
+      "turn": 8,
+      "intended_prompt_tokens": 9551,
+      "actual_prompt_tokens": 9551,
+      "output_tokens": 59,
+      "elapsed_s": 0.8898486819998652
+    },
+    {
+      "session_id": 20,
+      "turn": 3,
+      "intended_prompt_tokens": 4054,
+      "actual_prompt_tokens": 4054,
+      "output_tokens": 188,
+      "elapsed_s": 2.7593254630000956
+    },
+    {
+      "session_id": 14,
+      "turn": 14,
+      "intended_prompt_tokens": 28695,
+      "actual_prompt_tokens": 28695,
+      "output_tokens": 359,
+      "elapsed_s": 5.5504144080000515
+    },
+    {
+      "session_id": 13,
+      "turn": 11,
+      "intended_prompt_tokens": 24166,
+      "actual_prompt_tokens": 24166,
+      "output_tokens": 370,
+      "elapsed_s": 5.691096584999968
+    },
+    {
+      "session_id": 21,
+      "turn": 1,
+      "intended_prompt_tokens": 2622,
+      "actual_prompt_tokens": 2622,
+      "output_tokens": 376,
+      "elapsed_s": 5.17953245800004
+    },
+    {
+      "session_id": 22,
+      "turn": 0,
+      "intended_prompt_tokens": 1787,
+      "actual_prompt_tokens": 1787,
+      "output_tokens": 214,
+      "elapsed_s": 2.899841861999903
+    },
+    {
+      "session_id": 18,
+      "turn": 6,
+      "intended_prompt_tokens": 8984,
+      "actual_prompt_tokens": 8984,
+      "output_tokens": 175,
+      "elapsed_s": 3.345433162000063
+    },
+    {
+      "session_id": 19,
+      "turn": 5,
+      "intended_prompt_tokens": 8537,
+      "actual_prompt_tokens": 8537,
+      "output_tokens": 97,
+      "elapsed_s": 2.2393231749999813
+    },
+    {
+      "session_id": 13,
+      "turn": 12,
+      "intended_prompt_tokens": 24879,
+      "actual_prompt_tokens": 24879,
+      "output_tokens": 289,
+      "elapsed_s": 4.942970474000049
+    },
+    {
+      "session_id": 20,
+      "turn": 4,
+      "intended_prompt_tokens": 5115,
+      "actual_prompt_tokens": 5115,
+      "output_tokens": 146,
+      "elapsed_s": 2.9471293419999256
+    },
+    {
+      "session_id": 21,
+      "turn": 2,
+      "intended_prompt_tokens": 5196,
+      "actual_prompt_tokens": 5196,
+      "output_tokens": 116,
+      "elapsed_s": 2.3697797719999016
+    },
+    {
+      "session_id": 22,
+      "turn": 1,
+      "intended_prompt_tokens": 3428,
+      "actual_prompt_tokens": 3428,
+      "output_tokens": 168,
+      "elapsed_s": 2.689029001000108
+    },
+    {
+      "session_id": 17,
+      "turn": 6,
+      "intended_prompt_tokens": 9953,
+      "actual_prompt_tokens": 9953,
+      "output_tokens": 250,
+      "elapsed_s": 4.4764987539999765
+    },
+    {
+      "session_id": 18,
+      "turn": 7,
+      "intended_prompt_tokens": 11086,
+      "actual_prompt_tokens": 11086,
+      "output_tokens": 100,
+      "elapsed_s": 1.793453030999899
+    },
+    {
+      "session_id": 10,
+      "turn": 15,
+      "intended_prompt_tokens": 11159,
+      "actual_prompt_tokens": 11159,
+      "output_tokens": 315,
+      "elapsed_s": 5.615656145999992
+    },
+    {
+      "session_id": 13,
+      "turn": 13,
+      "intended_prompt_tokens": 25239,
+      "actual_prompt_tokens": 25239,
+      "output_tokens": 182,
+      "elapsed_s": 2.8371046160000333
+    },
+    {
+      "session_id": 16,
+      "turn": 9,
+      "intended_prompt_tokens": 10798,
+      "actual_prompt_tokens": 10798,
+      "output_tokens": 621,
+      "elapsed_s": 9.757064829
+    },
+    {
+      "session_id": 17,
+      "turn": 7,
+      "intended_prompt_tokens": 11375,
+      "actual_prompt_tokens": 11375,
+      "output_tokens": 219,
+      "elapsed_s": 3.001165495999885
+    },
+    {
+      "session_id": 21,
+      "turn": 3,
+      "intended_prompt_tokens": 5687,
+      "actual_prompt_tokens": 5687,
+      "output_tokens": 292,
+      "elapsed_s": 3.9313465159998486
+    },
+    {
+      "session_id": 16,
+      "turn": 10,
+      "intended_prompt_tokens": 11993,
+      "actual_prompt_tokens": 11993,
+      "output_tokens": 107,
+      "elapsed_s": 2.070659579999983
+    },
+    {
+      "session_id": 10,
+      "turn": 16,
+      "intended_prompt_tokens": 11575,
+      "actual_prompt_tokens": 11575,
+      "output_tokens": 185,
+      "elapsed_s": 3.018180646000019
+    },
+    {
+      "session_id": 22,
+      "turn": 2,
+      "intended_prompt_tokens": 3705,
+      "actual_prompt_tokens": 3705,
+      "output_tokens": 63,
+      "elapsed_s": 0.7748250300001018
+    },
+    {
+      "session_id": 20,
+      "turn": 5,
+      "intended_prompt_tokens": 5948,
+      "actual_prompt_tokens": 5948,
+      "output_tokens": 522,
+      "elapsed_s": 7.882083135999892
+    },
+    {
+      "session_id": 21,
+      "turn": 4,
+      "intended_prompt_tokens": 7223,
+      "actual_prompt_tokens": 7223,
+      "output_tokens": 80,
+      "elapsed_s": 1.4334445760000563
+    },
+    {
+      "session_id": 20,
+      "turn": 6,
+      "intended_prompt_tokens": 6665,
+      "actual_prompt_tokens": 6665,
+      "output_tokens": 83,
+      "elapsed_s": 1.2842944999999872
+    },
+    {
+      "session_id": 17,
+      "turn": 8,
+      "intended_prompt_tokens": 17077,
+      "actual_prompt_tokens": 17077,
+      "output_tokens": 205,
+      "elapsed_s": 3.6816630910000185
+    },
+    {
+      "session_id": 10,
+      "turn": 17,
+      "intended_prompt_tokens": 12310,
+      "actual_prompt_tokens": 12310,
+      "output_tokens": 95,
+      "elapsed_s": 1.4308509400000275
+    },
+    {
+      "session_id": 18,
+      "turn": 8,
+      "intended_prompt_tokens": 12206,
+      "actual_prompt_tokens": 12206,
+      "output_tokens": 200,
+      "elapsed_s": 2.866858174999834
+    },
+    {
+      "session_id": 22,
+      "turn": 3,
+      "intended_prompt_tokens": 4071,
+      "actual_prompt_tokens": 4071,
+      "output_tokens": 205,
+      "elapsed_s": 2.9693400149999434
+    },
+    {
+      "session_id": 21,
+      "turn": 5,
+      "intended_prompt_tokens": 8468,
+      "actual_prompt_tokens": 8468,
+      "output_tokens": 132,
+      "elapsed_s": 1.8904912529999365
+    },
+    {
+      "session_id": 16,
+      "turn": 11,
+      "intended_prompt_tokens": 13067,
+      "actual_prompt_tokens": 13067,
+      "output_tokens": 82,
+      "elapsed_s": 1.2205895890001557
+    },
+    {
+      "session_id": 19,
+      "turn": 6,
+      "intended_prompt_tokens": 8940,
+      "actual_prompt_tokens": 8940,
+      "output_tokens": 234,
+      "elapsed_s": 3.12582699099994
+    },
+    {
+      "session_id": 10,
+      "turn": 18,
+      "intended_prompt_tokens": 13276,
+      "actual_prompt_tokens": 13276,
+      "output_tokens": 96,
+      "elapsed_s": 1.269762738999816
+    },
+    {
+      "session_id": 16,
+      "turn": 12,
+      "intended_prompt_tokens": 14139,
+      "actual_prompt_tokens": 14139,
+      "output_tokens": 77,
+      "elapsed_s": 1.2464581510000698
+    },
+    {
+      "session_id": 19,
+      "turn": 7,
+      "intended_prompt_tokens": 10151,
+      "actual_prompt_tokens": 10151,
+      "output_tokens": 179,
+      "elapsed_s": 3.445634926999901
+    },
+    {
+      "session_id": 10,
+      "turn": 19,
+      "intended_prompt_tokens": 14803,
+      "actual_prompt_tokens": 14803,
+      "output_tokens": 161,
+      "elapsed_s": 2.77385055700006
+    },
+    {
+      "session_id": 13,
+      "turn": 14,
+      "intended_prompt_tokens": 25738,
+      "actual_prompt_tokens": 25738,
+      "output_tokens": 241,
+      "elapsed_s": 4.285320576999993
+    },
+    {
+      "session_id": 17,
+      "turn": 9,
+      "intended_prompt_tokens": 19596,
+      "actual_prompt_tokens": 19596,
+      "output_tokens": 236,
+      "elapsed_s": 6.720640027999934
+    },
+    {
+      "session_id": 21,
+      "turn": 6,
+      "intended_prompt_tokens": 8955,
+      "actual_prompt_tokens": 8955,
+      "output_tokens": 222,
+      "elapsed_s": 7.524327621000111
+    },
+    {
+      "session_id": 16,
+      "turn": 13,
+      "intended_prompt_tokens": 14657,
+      "actual_prompt_tokens": 14657,
+      "output_tokens": 129,
+      "elapsed_s": 5.916245916999969
+    },
+    {
+      "session_id": 20,
+      "turn": 7,
+      "intended_prompt_tokens": 13967,
+      "actual_prompt_tokens": 13967,
+      "output_tokens": 80,
+      "elapsed_s": 4.562812577999921
+    },
+    {
+      "session_id": 10,
+      "turn": 20,
+      "intended_prompt_tokens": 15608,
+      "actual_prompt_tokens": 15608,
+      "output_tokens": 95,
+      "elapsed_s": 4.108803552999916
+    },
+    {
+      "session_id": 19,
+      "turn": 8,
+      "intended_prompt_tokens": 25374,
+      "actual_prompt_tokens": 25374,
+      "output_tokens": 105,
+      "elapsed_s": 5.738308482000093
+    },
+    {
+      "session_id": 16,
+      "turn": 14,
+      "intended_prompt_tokens": 14957,
+      "actual_prompt_tokens": 14957,
+      "output_tokens": 88,
+      "elapsed_s": 1.5920886849999079
+    },
+    {
+      "session_id": 15,
+      "turn": 6,
+      "intended_prompt_tokens": 17309,
+      "actual_prompt_tokens": 17309,
+      "output_tokens": 234,
+      "elapsed_s": 5.237202313000125
+    },
+    {
+      "session_id": 20,
+      "turn": 8,
+      "intended_prompt_tokens": 15520,
+      "actual_prompt_tokens": 15520,
+      "output_tokens": 124,
+      "elapsed_s": 2.005108312999937
+    },
+    {
+      "session_id": 19,
+      "turn": 9,
+      "intended_prompt_tokens": 25520,
+      "actual_prompt_tokens": 25520,
+      "output_tokens": 158,
+      "elapsed_s": 2.5237654489999386
+    },
+    {
+      "session_id": 21,
+      "turn": 7,
+      "intended_prompt_tokens": 9334,
+      "actual_prompt_tokens": 9334,
+      "output_tokens": 112,
+      "elapsed_s": 1.7162628730000051
+    },
+    {
+      "session_id": 17,
+      "turn": 10,
+      "intended_prompt_tokens": 20599,
+      "actual_prompt_tokens": 20599,
+      "output_tokens": 238,
+      "elapsed_s": 3.833451334000074
+    },
+    {
+      "session_id": 16,
+      "turn": 15,
+      "intended_prompt_tokens": 16763,
+      "actual_prompt_tokens": 16763,
+      "output_tokens": 154,
+      "elapsed_s": 3.0878269810000347
+    },
+    {
+      "session_id": 21,
+      "turn": 8,
+      "intended_prompt_tokens": 12023,
+      "actual_prompt_tokens": 12023,
+      "output_tokens": 102,
+      "elapsed_s": 2.3634461270000884
+    },
+    {
+      "session_id": 15,
+      "turn": 7,
+      "intended_prompt_tokens": 19202,
+      "actual_prompt_tokens": 19202,
+      "output_tokens": 117,
+      "elapsed_s": 2.542495917999986
+    },
+    {
+      "session_id": 20,
+      "turn": 9,
+      "intended_prompt_tokens": 16023,
+      "actual_prompt_tokens": 16023,
+      "output_tokens": 151,
+      "elapsed_s": 2.866341137000063
+    },
+    {
+      "session_id": 19,
+      "turn": 10,
+      "intended_prompt_tokens": 26459,
+      "actual_prompt_tokens": 26459,
+      "output_tokens": 72,
+      "elapsed_s": 1.2204658059999929
+    },
+    {
+      "session_id": 21,
+      "turn": 9,
+      "intended_prompt_tokens": 12458,
+      "actual_prompt_tokens": 12458,
+      "output_tokens": 76,
+      "elapsed_s": 1.0485395690000132
+    },
+    {
+      "session_id": 17,
+      "turn": 11,
+      "intended_prompt_tokens": 22260,
+      "actual_prompt_tokens": 22260,
+      "output_tokens": 337,
+      "elapsed_s": 5.301846238999815
+    },
+    {
+      "session_id": 15,
+      "turn": 8,
+      "intended_prompt_tokens": 19623,
+      "actual_prompt_tokens": 19623,
+      "output_tokens": 152,
+      "elapsed_s": 2.0789200290000736
+    },
+    {
+      "session_id": 20,
+      "turn": 10,
+      "intended_prompt_tokens": 16459,
+      "actual_prompt_tokens": 16459,
+      "output_tokens": 107,
+      "elapsed_s": 1.769285353999976
+    },
+    {
+      "session_id": 17,
+      "turn": 12,
+      "intended_prompt_tokens": 23615,
+      "actual_prompt_tokens": 23615,
+      "output_tokens": 303,
+      "elapsed_s": 5.202081239000108
+    },
+    {
+      "session_id": 18,
+      "turn": 9,
+      "intended_prompt_tokens": 14612,
+      "actual_prompt_tokens": 14612,
+      "output_tokens": 107,
+      "elapsed_s": 2.170226649000142
+    },
+    {
+      "session_id": 16,
+      "turn": 16,
+      "intended_prompt_tokens": 17769,
+      "actual_prompt_tokens": 17769,
+      "output_tokens": 769,
+      "elapsed_s": 11.397015704000069
+    },
+    {
+      "session_id": 21,
+      "turn": 10,
+      "intended_prompt_tokens": 13052,
+      "actual_prompt_tokens": 13052,
+      "output_tokens": 275,
+      "elapsed_s": 4.871284657999922
+    },
+    {
+      "session_id": 19,
+      "turn": 11,
+      "intended_prompt_tokens": 27017,
+      "actual_prompt_tokens": 27017,
+      "output_tokens": 160,
+      "elapsed_s": 3.0171206880002046
+    },
+    {
+      "session_id": 15,
+      "turn": 9,
+      "intended_prompt_tokens": 20585,
+      "actual_prompt_tokens": 20585,
+      "output_tokens": 167,
+      "elapsed_s": 2.8025863210000352
+    },
+    {
+      "session_id": 18,
+      "turn": 10,
+      "intended_prompt_tokens": 15672,
+      "actual_prompt_tokens": 15672,
+      "output_tokens": 132,
+      "elapsed_s": 1.5903296169999521
+    },
+    {
+      "session_id": 22,
+      "turn": 4,
+      "intended_prompt_tokens": 5863,
+      "actual_prompt_tokens": 5863,
+      "output_tokens": 440,
+      "elapsed_s": 6.724598913999898
+    },
+    {
+      "session_id": 20,
+      "turn": 11,
+      "intended_prompt_tokens": 16860,
+      "actual_prompt_tokens": 16860,
+      "output_tokens": 124,
+      "elapsed_s": 2.282167761999972
+    },
+    {
+      "session_id": 18,
+      "turn": 11,
+      "intended_prompt_tokens": 16895,
+      "actual_prompt_tokens": 16895,
+      "output_tokens": 167,
+      "elapsed_s": 3.7251884270001483
+    },
+    {
+      "session_id": 21,
+      "turn": 11,
+      "intended_prompt_tokens": 13631,
+      "actual_prompt_tokens": 13631,
+      "output_tokens": 154,
+      "elapsed_s": 3.94685892099983
+    },
+    {
+      "session_id": 22,
+      "turn": 5,
+      "intended_prompt_tokens": 6546,
+      "actual_prompt_tokens": 6546,
+      "output_tokens": 96,
+      "elapsed_s": 3.078398790999927
+    },
+    {
+      "session_id": 19,
+      "turn": 12,
+      "intended_prompt_tokens": 29724,
+      "actual_prompt_tokens": 29724,
+      "output_tokens": 93,
+      "elapsed_s": 2.5676189270000123
+    },
+    {
+      "session_id": 13,
+      "turn": 15,
+      "intended_prompt_tokens": 26292,
+      "actual_prompt_tokens": 26292,
+      "output_tokens": 257,
+      "elapsed_s": 5.961819071000036
+    },
+    {
+      "session_id": 16,
+      "turn": 17,
+      "intended_prompt_tokens": 18796,
+      "actual_prompt_tokens": 18796,
+      "output_tokens": 153,
+      "elapsed_s": 2.695533166999894
+    },
+    {
+      "session_id": 18,
+      "turn": 12,
+      "intended_prompt_tokens": 18246,
+      "actual_prompt_tokens": 18246,
+      "output_tokens": 250,
+      "elapsed_s": 4.504275175999965
+    },
+    {
+      "session_id": 23,
+      "turn": 0,
+      "intended_prompt_tokens": 1525,
+      "actual_prompt_tokens": 1525,
+      "output_tokens": 151,
+      "elapsed_s": 2.2542696370001067
+    },
+    {
+      "session_id": 17,
+      "turn": 13,
+      "intended_prompt_tokens": 25858,
+      "actual_prompt_tokens": 25858,
+      "output_tokens": 418,
+      "elapsed_s": 8.274861565000037
+    },
+    {
+      "session_id": 13,
+      "turn": 16,
+      "intended_prompt_tokens": 26638,
+      "actual_prompt_tokens": 26638,
+      "output_tokens": 45,
+      "elapsed_s": 0.7882267300001331
+    },
+    {
+      "session_id": 18,
+      "turn": 13,
+      "intended_prompt_tokens": 18716,
+      "actual_prompt_tokens": 18716,
+      "output_tokens": 233,
+      "elapsed_s": 3.5108771640000214
+    },
+    {
+      "session_id": 13,
+      "turn": 17,
+      "intended_prompt_tokens": 26839,
+      "actual_prompt_tokens": 26839,
+      "output_tokens": 56,
+      "elapsed_s": 0.8706902240001
+    },
+    {
+      "session_id": 15,
+      "turn": 10,
+      "intended_prompt_tokens": 22309,
+      "actual_prompt_tokens": 22309,
+      "output_tokens": 775,
+      "elapsed_s": 14.915326341000082
+    },
+    {
+      "session_id": 23,
+      "turn": 1,
+      "intended_prompt_tokens": 2085,
+      "actual_prompt_tokens": 2085,
+      "output_tokens": 188,
+      "elapsed_s": 3.717639082000005
+    },
+    {
+      "session_id": 20,
+      "turn": 12,
+      "intended_prompt_tokens": 19103,
+      "actual_prompt_tokens": 19103,
+      "output_tokens": 663,
+      "elapsed_s": 12.329884683000046
+    },
+    {
+      "session_id": 21,
+      "turn": 12,
+      "intended_prompt_tokens": 15274,
+      "actual_prompt_tokens": 15274,
+      "output_tokens": 119,
+      "elapsed_s": 2.3373774169999706
+    },
+    {
+      "session_id": 13,
+      "turn": 18,
+      "intended_prompt_tokens": 29429,
+      "actual_prompt_tokens": 29429,
+      "output_tokens": 288,
+      "elapsed_s": 5.5234608279999975
+    },
+    {
+      "session_id": 18,
+      "turn": 14,
+      "intended_prompt_tokens": 20362,
+      "actual_prompt_tokens": 20362,
+      "output_tokens": 304,
+      "elapsed_s": 5.408479341999964
+    },
+    {
+      "session_id": 20,
+      "turn": 13,
+      "intended_prompt_tokens": 19899,
+      "actual_prompt_tokens": 19899,
+      "output_tokens": 152,
+      "elapsed_s": 2.7186650720000216
+    },
+    {
+      "session_id": 24,
+      "turn": 0,
+      "intended_prompt_tokens": 1421,
+      "actual_prompt_tokens": 1421,
+      "output_tokens": 95,
+      "elapsed_s": 1.1449853460001123
+    },
+    {
+      "session_id": 22,
+      "turn": 6,
+      "intended_prompt_tokens": 6837,
+      "actual_prompt_tokens": 6837,
+      "output_tokens": 204,
+      "elapsed_s": 2.7217465230000926
+    },
+    {
+      "session_id": 15,
+      "turn": 11,
+      "intended_prompt_tokens": 24379,
+      "actual_prompt_tokens": 24379,
+      "output_tokens": 393,
+      "elapsed_s": 5.984491561000141
+    },
+    {
+      "session_id": 24,
+      "turn": 1,
+      "intended_prompt_tokens": 3411,
+      "actual_prompt_tokens": 3411,
+      "output_tokens": 176,
+      "elapsed_s": 2.720383838999851
+    },
+    {
+      "session_id": 21,
+      "turn": 13,
+      "intended_prompt_tokens": 17303,
+      "actual_prompt_tokens": 17303,
+      "output_tokens": 184,
+      "elapsed_s": 5.2853441969998585
+    },
+    {
+      "session_id": 20,
+      "turn": 14,
+      "intended_prompt_tokens": 20248,
+      "actual_prompt_tokens": 20248,
+      "output_tokens": 386,
+      "elapsed_s": 8.924125301000004
+    },
+    {
+      "session_id": 10,
+      "turn": 21,
+      "intended_prompt_tokens": 20209,
+      "actual_prompt_tokens": 20209,
+      "output_tokens": 144,
+      "elapsed_s": 4.327734788000043
+    },
+    {
+      "session_id": 23,
+      "turn": 2,
+      "intended_prompt_tokens": 2693,
+      "actual_prompt_tokens": 2693,
+      "output_tokens": 177,
+      "elapsed_s": 4.262467313000116
+    },
+    {
+      "session_id": 24,
+      "turn": 2,
+      "intended_prompt_tokens": 4116,
+      "actual_prompt_tokens": 4116,
+      "output_tokens": 194,
+      "elapsed_s": 3.970249448000004
+    },
+    {
+      "session_id": 15,
+      "turn": 12,
+      "intended_prompt_tokens": 24984,
+      "actual_prompt_tokens": 24984,
+      "output_tokens": 181,
+      "elapsed_s": 3.299924327999861
+    },
+    {
+      "session_id": 25,
+      "turn": 0,
+      "intended_prompt_tokens": 1715,
+      "actual_prompt_tokens": 1715,
+      "output_tokens": 368,
+      "elapsed_s": 8.733336822000183
+    },
+    {
+      "session_id": 22,
+      "turn": 7,
+      "intended_prompt_tokens": 16448,
+      "actual_prompt_tokens": 16448,
+      "output_tokens": 349,
+      "elapsed_s": 8.435112507999975
+    },
+    {
+      "session_id": 16,
+      "turn": 18,
+      "intended_prompt_tokens": 19430,
+      "actual_prompt_tokens": 19430,
+      "output_tokens": 493,
+      "elapsed_s": 11.005193229999804
+    },
+    {
+      "session_id": 17,
+      "turn": 14,
+      "intended_prompt_tokens": 26653,
+      "actual_prompt_tokens": 26653,
+      "output_tokens": 384,
+      "elapsed_s": 7.183922235000182
+    },
+    {
+      "session_id": 21,
+      "turn": 14,
+      "intended_prompt_tokens": 19523,
+      "actual_prompt_tokens": 19523,
+      "output_tokens": 380,
+      "elapsed_s": 6.850349113999982
+    },
+    {
+      "session_id": 25,
+      "turn": 1,
+      "intended_prompt_tokens": 2701,
+      "actual_prompt_tokens": 2701,
+      "output_tokens": 149,
+      "elapsed_s": 2.4430694750001294
+    },
+    {
+      "session_id": 10,
+      "turn": 22,
+      "intended_prompt_tokens": 20543,
+      "actual_prompt_tokens": 20543,
+      "output_tokens": 148,
+      "elapsed_s": 2.295297878000156
+    },
+    {
+      "session_id": 26,
+      "turn": 0,
+      "intended_prompt_tokens": 1610,
+      "actual_prompt_tokens": 1610,
+      "output_tokens": 131,
+      "elapsed_s": 2.177992826000036
+    },
+    {
+      "session_id": 15,
+      "turn": 13,
+      "intended_prompt_tokens": 26363,
+      "actual_prompt_tokens": 26363,
+      "output_tokens": 266,
+      "elapsed_s": 4.563807346999965
+    },
+    {
+      "session_id": 23,
+      "turn": 3,
+      "intended_prompt_tokens": 3463,
+      "actual_prompt_tokens": 3463,
+      "output_tokens": 65,
+      "elapsed_s": 1.2580314159999944
+    },
+    {
+      "session_id": 25,
+      "turn": 2,
+      "intended_prompt_tokens": 3079,
+      "actual_prompt_tokens": 3079,
+      "output_tokens": 127,
+      "elapsed_s": 2.540146734000018
+    },
+    {
+      "session_id": 16,
+      "turn": 19,
+      "intended_prompt_tokens": 21595,
+      "actual_prompt_tokens": 21595,
+      "output_tokens": 197,
+      "elapsed_s": 3.740784617999907
+    },
+    {
+      "session_id": 25,
+      "turn": 3,
+      "intended_prompt_tokens": 4035,
+      "actual_prompt_tokens": 4035,
+      "output_tokens": 52,
+      "elapsed_s": 0.8686181479999959
+    },
+    {
+      "session_id": 26,
+      "turn": 1,
+      "intended_prompt_tokens": 1942,
+      "actual_prompt_tokens": 1942,
+      "output_tokens": 131,
+      "elapsed_s": 2.2024324009998963
+    },
+    {
+      "session_id": 15,
+      "turn": 14,
+      "intended_prompt_tokens": 26891,
+      "actual_prompt_tokens": 26891,
+      "output_tokens": 187,
+      "elapsed_s": 3.2058476570000494
+    },
+    {
+      "session_id": 23,
+      "turn": 4,
+      "intended_prompt_tokens": 4951,
+      "actual_prompt_tokens": 4951,
+      "output_tokens": 186,
+      "elapsed_s": 3.032326102999832
+    },
+    {
+      "session_id": 20,
+      "turn": 15,
+      "intended_prompt_tokens": 21368,
+      "actual_prompt_tokens": 21368,
+      "output_tokens": 255,
+      "elapsed_s": 4.2635406800000055
+    },
+    {
+      "session_id": 25,
+      "turn": 4,
+      "intended_prompt_tokens": 5035,
+      "actual_prompt_tokens": 5035,
+      "output_tokens": 30,
+      "elapsed_s": 0.4484329859999434
+    },
+    {
+      "session_id": 20,
+      "turn": 16,
+      "intended_prompt_tokens": 22536,
+      "actual_prompt_tokens": 22536,
+      "output_tokens": 81,
+      "elapsed_s": 1.4024409840001226
+    },
+    {
+      "session_id": 25,
+      "turn": 5,
+      "intended_prompt_tokens": 5662,
+      "actual_prompt_tokens": 5662,
+      "output_tokens": 116,
+      "elapsed_s": 1.8860385220000353
+    },
+    {
+      "session_id": 21,
+      "turn": 15,
+      "intended_prompt_tokens": 20707,
+      "actual_prompt_tokens": 20707,
+      "output_tokens": 382,
+      "elapsed_s": 6.093568226000116
+    },
+    {
+      "session_id": 16,
+      "turn": 20,
+      "intended_prompt_tokens": 22994,
+      "actual_prompt_tokens": 22994,
+      "output_tokens": 192,
+      "elapsed_s": 3.537192177999941
+    },
+    {
+      "session_id": 10,
+      "turn": 23,
+      "intended_prompt_tokens": 21752,
+      "actual_prompt_tokens": 21752,
+      "output_tokens": 200,
+      "elapsed_s": 3.458856690999937
+    },
+    {
+      "session_id": 23,
+      "turn": 5,
+      "intended_prompt_tokens": 6999,
+      "actual_prompt_tokens": 6999,
+      "output_tokens": 201,
+      "elapsed_s": 3.4079380149998997
+    },
+    {
+      "session_id": 22,
+      "turn": 8,
+      "intended_prompt_tokens": 17018,
+      "actual_prompt_tokens": 17018,
+      "output_tokens": 146,
+      "elapsed_s": 2.488689422000107
+    },
+    {
+      "session_id": 20,
+      "turn": 17,
+      "intended_prompt_tokens": 23065,
+      "actual_prompt_tokens": 23065,
+      "output_tokens": 288,
+      "elapsed_s": 4.722088549999853
+    },
+    {
+      "session_id": 24,
+      "turn": 3,
+      "intended_prompt_tokens": 5236,
+      "actual_prompt_tokens": 5236,
+      "output_tokens": 118,
+      "elapsed_s": 1.9696785099999943
+    },
+    {
+      "session_id": 24,
+      "turn": 4,
+      "intended_prompt_tokens": 5549,
+      "actual_prompt_tokens": 5549,
+      "output_tokens": 101,
+      "elapsed_s": 1.7111889230000088
+    },
+    {
+      "session_id": 26,
+      "turn": 2,
+      "intended_prompt_tokens": 3566,
+      "actual_prompt_tokens": 3566,
+      "output_tokens": 560,
+      "elapsed_s": 8.852376748999859
+    },
+    {
+      "session_id": 21,
+      "turn": 16,
+      "intended_prompt_tokens": 21188,
+      "actual_prompt_tokens": 21188,
+      "output_tokens": 391,
+      "elapsed_s": 6.078827691000015
+    },
+    {
+      "session_id": 23,
+      "turn": 6,
+      "intended_prompt_tokens": 7856,
+      "actual_prompt_tokens": 7856,
+      "output_tokens": 213,
+      "elapsed_s": 3.228356610999981
+    },
+    {
+      "session_id": 22,
+      "turn": 9,
+      "intended_prompt_tokens": 19414,
+      "actual_prompt_tokens": 19414,
+      "output_tokens": 247,
+      "elapsed_s": 3.8310484749999887
+    },
+    {
+      "session_id": 21,
+      "turn": 17,
+      "intended_prompt_tokens": 21720,
+      "actual_prompt_tokens": 21720,
+      "output_tokens": 178,
+      "elapsed_s": 3.079704487000072
+    },
+    {
+      "session_id": 24,
+      "turn": 5,
+      "intended_prompt_tokens": 5936,
+      "actual_prompt_tokens": 5936,
+      "output_tokens": 70,
+      "elapsed_s": 1.2554402390001087
+    },
+    {
+      "session_id": 23,
+      "turn": 7,
+      "intended_prompt_tokens": 8718,
+      "actual_prompt_tokens": 8718,
+      "output_tokens": 107,
+      "elapsed_s": 2.171846781000113
+    },
+    {
+      "session_id": 26,
+      "turn": 3,
+      "intended_prompt_tokens": 5285,
+      "actual_prompt_tokens": 5285,
+      "output_tokens": 201,
+      "elapsed_s": 3.615495889000158
+    },
+    {
+      "session_id": 20,
+      "turn": 18,
+      "intended_prompt_tokens": 24232,
+      "actual_prompt_tokens": 24232,
+      "output_tokens": 149,
+      "elapsed_s": 4.690640297999835
+    },
+    {
+      "session_id": 15,
+      "turn": 15,
+      "intended_prompt_tokens": 27989,
+      "actual_prompt_tokens": 27989,
+      "output_tokens": 68,
+      "elapsed_s": 3.2700633219999418
+    },
+    {
+      "session_id": 10,
+      "turn": 24,
+      "intended_prompt_tokens": 22138,
+      "actual_prompt_tokens": 22138,
+      "output_tokens": 270,
+      "elapsed_s": 6.671634611999707
+    },
+    {
+      "session_id": 24,
+      "turn": 6,
+      "intended_prompt_tokens": 6186,
+      "actual_prompt_tokens": 6186,
+      "output_tokens": 132,
+      "elapsed_s": 4.167702448999989
+    },
+    {
+      "session_id": 25,
+      "turn": 6,
+      "intended_prompt_tokens": 7173,
+      "actual_prompt_tokens": 7173,
+      "output_tokens": 667,
+      "elapsed_s": 12.379836203999957
+    },
+    {
+      "session_id": 26,
+      "turn": 4,
+      "intended_prompt_tokens": 6658,
+      "actual_prompt_tokens": 6658,
+      "output_tokens": 128,
+      "elapsed_s": 3.739570228000048
+    },
+    {
+      "session_id": 24,
+      "turn": 7,
+      "intended_prompt_tokens": 7764,
+      "actual_prompt_tokens": 7764,
+      "output_tokens": 99,
+      "elapsed_s": 1.7900751349998245
+    },
+    {
+      "session_id": 25,
+      "turn": 7,
+      "intended_prompt_tokens": 8292,
+      "actual_prompt_tokens": 8292,
+      "output_tokens": 113,
+      "elapsed_s": 1.8350501840000106
+    },
+    {
+      "session_id": 26,
+      "turn": 5,
+      "intended_prompt_tokens": 7367,
+      "actual_prompt_tokens": 7367,
+      "output_tokens": 153,
+      "elapsed_s": 2.426900141999795
+    },
+    {
+      "session_id": 10,
+      "turn": 25,
+      "intended_prompt_tokens": 22880,
+      "actual_prompt_tokens": 22880,
+      "output_tokens": 140,
+      "elapsed_s": 2.485575537999921
+    },
+    {
+      "session_id": 21,
+      "turn": 18,
+      "intended_prompt_tokens": 22043,
+      "actual_prompt_tokens": 22043,
+      "output_tokens": 357,
+      "elapsed_s": 7.297873709000214
+    },
+    {
+      "session_id": 23,
+      "turn": 8,
+      "intended_prompt_tokens": 22363,
+      "actual_prompt_tokens": 22363,
+      "output_tokens": 469,
+      "elapsed_s": 10.028036324999675
+    },
+    {
+      "session_id": 26,
+      "turn": 6,
+      "intended_prompt_tokens": 10485,
+      "actual_prompt_tokens": 10485,
+      "output_tokens": 156,
+      "elapsed_s": 3.4084970600001725
+    },
+    {
+      "session_id": 20,
+      "turn": 19,
+      "intended_prompt_tokens": 26997,
+      "actual_prompt_tokens": 26997,
+      "output_tokens": 40,
+      "elapsed_s": 1.7581570449997344
+    },
+    {
+      "session_id": 22,
+      "turn": 10,
+      "intended_prompt_tokens": 19756,
+      "actual_prompt_tokens": 19756,
+      "output_tokens": 260,
+      "elapsed_s": 6.335973883999941
+    },
+    {
+      "session_id": 16,
+      "turn": 21,
+      "intended_prompt_tokens": 25867,
+      "actual_prompt_tokens": 25867,
+      "output_tokens": 64,
+      "elapsed_s": 2.327456944000005
+    },
+    {
+      "session_id": 24,
+      "turn": 8,
+      "intended_prompt_tokens": 8604,
+      "actual_prompt_tokens": 8604,
+      "output_tokens": 156,
+      "elapsed_s": 4.960263229999782
+    },
+    {
+      "session_id": 21,
+      "turn": 19,
+      "intended_prompt_tokens": 25501,
+      "actual_prompt_tokens": 25501,
+      "output_tokens": 159,
+      "elapsed_s": 4.785532150000108
+    },
+    {
+      "session_id": 25,
+      "turn": 8,
+      "intended_prompt_tokens": 8714,
+      "actual_prompt_tokens": 8714,
+      "output_tokens": 95,
+      "elapsed_s": 2.6692711900000177
+    },
+    {
+      "session_id": 10,
+      "turn": 26,
+      "intended_prompt_tokens": 24603,
+      "actual_prompt_tokens": 24603,
+      "output_tokens": 185,
+      "elapsed_s": 5.475716154000111
+    },
+    {
+      "session_id": 22,
+      "turn": 11,
+      "intended_prompt_tokens": 20452,
+      "actual_prompt_tokens": 20452,
+      "output_tokens": 58,
+      "elapsed_s": 1.2162883289997808
+    },
+    {
+      "session_id": 15,
+      "turn": 16,
+      "intended_prompt_tokens": 28290,
+      "actual_prompt_tokens": 28290,
+      "output_tokens": 197,
+      "elapsed_s": 4.888551001999986
+    },
+    {
+      "session_id": 21,
+      "turn": 20,
+      "intended_prompt_tokens": 26037,
+      "actual_prompt_tokens": 26037,
+      "output_tokens": 63,
+      "elapsed_s": 1.117835070000183
+    },
+    {
+      "session_id": 26,
+      "turn": 7,
+      "intended_prompt_tokens": 10807,
+      "actual_prompt_tokens": 10807,
+      "output_tokens": 192,
+      "elapsed_s": 3.250134965000143
+    },
+    {
+      "session_id": 27,
+      "turn": 0,
+      "intended_prompt_tokens": 1860,
+      "actual_prompt_tokens": 1860,
+      "output_tokens": 210,
+      "elapsed_s": 3.768222168000193
+    },
+    {
+      "session_id": 23,
+      "turn": 9,
+      "intended_prompt_tokens": 23012,
+      "actual_prompt_tokens": 23012,
+      "output_tokens": 295,
+      "elapsed_s": 6.184873421999782
+    },
+    {
+      "session_id": 24,
+      "turn": 9,
+      "intended_prompt_tokens": 9026,
+      "actual_prompt_tokens": 9026,
+      "output_tokens": 155,
+      "elapsed_s": 2.4173008340003435
+    },
+    {
+      "session_id": 15,
+      "turn": 17,
+      "intended_prompt_tokens": 29278,
+      "actual_prompt_tokens": 29278,
+      "output_tokens": 100,
+      "elapsed_s": 1.779838042999927
+    },
+    {
+      "session_id": 10,
+      "turn": 27,
+      "intended_prompt_tokens": 24856,
+      "actual_prompt_tokens": 24856,
+      "output_tokens": 228,
+      "elapsed_s": 3.912709608000114
+    },
+    {
+      "session_id": 21,
+      "turn": 21,
+      "intended_prompt_tokens": 27150,
+      "actual_prompt_tokens": 27150,
+      "output_tokens": 124,
+      "elapsed_s": 2.1432039260002966
+    },
+    {
+      "session_id": 23,
+      "turn": 10,
+      "intended_prompt_tokens": 23627,
+      "actual_prompt_tokens": 23627,
+      "output_tokens": 181,
+      "elapsed_s": 3.0609588729998904
+    },
+    {
+      "session_id": 22,
+      "turn": 12,
+      "intended_prompt_tokens": 21833,
+      "actual_prompt_tokens": 21833,
+      "output_tokens": 218,
+      "elapsed_s": 4.437109740999858
+    },
+    {
+      "session_id": 27,
+      "turn": 1,
+      "intended_prompt_tokens": 2607,
+      "actual_prompt_tokens": 2607,
+      "output_tokens": 53,
+      "elapsed_s": 1.4784353320001173
+    },
+    {
+      "session_id": 26,
+      "turn": 8,
+      "intended_prompt_tokens": 13979,
+      "actual_prompt_tokens": 13979,
+      "output_tokens": 44,
+      "elapsed_s": 1.7301397280002675
+    },
+    {
+      "session_id": 28,
+      "turn": 0,
+      "intended_prompt_tokens": 1339,
+      "actual_prompt_tokens": 1339,
+      "output_tokens": 189,
+      "elapsed_s": 4.0207912939999915
+    },
+    {
+      "session_id": 25,
+      "turn": 9,
+      "intended_prompt_tokens": 9590,
+      "actual_prompt_tokens": 9590,
+      "output_tokens": 85,
+      "elapsed_s": 1.8112947919998987
+    },
+    {
+      "session_id": 10,
+      "turn": 28,
+      "intended_prompt_tokens": 25717,
+      "actual_prompt_tokens": 25717,
+      "output_tokens": 242,
+      "elapsed_s": 4.787023297999895
+    },
+    {
+      "session_id": 21,
+      "turn": 22,
+      "intended_prompt_tokens": 29322,
+      "actual_prompt_tokens": 29322,
+      "output_tokens": 157,
+      "elapsed_s": 2.7383098239997707
+    },
+    {
+      "session_id": 23,
+      "turn": 11,
+      "intended_prompt_tokens": 24649,
+      "actual_prompt_tokens": 24649,
+      "output_tokens": 236,
+      "elapsed_s": 4.549753539000449
+    },
+    {
+      "session_id": 28,
+      "turn": 1,
+      "intended_prompt_tokens": 1771,
+      "actual_prompt_tokens": 1771,
+      "output_tokens": 152,
+      "elapsed_s": 2.334110810000311
+    },
+    {
+      "session_id": 29,
+      "turn": 0,
+      "intended_prompt_tokens": 1601,
+      "actual_prompt_tokens": 1601,
+      "output_tokens": 132,
+      "elapsed_s": 1.9756250770001316
+    },
+    {
+      "session_id": 22,
+      "turn": 13,
+      "intended_prompt_tokens": 23331,
+      "actual_prompt_tokens": 23331,
+      "output_tokens": 115,
+      "elapsed_s": 1.7981129270001475
+    },
+    {
+      "session_id": 25,
+      "turn": 10,
+      "intended_prompt_tokens": 9803,
+      "actual_prompt_tokens": 9803,
+      "output_tokens": 250,
+      "elapsed_s": 4.290333558999919
+    },
+    {
+      "session_id": 20,
+      "turn": 20,
+      "intended_prompt_tokens": 28434,
+      "actual_prompt_tokens": 28434,
+      "output_tokens": 83,
+      "elapsed_s": 1.7920244050001202
+    },
+    {
+      "session_id": 28,
+      "turn": 2,
+      "intended_prompt_tokens": 2988,
+      "actual_prompt_tokens": 2988,
+      "output_tokens": 98,
+      "elapsed_s": 2.0811791930000254
+    },
+    {
+      "session_id": 21,
+      "turn": 23,
+      "intended_prompt_tokens": 29560,
+      "actual_prompt_tokens": 29560,
+      "output_tokens": 78,
+      "elapsed_s": 1.5758460430001833
+    },
+    {
+      "session_id": 23,
+      "turn": 12,
+      "intended_prompt_tokens": 25503,
+      "actual_prompt_tokens": 25503,
+      "output_tokens": 245,
+      "elapsed_s": 4.209364994000225
+    },
+    {
+      "session_id": 24,
+      "turn": 10,
+      "intended_prompt_tokens": 9391,
+      "actual_prompt_tokens": 9391,
+      "output_tokens": 123,
+      "elapsed_s": 1.855382741000085
+    },
+    {
+      "session_id": 30,
+      "turn": 0,
+      "intended_prompt_tokens": 1567,
+      "actual_prompt_tokens": 1567,
+      "output_tokens": 95,
+      "elapsed_s": 1.566928034999819
+    },
+    {
+      "session_id": 29,
+      "turn": 1,
+      "intended_prompt_tokens": 3547,
+      "actual_prompt_tokens": 3547,
+      "output_tokens": 254,
+      "elapsed_s": 4.523702787000275
+    },
+    {
+      "session_id": 20,
+      "turn": 21,
+      "intended_prompt_tokens": 28973,
+      "actual_prompt_tokens": 28973,
+      "output_tokens": 97,
+      "elapsed_s": 1.9497662189996845
+    },
+    {
+      "session_id": 22,
+      "turn": 14,
+      "intended_prompt_tokens": 23738,
+      "actual_prompt_tokens": 23738,
+      "output_tokens": 325,
+      "elapsed_s": 5.905676513999879
+    },
+    {
+      "session_id": 25,
+      "turn": 11,
+      "intended_prompt_tokens": 10213,
+      "actual_prompt_tokens": 10213,
+      "output_tokens": 213,
+      "elapsed_s": 4.4876244219999535
+    },
+    {
+      "session_id": 26,
+      "turn": 9,
+      "intended_prompt_tokens": 14799,
+      "actual_prompt_tokens": 14799,
+      "output_tokens": 277,
+      "elapsed_s": 5.5199697910002214
+    },
+    {
+      "session_id": 23,
+      "turn": 13,
+      "intended_prompt_tokens": 27445,
+      "actual_prompt_tokens": 27445,
+      "output_tokens": 222,
+      "elapsed_s": 4.608913594000114
+    },
+    {
+      "session_id": 22,
+      "turn": 15,
+      "intended_prompt_tokens": 25455,
+      "actual_prompt_tokens": 25455,
+      "output_tokens": 150,
+      "elapsed_s": 2.732732020000185
+    },
+    {
+      "session_id": 20,
+      "turn": 22,
+      "intended_prompt_tokens": 29954,
+      "actual_prompt_tokens": 29954,
+      "output_tokens": 200,
+      "elapsed_s": 3.9657289510000737
+    },
+    {
+      "session_id": 27,
+      "turn": 2,
+      "intended_prompt_tokens": 2719,
+      "actual_prompt_tokens": 2719,
+      "output_tokens": 293,
+      "elapsed_s": 5.575077445000261
+    },
+    {
+      "session_id": 25,
+      "turn": 12,
+      "intended_prompt_tokens": 10530,
+      "actual_prompt_tokens": 10530,
+      "output_tokens": 102,
+      "elapsed_s": 1.6356149299999743
+    },
+    {
+      "session_id": 26,
+      "turn": 10,
+      "intended_prompt_tokens": 15257,
+      "actual_prompt_tokens": 15257,
+      "output_tokens": 89,
+      "elapsed_s": 1.2443224310000005
+    },
+    {
+      "session_id": 30,
+      "turn": 1,
+      "intended_prompt_tokens": 3018,
+      "actual_prompt_tokens": 3018,
+      "output_tokens": 269,
+      "elapsed_s": 4.78436063800018
+    },
+    {
+      "session_id": 23,
+      "turn": 14,
+      "intended_prompt_tokens": 28025,
+      "actual_prompt_tokens": 28025,
+      "output_tokens": 108,
+      "elapsed_s": 1.9944175710002128
+    },
+    {
+      "session_id": 28,
+      "turn": 3,
+      "intended_prompt_tokens": 3210,
+      "actual_prompt_tokens": 3210,
+      "output_tokens": 290,
+      "elapsed_s": 4.432936554999742
+    },
+    {
+      "session_id": 27,
+      "turn": 3,
+      "intended_prompt_tokens": 3060,
+      "actual_prompt_tokens": 3060,
+      "output_tokens": 217,
+      "elapsed_s": 4.310454807000042
+    },
+    {
+      "session_id": 24,
+      "turn": 11,
+      "intended_prompt_tokens": 9759,
+      "actual_prompt_tokens": 9759,
+      "output_tokens": 72,
+      "elapsed_s": 1.8402268630002254
+    },
+    {
+      "session_id": 29,
+      "turn": 2,
+      "intended_prompt_tokens": 5429,
+      "actual_prompt_tokens": 5429,
+      "output_tokens": 584,
+      "elapsed_s": 9.954960826999923
+    },
+    {
+      "session_id": 23,
+      "turn": 15,
+      "intended_prompt_tokens": 29749,
+      "actual_prompt_tokens": 29749,
+      "output_tokens": 91,
+      "elapsed_s": 2.019346384999608
+    },
+    {
+      "session_id": 31,
+      "turn": 0,
+      "intended_prompt_tokens": 1659,
+      "actual_prompt_tokens": 1659,
+      "output_tokens": 312,
+      "elapsed_s": 5.618577201000335
+    },
+    {
+      "session_id": 30,
+      "turn": 2,
+      "intended_prompt_tokens": 7154,
+      "actual_prompt_tokens": 7154,
+      "output_tokens": 100,
+      "elapsed_s": 2.4429197069998736
+    },
+    {
+      "session_id": 32,
+      "turn": 0,
+      "intended_prompt_tokens": 1649,
+      "actual_prompt_tokens": 1649,
+      "output_tokens": 110,
+      "elapsed_s": 1.6291080169999077
+    },
+    {
+      "session_id": 26,
+      "turn": 11,
+      "intended_prompt_tokens": 16293,
+      "actual_prompt_tokens": 16293,
+      "output_tokens": 236,
+      "elapsed_s": 3.6032450000002427
+    },
+    {
+      "session_id": 22,
+      "turn": 16,
+      "intended_prompt_tokens": 28162,
+      "actual_prompt_tokens": 28162,
+      "output_tokens": 368,
+      "elapsed_s": 6.418890461999581
+    },
+    {
+      "session_id": 33,
+      "turn": 0,
+      "intended_prompt_tokens": 1341,
+      "actual_prompt_tokens": 1341,
+      "output_tokens": 80,
+      "elapsed_s": 1.400424110000131
+    },
+    {
+      "session_id": 24,
+      "turn": 12,
+      "intended_prompt_tokens": 10818,
+      "actual_prompt_tokens": 10818,
+      "output_tokens": 52,
+      "elapsed_s": 0.7598803079999925
+    },
+    {
+      "session_id": 32,
+      "turn": 1,
+      "intended_prompt_tokens": 2956,
+      "actual_prompt_tokens": 2956,
+      "output_tokens": 126,
+      "elapsed_s": 1.8773608100000274
+    },
+    {
+      "session_id": 25,
+      "turn": 13,
+      "intended_prompt_tokens": 10844,
+      "actual_prompt_tokens": 10844,
+      "output_tokens": 281,
+      "elapsed_s": 4.0202961679997316
+    },
+    {
+      "session_id": 30,
+      "turn": 3,
+      "intended_prompt_tokens": 8664,
+      "actual_prompt_tokens": 8664,
+      "output_tokens": 155,
+      "elapsed_s": 2.354496677000043
+    },
+    {
+      "session_id": 22,
+      "turn": 17,
+      "intended_prompt_tokens": 28731,
+      "actual_prompt_tokens": 28731,
+      "output_tokens": 85,
+      "elapsed_s": 1.8899476510000568
+    },
+    {
+      "session_id": 33,
+      "turn": 1,
+      "intended_prompt_tokens": 2552,
+      "actual_prompt_tokens": 2552,
+      "output_tokens": 81,
+      "elapsed_s": 1.4164736210000228
+    },
+    {
+      "session_id": 32,
+      "turn": 2,
+      "intended_prompt_tokens": 3413,
+      "actual_prompt_tokens": 3413,
+      "output_tokens": 118,
+      "elapsed_s": 1.9153131349999057
+    },
+    {
+      "session_id": 24,
+      "turn": 13,
+      "intended_prompt_tokens": 11239,
+      "actual_prompt_tokens": 11239,
+      "output_tokens": 163,
+      "elapsed_s": 2.909827248000056
+    },
+    {
+      "session_id": 29,
+      "turn": 3,
+      "intended_prompt_tokens": 6249,
+      "actual_prompt_tokens": 6249,
+      "output_tokens": 356,
+      "elapsed_s": 5.557389732000047
+    },
+    {
+      "session_id": 30,
+      "turn": 4,
+      "intended_prompt_tokens": 10312,
+      "actual_prompt_tokens": 10312,
+      "output_tokens": 105,
+      "elapsed_s": 1.4204856040000777
+    },
+    {
+      "session_id": 31,
+      "turn": 1,
+      "intended_prompt_tokens": 4253,
+      "actual_prompt_tokens": 4253,
+      "output_tokens": 225,
+      "elapsed_s": 3.9393765289996736
+    },
+    {
+      "session_id": 25,
+      "turn": 14,
+      "intended_prompt_tokens": 11412,
+      "actual_prompt_tokens": 11412,
+      "output_tokens": 51,
+      "elapsed_s": 1.1481475799996588
+    },
+    {
+      "session_id": 28,
+      "turn": 4,
+      "intended_prompt_tokens": 3779,
+      "actual_prompt_tokens": 3779,
+      "output_tokens": 575,
+      "elapsed_s": 8.987713862999954
+    },
+    {
+      "session_id": 32,
+      "turn": 3,
+      "intended_prompt_tokens": 7351,
+      "actual_prompt_tokens": 7351,
+      "output_tokens": 82,
+      "elapsed_s": 1.485043745999974
+    },
+    {
+      "session_id": 29,
+      "turn": 4,
+      "intended_prompt_tokens": 6872,
+      "actual_prompt_tokens": 6872,
+      "output_tokens": 110,
+      "elapsed_s": 1.5886534409996784
+    },
+    {
+      "session_id": 27,
+      "turn": 4,
+      "intended_prompt_tokens": 4055,
+      "actual_prompt_tokens": 4055,
+      "output_tokens": 385,
+      "elapsed_s": 6.030947340000239
+    },
+    {
+      "session_id": 24,
+      "turn": 14,
+      "intended_prompt_tokens": 11880,
+      "actual_prompt_tokens": 11880,
+      "output_tokens": 217,
+      "elapsed_s": 3.2420700920001764
+    },
+    {
+      "session_id": 31,
+      "turn": 2,
+      "intended_prompt_tokens": 5270,
+      "actual_prompt_tokens": 5270,
+      "output_tokens": 103,
+      "elapsed_s": 1.2717565929997363
+    },
+    {
+      "session_id": 32,
+      "turn": 4,
+      "intended_prompt_tokens": 9133,
+      "actual_prompt_tokens": 9133,
+      "output_tokens": 180,
+      "elapsed_s": 2.280755375999888
+    },
+    {
+      "session_id": 34,
+      "turn": 0,
+      "intended_prompt_tokens": 1469,
+      "actual_prompt_tokens": 1469,
+      "output_tokens": 460,
+      "elapsed_s": 6.224803469000108
+    },
+    {
+      "session_id": 27,
+      "turn": 5,
+      "intended_prompt_tokens": 4945,
+      "actual_prompt_tokens": 4945,
+      "output_tokens": 64,
+      "elapsed_s": 1.0505892199998925
+    },
+    {
+      "session_id": 24,
+      "turn": 15,
+      "intended_prompt_tokens": 14371,
+      "actual_prompt_tokens": 14371,
+      "output_tokens": 110,
+      "elapsed_s": 1.7341388469999401
+    },
+    {
+      "session_id": 29,
+      "turn": 5,
+      "intended_prompt_tokens": 7183,
+      "actual_prompt_tokens": 7183,
+      "output_tokens": 86,
+      "elapsed_s": 1.2165610910001305
+    },
+    {
+      "session_id": 25,
+      "turn": 15,
+      "intended_prompt_tokens": 12142,
+      "actual_prompt_tokens": 12142,
+      "output_tokens": 107,
+      "elapsed_s": 1.495204117999947
+    },
+    {
+      "session_id": 33,
+      "turn": 2,
+      "intended_prompt_tokens": 2902,
+      "actual_prompt_tokens": 2902,
+      "output_tokens": 437,
+      "elapsed_s": 5.6504023190000225
+    },
+    {
+      "session_id": 27,
+      "turn": 6,
+      "intended_prompt_tokens": 5437,
+      "actual_prompt_tokens": 5437,
+      "output_tokens": 63,
+      "elapsed_s": 0.8269232810002904
+    },
+    {
+      "session_id": 32,
+      "turn": 5,
+      "intended_prompt_tokens": 10312,
+      "actual_prompt_tokens": 10312,
+      "output_tokens": 234,
+      "elapsed_s": 2.870691145999899
+    },
+    {
+      "session_id": 34,
+      "turn": 1,
+      "intended_prompt_tokens": 2138,
+      "actual_prompt_tokens": 2138,
+      "output_tokens": 152,
+      "elapsed_s": 1.9757379569996374
+    },
+    {
+      "session_id": 25,
+      "turn": 16,
+      "intended_prompt_tokens": 13624,
+      "actual_prompt_tokens": 13624,
+      "output_tokens": 81,
+      "elapsed_s": 1.5465970000000198
+    },
+    {
+      "session_id": 28,
+      "turn": 5,
+      "intended_prompt_tokens": 5152,
+      "actual_prompt_tokens": 5152,
+      "output_tokens": 113,
+      "elapsed_s": 2.019554970000172
+    },
+    {
+      "session_id": 29,
+      "turn": 6,
+      "intended_prompt_tokens": 8216,
+      "actual_prompt_tokens": 8216,
+      "output_tokens": 273,
+      "elapsed_s": 3.8519039499997234
+    },
+    {
+      "session_id": 24,
+      "turn": 16,
+      "intended_prompt_tokens": 16763,
+      "actual_prompt_tokens": 16763,
+      "output_tokens": 63,
+      "elapsed_s": 1.0828474709996954
+    },
+    {
+      "session_id": 33,
+      "turn": 3,
+      "intended_prompt_tokens": 4167,
+      "actual_prompt_tokens": 4167,
+      "output_tokens": 153,
+      "elapsed_s": 2.2317874559998927
+    },
+    {
+      "session_id": 25,
+      "turn": 17,
+      "intended_prompt_tokens": 14095,
+      "actual_prompt_tokens": 14095,
+      "output_tokens": 155,
+      "elapsed_s": 2.15617219700016
+    },
+    {
+      "session_id": 28,
+      "turn": 6,
+      "intended_prompt_tokens": 6178,
+      "actual_prompt_tokens": 6178,
+      "output_tokens": 169,
+      "elapsed_s": 2.224888043000192
+    },
+    {
+      "session_id": 30,
+      "turn": 5,
+      "intended_prompt_tokens": 10818,
+      "actual_prompt_tokens": 10818,
+      "output_tokens": 162,
+      "elapsed_s": 2.039635397999973
+    },
+    {
+      "session_id": 29,
+      "turn": 7,
+      "intended_prompt_tokens": 8752,
+      "actual_prompt_tokens": 8752,
+      "output_tokens": 312,
+      "elapsed_s": 3.9778360109999085
+    },
+    {
+      "session_id": 27,
+      "turn": 7,
+      "intended_prompt_tokens": 5682,
+      "actual_prompt_tokens": 5682,
+      "output_tokens": 486,
+      "elapsed_s": 6.354310942000211
+    },
+    {
+      "session_id": 33,
+      "turn": 4,
+      "intended_prompt_tokens": 4548,
+      "actual_prompt_tokens": 4548,
+      "output_tokens": 222,
+      "elapsed_s": 2.8442259349999404
+    },
+    {
+      "session_id": 25,
+      "turn": 18,
+      "intended_prompt_tokens": 14595,
+      "actual_prompt_tokens": 14595,
+      "output_tokens": 119,
+      "elapsed_s": 1.988362488000348
+    },
+    {
+      "session_id": 30,
+      "turn": 6,
+      "intended_prompt_tokens": 12702,
+      "actual_prompt_tokens": 12702,
+      "output_tokens": 67,
+      "elapsed_s": 1.3344035330001134
+    },
+    {
+      "session_id": 34,
+      "turn": 2,
+      "intended_prompt_tokens": 2517,
+      "actual_prompt_tokens": 2517,
+      "output_tokens": 121,
+      "elapsed_s": 2.5869066720001683
+    },
+    {
+      "session_id": 32,
+      "turn": 6,
+      "intended_prompt_tokens": 13188,
+      "actual_prompt_tokens": 13188,
+      "output_tokens": 121,
+      "elapsed_s": 2.5606597480000346
+    },
+    {
+      "session_id": 27,
+      "turn": 8,
+      "intended_prompt_tokens": 10385,
+      "actual_prompt_tokens": 10385,
+      "output_tokens": 80,
+      "elapsed_s": 1.4679315170001246
+    },
+    {
+      "session_id": 25,
+      "turn": 19,
+      "intended_prompt_tokens": 15080,
+      "actual_prompt_tokens": 15080,
+      "output_tokens": 93,
+      "elapsed_s": 1.935057377999783
+    },
+    {
+      "session_id": 28,
+      "turn": 7,
+      "intended_prompt_tokens": 6493,
+      "actual_prompt_tokens": 6493,
+      "output_tokens": 144,
+      "elapsed_s": 2.3599021549998724
+    },
+    {
+      "session_id": 34,
+      "turn": 3,
+      "intended_prompt_tokens": 3998,
+      "actual_prompt_tokens": 3998,
+      "output_tokens": 153,
+      "elapsed_s": 2.039631737000036
+    },
+    {
+      "session_id": 28,
+      "turn": 8,
+      "intended_prompt_tokens": 7317,
+      "actual_prompt_tokens": 7317,
+      "output_tokens": 115,
+      "elapsed_s": 1.566770728999927
+    },
+    {
+      "session_id": 29,
+      "turn": 8,
+      "intended_prompt_tokens": 10097,
+      "actual_prompt_tokens": 10097,
+      "output_tokens": 188,
+      "elapsed_s": 2.8748855160001767
+    },
+    {
+      "session_id": 30,
+      "turn": 7,
+      "intended_prompt_tokens": 14179,
+      "actual_prompt_tokens": 14179,
+      "output_tokens": 140,
+      "elapsed_s": 2.671849965000092
+    },
+    {
+      "session_id": 32,
+      "turn": 7,
+      "intended_prompt_tokens": 13816,
+      "actual_prompt_tokens": 13816,
+      "output_tokens": 229,
+      "elapsed_s": 3.6798307240001122
+    },
+    {
+      "session_id": 28,
+      "turn": 9,
+      "intended_prompt_tokens": 7595,
+      "actual_prompt_tokens": 7595,
+      "output_tokens": 292,
+      "elapsed_s": 4.803143127999647
+    },
+    {
+      "session_id": 29,
+      "turn": 9,
+      "intended_prompt_tokens": 14310,
+      "actual_prompt_tokens": 14310,
+      "output_tokens": 142,
+      "elapsed_s": 2.407213923999734
+    },
+    {
+      "session_id": 25,
+      "turn": 20,
+      "intended_prompt_tokens": 15518,
+      "actual_prompt_tokens": 15518,
+      "output_tokens": 645,
+      "elapsed_s": 9.551399100999788
+    },
+    {
+      "session_id": 28,
+      "turn": 10,
+      "intended_prompt_tokens": 8313,
+      "actual_prompt_tokens": 8313,
+      "output_tokens": 180,
+      "elapsed_s": 2.5635058449997814
+    },
+    {
+      "session_id": 34,
+      "turn": 4,
+      "intended_prompt_tokens": 5616,
+      "actual_prompt_tokens": 5616,
+      "output_tokens": 513,
+      "elapsed_s": 8.121093831000053
+    },
+    {
+      "session_id": 33,
+      "turn": 5,
+      "intended_prompt_tokens": 7255,
+      "actual_prompt_tokens": 7255,
+      "output_tokens": 927,
+      "elapsed_s": 14.021540118999837
+    },
+    {
+      "session_id": 25,
+      "turn": 21,
+      "intended_prompt_tokens": 17625,
+      "actual_prompt_tokens": 17625,
+      "output_tokens": 237,
+      "elapsed_s": 3.2698835070000314
+    },
+    {
+      "session_id": 30,
+      "turn": 8,
+      "intended_prompt_tokens": 14594,
+      "actual_prompt_tokens": 14594,
+      "output_tokens": 341,
+      "elapsed_s": 4.656549379999888
+    },
+    {
+      "session_id": 31,
+      "turn": 3,
+      "intended_prompt_tokens": 9563,
+      "actual_prompt_tokens": 9563,
+      "output_tokens": 65,
+      "elapsed_s": 1.2641330940000444
+    },
+    {
+      "session_id": 27,
+      "turn": 9,
+      "intended_prompt_tokens": 10828,
+      "actual_prompt_tokens": 10828,
+      "output_tokens": 848,
+      "elapsed_s": 12.45903833500006
+    },
+    {
+      "session_id": 32,
+      "turn": 8,
+      "intended_prompt_tokens": 14155,
+      "actual_prompt_tokens": 14155,
+      "output_tokens": 666,
+      "elapsed_s": 9.491125279999778
+    },
+    {
+      "session_id": 25,
+      "turn": 22,
+      "intended_prompt_tokens": 19142,
+      "actual_prompt_tokens": 19142,
+      "output_tokens": 229,
+      "elapsed_s": 3.7805215590001353
+    },
+    {
+      "session_id": 25,
+      "turn": 23,
+      "intended_prompt_tokens": 19414,
+      "actual_prompt_tokens": 19414,
+      "output_tokens": 65,
+      "elapsed_s": 0.947601719999966
+    },
+    {
+      "session_id": 32,
+      "turn": 9,
+      "intended_prompt_tokens": 17562,
+      "actual_prompt_tokens": 17562,
+      "output_tokens": 78,
+      "elapsed_s": 1.6456161950000023
+    },
+    {
+      "session_id": 27,
+      "turn": 10,
+      "intended_prompt_tokens": 13206,
+      "actual_prompt_tokens": 13206,
+      "output_tokens": 114,
+      "elapsed_s": 2.192725905000316
+    },
+    {
+      "session_id": 34,
+      "turn": 5,
+      "intended_prompt_tokens": 6555,
+      "actual_prompt_tokens": 6555,
+      "output_tokens": 261,
+      "elapsed_s": 4.075389363999875
+    },
+    {
+      "session_id": 32,
+      "turn": 10,
+      "intended_prompt_tokens": 17713,
+      "actual_prompt_tokens": 17713,
+      "output_tokens": 62,
+      "elapsed_s": 0.7420428489999722
+    },
+    {
+      "session_id": 31,
+      "turn": 4,
+      "intended_prompt_tokens": 10578,
+      "actual_prompt_tokens": 10578,
+      "output_tokens": 53,
+      "elapsed_s": 1.5114064739996138
+    },
+    {
+      "session_id": 25,
+      "turn": 24,
+      "intended_prompt_tokens": 20286,
+      "actual_prompt_tokens": 20286,
+      "output_tokens": 124,
+      "elapsed_s": 2.5474031319999995
+    },
+    {
+      "session_id": 28,
+      "turn": 11,
+      "intended_prompt_tokens": 9100,
+      "actual_prompt_tokens": 9100,
+      "output_tokens": 411,
+      "elapsed_s": 6.7878570890002266
+    },
+    {
+      "session_id": 30,
+      "turn": 9,
+      "intended_prompt_tokens": 16570,
+      "actual_prompt_tokens": 16570,
+      "output_tokens": 138,
+      "elapsed_s": 2.6628883519997544
+    },
+    {
+      "session_id": 32,
+      "turn": 11,
+      "intended_prompt_tokens": 19516,
+      "actual_prompt_tokens": 19516,
+      "output_tokens": 241,
+      "elapsed_s": 3.912355920000209
+    },
+    {
+      "session_id": 30,
+      "turn": 10,
+      "intended_prompt_tokens": 17474,
+      "actual_prompt_tokens": 17474,
+      "output_tokens": 79,
+      "elapsed_s": 1.860179521000191
+    },
+    {
+      "session_id": 25,
+      "turn": 25,
+      "intended_prompt_tokens": 20916,
+      "actual_prompt_tokens": 20916,
+      "output_tokens": 130,
+      "elapsed_s": 2.7840287110002464
+    },
+    {
+      "session_id": 31,
+      "turn": 5,
+      "intended_prompt_tokens": 10831,
+      "actual_prompt_tokens": 10831,
+      "output_tokens": 345,
+      "elapsed_s": 5.549331795999933
+    },
+    {
+      "session_id": 28,
+      "turn": 12,
+      "intended_prompt_tokens": 10116,
+      "actual_prompt_tokens": 10116,
+      "output_tokens": 85,
+      "elapsed_s": 1.335929128999851
+    },
+    {
+      "session_id": 24,
+      "turn": 17,
+      "intended_prompt_tokens": 18187,
+      "actual_prompt_tokens": 18187,
+      "output_tokens": 208,
+      "elapsed_s": 3.8781597019997207
+    },
+    {
+      "session_id": 32,
+      "turn": 12,
+      "intended_prompt_tokens": 21424,
+      "actual_prompt_tokens": 21424,
+      "output_tokens": 229,
+      "elapsed_s": 3.94296146600027
+    },
+    {
+      "session_id": 30,
+      "turn": 11,
+      "intended_prompt_tokens": 17683,
+      "actual_prompt_tokens": 17683,
+      "output_tokens": 114,
+      "elapsed_s": 1.8018136390001018
+    },
+    {
+      "session_id": 29,
+      "turn": 10,
+      "intended_prompt_tokens": 15211,
+      "actual_prompt_tokens": 15211,
+      "output_tokens": 641,
+      "elapsed_s": 10.223459974999969
+    },
+    {
+      "session_id": 32,
+      "turn": 13,
+      "intended_prompt_tokens": 22529,
+      "actual_prompt_tokens": 22529,
+      "output_tokens": 105,
+      "elapsed_s": 1.476692166000248
+    },
+    {
+      "session_id": 31,
+      "turn": 6,
+      "intended_prompt_tokens": 12856,
+      "actual_prompt_tokens": 12856,
+      "output_tokens": 385,
+      "elapsed_s": 5.2995726100002685
+    },
+    {
+      "session_id": 28,
+      "turn": 13,
+      "intended_prompt_tokens": 10297,
+      "actual_prompt_tokens": 10297,
+      "output_tokens": 386,
+      "elapsed_s": 5.165422509000109
+    },
+    {
+      "session_id": 30,
+      "turn": 12,
+      "intended_prompt_tokens": 17921,
+      "actual_prompt_tokens": 17921,
+      "output_tokens": 147,
+      "elapsed_s": 2.6996085900000253
+    },
+    {
+      "session_id": 25,
+      "turn": 26,
+      "intended_prompt_tokens": 21245,
+      "actual_prompt_tokens": 21245,
+      "output_tokens": 75,
+      "elapsed_s": 1.6839919070002907
+    },
+    {
+      "session_id": 29,
+      "turn": 11,
+      "intended_prompt_tokens": 17970,
+      "actual_prompt_tokens": 17970,
+      "output_tokens": 77,
+      "elapsed_s": 1.561630212000182
+    },
+    {
+      "session_id": 31,
+      "turn": 7,
+      "intended_prompt_tokens": 13459,
+      "actual_prompt_tokens": 13459,
+      "output_tokens": 213,
+      "elapsed_s": 3.2296145340001203
+    },
+    {
+      "session_id": 34,
+      "turn": 6,
+      "intended_prompt_tokens": 7074,
+      "actual_prompt_tokens": 7074,
+      "output_tokens": 250,
+      "elapsed_s": 3.0951532219996807
+    },
+    {
+      "session_id": 32,
+      "turn": 14,
+      "intended_prompt_tokens": 23367,
+      "actual_prompt_tokens": 23367,
+      "output_tokens": 315,
+      "elapsed_s": 5.179570833000071
+    },
+    {
+      "session_id": 34,
+      "turn": 7,
+      "intended_prompt_tokens": 9821,
+      "actual_prompt_tokens": 9821,
+      "output_tokens": 58,
+      "elapsed_s": 1.0028411690000212
+    },
+    {
+      "session_id": 25,
+      "turn": 27,
+      "intended_prompt_tokens": 22014,
+      "actual_prompt_tokens": 22014,
+      "output_tokens": 158,
+      "elapsed_s": 3.2028441649999877
+    },
+    {
+      "session_id": 31,
+      "turn": 8,
+      "intended_prompt_tokens": 14637,
+      "actual_prompt_tokens": 14637,
+      "output_tokens": 170,
+      "elapsed_s": 3.428603340999871
+    },
+    {
+      "session_id": 33,
+      "turn": 6,
+      "intended_prompt_tokens": 10503,
+      "actual_prompt_tokens": 10503,
+      "output_tokens": 115,
+      "elapsed_s": 2.2069105859995943
+    },
+    {
+      "session_id": 31,
+      "turn": 9,
+      "intended_prompt_tokens": 15902,
+      "actual_prompt_tokens": 15902,
+      "output_tokens": 85,
+      "elapsed_s": 1.2043815229999382
+    },
+    {
+      "session_id": 30,
+      "turn": 13,
+      "intended_prompt_tokens": 21489,
+      "actual_prompt_tokens": 21489,
+      "output_tokens": 293,
+      "elapsed_s": 4.638235104999694
+    },
+    {
+      "session_id": 33,
+      "turn": 7,
+      "intended_prompt_tokens": 10817,
+      "actual_prompt_tokens": 10817,
+      "output_tokens": 170,
+      "elapsed_s": 2.619905438999922
+    },
+    {
+      "session_id": 31,
+      "turn": 10,
+      "intended_prompt_tokens": 16209,
+      "actual_prompt_tokens": 16209,
+      "output_tokens": 118,
+      "elapsed_s": 1.6529226589996142
+    },
+    {
+      "session_id": 32,
+      "turn": 15,
+      "intended_prompt_tokens": 24621,
+      "actual_prompt_tokens": 24621,
+      "output_tokens": 194,
+      "elapsed_s": 2.909852265000154
+    },
+    {
+      "session_id": 28,
+      "turn": 14,
+      "intended_prompt_tokens": 11008,
+      "actual_prompt_tokens": 11008,
+      "output_tokens": 238,
+      "elapsed_s": 3.4920560929999738
+    },
+    {
+      "session_id": 24,
+      "turn": 18,
+      "intended_prompt_tokens": 18589,
+      "actual_prompt_tokens": 18589,
+      "output_tokens": 244,
+      "elapsed_s": 3.44249587000013
+    },
+    {
+      "session_id": 33,
+      "turn": 8,
+      "intended_prompt_tokens": 11615,
+      "actual_prompt_tokens": 11615,
+      "output_tokens": 91,
+      "elapsed_s": 1.6871900520000054
+    },
+    {
+      "session_id": 30,
+      "turn": 14,
+      "intended_prompt_tokens": 22392,
+      "actual_prompt_tokens": 22392,
+      "output_tokens": 35,
+      "elapsed_s": 0.8502960179998809
+    },
+    {
+      "session_id": 32,
+      "turn": 16,
+      "intended_prompt_tokens": 25228,
+      "actual_prompt_tokens": 25228,
+      "output_tokens": 137,
+      "elapsed_s": 2.518495249999887
+    },
+    {
+      "session_id": 33,
+      "turn": 9,
+      "intended_prompt_tokens": 12785,
+      "actual_prompt_tokens": 12785,
+      "output_tokens": 63,
+      "elapsed_s": 1.1866380609999396
+    },
+    {
+      "session_id": 34,
+      "turn": 8,
+      "intended_prompt_tokens": 10725,
+      "actual_prompt_tokens": 10725,
+      "output_tokens": 227,
+      "elapsed_s": 3.8433313909999924
+    },
+    {
+      "session_id": 31,
+      "turn": 11,
+      "intended_prompt_tokens": 16789,
+      "actual_prompt_tokens": 16789,
+      "output_tokens": 228,
+      "elapsed_s": 3.6872271320003165
+    },
+    {
+      "session_id": 29,
+      "turn": 12,
+      "intended_prompt_tokens": 18328,
+      "actual_prompt_tokens": 18328,
+      "output_tokens": 47,
+      "elapsed_s": 0.8184628140002133
+    },
+    {
+      "session_id": 24,
+      "turn": 19,
+      "intended_prompt_tokens": 19491,
+      "actual_prompt_tokens": 19491,
+      "output_tokens": 345,
+      "elapsed_s": 6.2550499910003055
+    },
+    {
+      "session_id": 28,
+      "turn": 15,
+      "intended_prompt_tokens": 11694,
+      "actual_prompt_tokens": 11694,
+      "output_tokens": 63,
+      "elapsed_s": 2.006402805000107
+    },
+    {
+      "session_id": 29,
+      "turn": 13,
+      "intended_prompt_tokens": 18877,
+      "actual_prompt_tokens": 18877,
+      "output_tokens": 137,
+      "elapsed_s": 2.9953281289999723
+    },
+    {
+      "session_id": 32,
+      "turn": 17,
+      "intended_prompt_tokens": 26327,
+      "actual_prompt_tokens": 26327,
+      "output_tokens": 171,
+      "elapsed_s": 4.107032138999784
+    },
+    {
+      "session_id": 31,
+      "turn": 12,
+      "intended_prompt_tokens": 17514,
+      "actual_prompt_tokens": 17514,
+      "output_tokens": 249,
+      "elapsed_s": 5.668269301000237
+    },
+    {
+      "session_id": 25,
+      "turn": 28,
+      "intended_prompt_tokens": 24106,
+      "actual_prompt_tokens": 24106,
+      "output_tokens": 169,
+      "elapsed_s": 3.914099795999846
+    },
+    {
+      "session_id": 28,
+      "turn": 16,
+      "intended_prompt_tokens": 15801,
+      "actual_prompt_tokens": 15801,
+      "output_tokens": 130,
+      "elapsed_s": 2.5920986649998667
+    },
+    {
+      "session_id": 30,
+      "turn": 15,
+      "intended_prompt_tokens": 23116,
+      "actual_prompt_tokens": 23116,
+      "output_tokens": 276,
+      "elapsed_s": 5.883052526000029
+    },
+    {
+      "session_id": 36,
+      "turn": 0,
+      "intended_prompt_tokens": 1623,
+      "actual_prompt_tokens": 1623,
+      "output_tokens": 31,
+      "elapsed_s": 0.4050606920000064
+    },
+    {
+      "session_id": 33,
+      "turn": 10,
+      "intended_prompt_tokens": 14126,
+      "actual_prompt_tokens": 14126,
+      "output_tokens": 256,
+      "elapsed_s": 5.338924691999637
+    },
+    {
+      "session_id": 35,
+      "turn": 0,
+      "intended_prompt_tokens": 1795,
+      "actual_prompt_tokens": 1795,
+      "output_tokens": 387,
+      "elapsed_s": 6.013194681000186
+    },
+    {
+      "session_id": 29,
+      "turn": 14,
+      "intended_prompt_tokens": 19530,
+      "actual_prompt_tokens": 19530,
+      "output_tokens": 177,
+      "elapsed_s": 2.3578329420001864
+    },
+    {
+      "session_id": 37,
+      "turn": 0,
+      "intended_prompt_tokens": 1539,
+      "actual_prompt_tokens": 1539,
+      "output_tokens": 60,
+      "elapsed_s": 1.0110718709997855
+    },
+    {
+      "session_id": 36,
+      "turn": 1,
+      "intended_prompt_tokens": 3404,
+      "actual_prompt_tokens": 3404,
+      "output_tokens": 163,
+      "elapsed_s": 2.9372051430000283
+    },
+    {
+      "session_id": 31,
+      "turn": 13,
+      "intended_prompt_tokens": 18368,
+      "actual_prompt_tokens": 18368,
+      "output_tokens": 279,
+      "elapsed_s": 4.581015791000027
+    },
+    {
+      "session_id": 36,
+      "turn": 2,
+      "intended_prompt_tokens": 3716,
+      "actual_prompt_tokens": 3716,
+      "output_tokens": 63,
+      "elapsed_s": 1.0188904829997227
+    },
+    {
+      "session_id": 33,
+      "turn": 11,
+      "intended_prompt_tokens": 16306,
+      "actual_prompt_tokens": 16306,
+      "output_tokens": 278,
+      "elapsed_s": 4.518783511000038
+    },
+    {
+      "session_id": 30,
+      "turn": 16,
+      "intended_prompt_tokens": 23642,
+      "actual_prompt_tokens": 23642,
+      "output_tokens": 223,
+      "elapsed_s": 3.2910307320003085
+    },
+    {
+      "session_id": 29,
+      "turn": 15,
+      "intended_prompt_tokens": 20893,
+      "actual_prompt_tokens": 20893,
+      "output_tokens": 274,
+      "elapsed_s": 4.109552492000148
+    },
+    {
+      "session_id": 35,
+      "turn": 1,
+      "intended_prompt_tokens": 2761,
+      "actual_prompt_tokens": 2761,
+      "output_tokens": 315,
+      "elapsed_s": 4.948629220999919
+    },
+    {
+      "session_id": 37,
+      "turn": 1,
+      "intended_prompt_tokens": 2660,
+      "actual_prompt_tokens": 2660,
+      "output_tokens": 135,
+      "elapsed_s": 2.01988049900001
+    },
+    {
+      "session_id": 31,
+      "turn": 14,
+      "intended_prompt_tokens": 19960,
+      "actual_prompt_tokens": 19960,
+      "output_tokens": 96,
+      "elapsed_s": 1.4275678829999379
+    },
+    {
+      "session_id": 30,
+      "turn": 17,
+      "intended_prompt_tokens": 24186,
+      "actual_prompt_tokens": 24186,
+      "output_tokens": 119,
+      "elapsed_s": 1.430359055000281
+    },
+    {
+      "session_id": 38,
+      "turn": 0,
+      "intended_prompt_tokens": 1586,
+      "actual_prompt_tokens": 1586,
+      "output_tokens": 149,
+      "elapsed_s": 1.3970262490001915
+    },
+    {
+      "session_id": 27,
+      "turn": 11,
+      "intended_prompt_tokens": 13482,
+      "actual_prompt_tokens": 13482,
+      "output_tokens": 120,
+      "elapsed_s": 2.343814749000103
+    },
+    {
+      "session_id": 29,
+      "turn": 16,
+      "intended_prompt_tokens": 21774,
+      "actual_prompt_tokens": 21774,
+      "output_tokens": 77,
+      "elapsed_s": 1.7316486139998233
+    },
+    {
+      "session_id": 35,
+      "turn": 2,
+      "intended_prompt_tokens": 3787,
+      "actual_prompt_tokens": 3787,
+      "output_tokens": 156,
+      "elapsed_s": 3.1466952200003107
+    },
+    {
+      "session_id": 31,
+      "turn": 15,
+      "intended_prompt_tokens": 23565,
+      "actual_prompt_tokens": 23565,
+      "output_tokens": 161,
+      "elapsed_s": 3.0350739370001065
+    },
+    {
+      "session_id": 36,
+      "turn": 3,
+      "intended_prompt_tokens": 4103,
+      "actual_prompt_tokens": 4103,
+      "output_tokens": 80,
+      "elapsed_s": 0.9713016230002722
+    },
+    {
+      "session_id": 33,
+      "turn": 12,
+      "intended_prompt_tokens": 16752,
+      "actual_prompt_tokens": 16752,
+      "output_tokens": 332,
+      "elapsed_s": 5.280111046000002
+    },
+    {
+      "session_id": 37,
+      "turn": 2,
+      "intended_prompt_tokens": 6929,
+      "actual_prompt_tokens": 6929,
+      "output_tokens": 280,
+      "elapsed_s": 4.962718680999842
+    },
+    {
+      "session_id": 31,
+      "turn": 16,
+      "intended_prompt_tokens": 28732,
+      "actual_prompt_tokens": 28732,
+      "output_tokens": 202,
+      "elapsed_s": 4.523137353000038
+    },
+    {
+      "session_id": 35,
+      "turn": 3,
+      "intended_prompt_tokens": 4044,
+      "actual_prompt_tokens": 4044,
+      "output_tokens": 296,
+      "elapsed_s": 5.9437795290000395
+    },
+    {
+      "session_id": 36,
+      "turn": 4,
+      "intended_prompt_tokens": 4652,
+      "actual_prompt_tokens": 4652,
+      "output_tokens": 143,
+      "elapsed_s": 3.0279953449999084
+    },
+    {
+      "session_id": 29,
+      "turn": 17,
+      "intended_prompt_tokens": 22014,
+      "actual_prompt_tokens": 22014,
+      "output_tokens": 207,
+      "elapsed_s": 5.097371071999987
+    },
+    {
+      "session_id": 27,
+      "turn": 12,
+      "intended_prompt_tokens": 16322,
+      "actual_prompt_tokens": 16322,
+      "output_tokens": 406,
+      "elapsed_s": 8.989593472000251
+    },
+    {
+      "session_id": 31,
+      "turn": 17,
+      "intended_prompt_tokens": 29235,
+      "actual_prompt_tokens": 29235,
+      "output_tokens": 149,
+      "elapsed_s": 3.4403160820002086
+    },
+    {
+      "session_id": 37,
+      "turn": 3,
+      "intended_prompt_tokens": 7701,
+      "actual_prompt_tokens": 7701,
+      "output_tokens": 311,
+      "elapsed_s": 7.566745878999882
+    },
+    {
+      "session_id": 33,
+      "turn": 13,
+      "intended_prompt_tokens": 22077,
+      "actual_prompt_tokens": 22077,
+      "output_tokens": 333,
+      "elapsed_s": 7.769508259999839
+    },
+    {
+      "session_id": 38,
+      "turn": 1,
+      "intended_prompt_tokens": 2353,
+      "actual_prompt_tokens": 2353,
+      "output_tokens": 129,
+      "elapsed_s": 2.7454092640000454
+    },
+    {
+      "session_id": 39,
+      "turn": 0,
+      "intended_prompt_tokens": 2078,
+      "actual_prompt_tokens": 2078,
+      "output_tokens": 154,
+      "elapsed_s": 2.3809041549998256
+    },
+    {
+      "session_id": 35,
+      "turn": 4,
+      "intended_prompt_tokens": 13294,
+      "actual_prompt_tokens": 13294,
+      "output_tokens": 310,
+      "elapsed_s": 6.267524219000279
+    },
+    {
+      "session_id": 25,
+      "turn": 29,
+      "intended_prompt_tokens": 24598,
+      "actual_prompt_tokens": 24598,
+      "output_tokens": 130,
+      "elapsed_s": 1.822709218
+    },
+    {
+      "session_id": 39,
+      "turn": 1,
+      "intended_prompt_tokens": 4555,
+      "actual_prompt_tokens": 4555,
+      "output_tokens": 71,
+      "elapsed_s": 1.809734914999808
+    },
+    {
+      "session_id": 29,
+      "turn": 18,
+      "intended_prompt_tokens": 22493,
+      "actual_prompt_tokens": 22493,
+      "output_tokens": 114,
+      "elapsed_s": 2.530998806000298
+    },
+    {
+      "session_id": 34,
+      "turn": 9,
+      "intended_prompt_tokens": 11173,
+      "actual_prompt_tokens": 11173,
+      "output_tokens": 384,
+      "elapsed_s": 7.058555786999932
+    },
+    {
+      "session_id": 33,
+      "turn": 14,
+      "intended_prompt_tokens": 25576,
+      "actual_prompt_tokens": 25576,
+      "output_tokens": 135,
+      "elapsed_s": 2.674161545000061
+    },
+    {
+      "session_id": 38,
+      "turn": 2,
+      "intended_prompt_tokens": 3269,
+      "actual_prompt_tokens": 3269,
+      "output_tokens": 274,
+      "elapsed_s": 4.747373447999962
+    },
+    {
+      "session_id": 35,
+      "turn": 5,
+      "intended_prompt_tokens": 13906,
+      "actual_prompt_tokens": 13906,
+      "output_tokens": 176,
+      "elapsed_s": 2.626744250000229
+    },
+    {
+      "session_id": 33,
+      "turn": 15,
+      "intended_prompt_tokens": 27599,
+      "actual_prompt_tokens": 27599,
+      "output_tokens": 153,
+      "elapsed_s": 2.6829245300000366
+    },
+    {
+      "session_id": 39,
+      "turn": 2,
+      "intended_prompt_tokens": 6628,
+      "actual_prompt_tokens": 6628,
+      "output_tokens": 55,
+      "elapsed_s": 1.0471923820000484
+    },
+    {
+      "session_id": 34,
+      "turn": 10,
+      "intended_prompt_tokens": 11898,
+      "actual_prompt_tokens": 11898,
+      "output_tokens": 112,
+      "elapsed_s": 1.8036918840002727
+    },
+    {
+      "session_id": 36,
+      "turn": 5,
+      "intended_prompt_tokens": 5163,
+      "actual_prompt_tokens": 5163,
+      "output_tokens": 456,
+      "elapsed_s": 7.466828806999729
+    },
+    {
+      "session_id": 38,
+      "turn": 3,
+      "intended_prompt_tokens": 3814,
+      "actual_prompt_tokens": 3814,
+      "output_tokens": 193,
+      "elapsed_s": 2.2840211140000974
+    },
+    {
+      "session_id": 35,
+      "turn": 6,
+      "intended_prompt_tokens": 14236,
+      "actual_prompt_tokens": 14236,
+      "output_tokens": 57,
+      "elapsed_s": 1.0501957769997716
+    },
+    {
+      "session_id": 33,
+      "turn": 16,
+      "intended_prompt_tokens": 28517,
+      "actual_prompt_tokens": 28517,
+      "output_tokens": 105,
+      "elapsed_s": 2.1644533970002158
+    },
+    {
+      "session_id": 38,
+      "turn": 4,
+      "intended_prompt_tokens": 5958,
+      "actual_prompt_tokens": 5958,
+      "output_tokens": 63,
+      "elapsed_s": 1.325829700000213
+    },
+    {
+      "session_id": 35,
+      "turn": 7,
+      "intended_prompt_tokens": 15923,
+      "actual_prompt_tokens": 15923,
+      "output_tokens": 184,
+      "elapsed_s": 2.8554760449997048
+    },
+    {
+      "session_id": 34,
+      "turn": 11,
+      "intended_prompt_tokens": 12544,
+      "actual_prompt_tokens": 12544,
+      "output_tokens": 247,
+      "elapsed_s": 4.133209751999857
+    },
+    {
+      "session_id": 29,
+      "turn": 19,
+      "intended_prompt_tokens": 23807,
+      "actual_prompt_tokens": 23807,
+      "output_tokens": 116,
+      "elapsed_s": 1.8860023370002637
+    },
+    {
+      "session_id": 35,
+      "turn": 8,
+      "intended_prompt_tokens": 16312,
+      "actual_prompt_tokens": 16312,
+      "output_tokens": 115,
+      "elapsed_s": 1.6217632879997836
+    },
+    {
+      "session_id": 33,
+      "turn": 17,
+      "intended_prompt_tokens": 29019,
+      "actual_prompt_tokens": 29019,
+      "output_tokens": 278,
+      "elapsed_s": 3.806285024999852
+    },
+    {
+      "session_id": 39,
+      "turn": 3,
+      "intended_prompt_tokens": 7136,
+      "actual_prompt_tokens": 7136,
+      "output_tokens": 596,
+      "elapsed_s": 8.521080430999973
+    },
+    {
+      "session_id": 37,
+      "turn": 4,
+      "intended_prompt_tokens": 8331,
+      "actual_prompt_tokens": 8331,
+      "output_tokens": 414,
+      "elapsed_s": 5.434233683000002
+    },
+    {
+      "session_id": 34,
+      "turn": 12,
+      "intended_prompt_tokens": 13366,
+      "actual_prompt_tokens": 13366,
+      "output_tokens": 294,
+      "elapsed_s": 3.7062362020001274
+    },
+    {
+      "session_id": 35,
+      "turn": 9,
+      "intended_prompt_tokens": 16552,
+      "actual_prompt_tokens": 16552,
+      "output_tokens": 121,
+      "elapsed_s": 1.6000465850002001
+    },
+    {
+      "session_id": 38,
+      "turn": 5,
+      "intended_prompt_tokens": 6625,
+      "actual_prompt_tokens": 6625,
+      "output_tokens": 173,
+      "elapsed_s": 2.07958226799974
+    },
+    {
+      "session_id": 34,
+      "turn": 13,
+      "intended_prompt_tokens": 14141,
+      "actual_prompt_tokens": 14141,
+      "output_tokens": 181,
+      "elapsed_s": 2.315519518000201
+    },
+    {
+      "session_id": 39,
+      "turn": 4,
+      "intended_prompt_tokens": 7913,
+      "actual_prompt_tokens": 7913,
+      "output_tokens": 124,
+      "elapsed_s": 1.5711484540001948
+    },
+    {
+      "session_id": 38,
+      "turn": 6,
+      "intended_prompt_tokens": 8477,
+      "actual_prompt_tokens": 8477,
+      "output_tokens": 124,
+      "elapsed_s": 1.469058141000005
+    },
+    {
+      "session_id": 39,
+      "turn": 5,
+      "intended_prompt_tokens": 8576,
+      "actual_prompt_tokens": 8576,
+      "output_tokens": 113,
+      "elapsed_s": 1.4620881179998833
+    },
+    {
+      "session_id": 34,
+      "turn": 14,
+      "intended_prompt_tokens": 18433,
+      "actual_prompt_tokens": 18433,
+      "output_tokens": 186,
+      "elapsed_s": 2.772413429000153
+    },
+    {
+      "session_id": 38,
+      "turn": 7,
+      "intended_prompt_tokens": 9726,
+      "actual_prompt_tokens": 9726,
+      "output_tokens": 189,
+      "elapsed_s": 4.139000838999891
+    },
+    {
+      "session_id": 37,
+      "turn": 5,
+      "intended_prompt_tokens": 9149,
+      "actual_prompt_tokens": 9149,
+      "output_tokens": 231,
+      "elapsed_s": 3.1720634739999696
+    },
+    {
+      "session_id": 34,
+      "turn": 15,
+      "intended_prompt_tokens": 20188,
+      "actual_prompt_tokens": 20188,
+      "output_tokens": 318,
+      "elapsed_s": 5.908798313000261
+    },
+    {
+      "session_id": 39,
+      "turn": 6,
+      "intended_prompt_tokens": 20941,
+      "actual_prompt_tokens": 20941,
+      "output_tokens": 369,
+      "elapsed_s": 6.350678424999842
+    },
+    {
+      "session_id": 35,
+      "turn": 10,
+      "intended_prompt_tokens": 17581,
+      "actual_prompt_tokens": 17581,
+      "output_tokens": 336,
+      "elapsed_s": 4.667992943999707
+    },
+    {
+      "session_id": 36,
+      "turn": 6,
+      "intended_prompt_tokens": 8844,
+      "actual_prompt_tokens": 8844,
+      "output_tokens": 156,
+      "elapsed_s": 2.6430607970000892
+    },
+    {
+      "session_id": 38,
+      "turn": 8,
+      "intended_prompt_tokens": 10377,
+      "actual_prompt_tokens": 10377,
+      "output_tokens": 205,
+      "elapsed_s": 2.944374137000068
+    },
+    {
+      "session_id": 39,
+      "turn": 7,
+      "intended_prompt_tokens": 22368,
+      "actual_prompt_tokens": 22368,
+      "output_tokens": 247,
+      "elapsed_s": 3.4464947320002466
+    },
+    {
+      "session_id": 34,
+      "turn": 16,
+      "intended_prompt_tokens": 20835,
+      "actual_prompt_tokens": 20835,
+      "output_tokens": 348,
+      "elapsed_s": 4.965755650999654
+    },
+    {
+      "session_id": 37,
+      "turn": 6,
+      "intended_prompt_tokens": 9883,
+      "actual_prompt_tokens": 9883,
+      "output_tokens": 201,
+      "elapsed_s": 2.918434077999791
+    },
+    {
+      "session_id": 36,
+      "turn": 7,
+      "intended_prompt_tokens": 9766,
+      "actual_prompt_tokens": 9766,
+      "output_tokens": 239,
+      "elapsed_s": 3.6042894459997115
+    },
+    {
+      "session_id": 38,
+      "turn": 9,
+      "intended_prompt_tokens": 11435,
+      "actual_prompt_tokens": 11435,
+      "output_tokens": 300,
+      "elapsed_s": 4.621954697000092
+    },
+    {
+      "session_id": 39,
+      "turn": 8,
+      "intended_prompt_tokens": 24159,
+      "actual_prompt_tokens": 24159,
+      "output_tokens": 429,
+      "elapsed_s": 6.080210655999963
+    },
+    {
+      "session_id": 37,
+      "turn": 7,
+      "intended_prompt_tokens": 14149,
+      "actual_prompt_tokens": 14149,
+      "output_tokens": 442,
+      "elapsed_s": 5.794553405999977
+    },
+    {
+      "session_id": 36,
+      "turn": 8,
+      "intended_prompt_tokens": 10173,
+      "actual_prompt_tokens": 10173,
+      "output_tokens": 211,
+      "elapsed_s": 2.84266148100005
+    },
+    {
+      "session_id": 38,
+      "turn": 10,
+      "intended_prompt_tokens": 12555,
+      "actual_prompt_tokens": 12555,
+      "output_tokens": 198,
+      "elapsed_s": 2.7667822100002013
+    },
+    {
+      "session_id": 37,
+      "turn": 8,
+      "intended_prompt_tokens": 17345,
+      "actual_prompt_tokens": 17345,
+      "output_tokens": 386,
+      "elapsed_s": 5.23070324299988
+    },
+    {
+      "session_id": 39,
+      "turn": 9,
+      "intended_prompt_tokens": 26405,
+      "actual_prompt_tokens": 26405,
+      "output_tokens": 61,
+      "elapsed_s": 1.3386405189999095
+    },
+    {
+      "session_id": 35,
+      "turn": 11,
+      "intended_prompt_tokens": 18847,
+      "actual_prompt_tokens": 18847,
+      "output_tokens": 172,
+      "elapsed_s": 3.2705889610001577
+    },
+    {
+      "session_id": 36,
+      "turn": 9,
+      "intended_prompt_tokens": 10545,
+      "actual_prompt_tokens": 10545,
+      "output_tokens": 100,
+      "elapsed_s": 1.7509209729996655
+    },
+    {
+      "session_id": 39,
+      "turn": 10,
+      "intended_prompt_tokens": 28740,
+      "actual_prompt_tokens": 28740,
+      "output_tokens": 227,
+      "elapsed_s": 3.7050204890001623
+    },
+    {
+      "session_id": 37,
+      "turn": 9,
+      "intended_prompt_tokens": 20429,
+      "actual_prompt_tokens": 20429,
+      "output_tokens": 221,
+      "elapsed_s": 3.166344431000198
+    },
+    {
+      "session_id": 36,
+      "turn": 10,
+      "intended_prompt_tokens": 11265,
+      "actual_prompt_tokens": 11265,
+      "output_tokens": 284,
+      "elapsed_s": 3.992627352999989
+    },
+    {
+      "session_id": 39,
+      "turn": 11,
+      "intended_prompt_tokens": 29408,
+      "actual_prompt_tokens": 29408,
+      "output_tokens": 228,
+      "elapsed_s": 3.4048605410002892
+    },
+    {
+      "session_id": 35,
+      "turn": 12,
+      "intended_prompt_tokens": 19451,
+      "actual_prompt_tokens": 19451,
+      "output_tokens": 282,
+      "elapsed_s": 3.65295637600002
+    },
+    {
+      "session_id": 37,
+      "turn": 10,
+      "intended_prompt_tokens": 22083,
+      "actual_prompt_tokens": 22083,
+      "output_tokens": 489,
+      "elapsed_s": 6.2067800380000335
+    },
+    {
+      "session_id": 38,
+      "turn": 11,
+      "intended_prompt_tokens": 13130,
+      "actual_prompt_tokens": 13130,
+      "output_tokens": 177,
+      "elapsed_s": 2.2218675280000753
+    },
+    {
+      "session_id": 38,
+      "turn": 12,
+      "intended_prompt_tokens": 13646,
+      "actual_prompt_tokens": 13646,
+      "output_tokens": 139,
+      "elapsed_s": 1.65989596099962
+    },
+    {
+      "session_id": 35,
+      "turn": 13,
+      "intended_prompt_tokens": 20372,
+      "actual_prompt_tokens": 20372,
+      "output_tokens": 317,
+      "elapsed_s": 3.691803811999762
+    },
+    {
+      "session_id": 38,
+      "turn": 13,
+      "intended_prompt_tokens": 14578,
+      "actual_prompt_tokens": 14578,
+      "output_tokens": 244,
+      "elapsed_s": 2.5316967399999157
+    },
+    {
+      "session_id": 35,
+      "turn": 14,
+      "intended_prompt_tokens": 21671,
+      "actual_prompt_tokens": 21671,
+      "output_tokens": 155,
+      "elapsed_s": 1.993794176999927
+    },
+    {
+      "session_id": 38,
+      "turn": 14,
+      "intended_prompt_tokens": 15278,
+      "actual_prompt_tokens": 15278,
+      "output_tokens": 445,
+      "elapsed_s": 5.311365274999844
+    },
+    {
+      "session_id": 35,
+      "turn": 15,
+      "intended_prompt_tokens": 22667,
+      "actual_prompt_tokens": 22667,
+      "output_tokens": 214,
+      "elapsed_s": 2.5371700699997746
+    },
+    {
+      "session_id": 38,
+      "turn": 15,
+      "intended_prompt_tokens": 15779,
+      "actual_prompt_tokens": 15779,
+      "output_tokens": 163,
+      "elapsed_s": 1.8685985389997768
+    },
+    {
+      "session_id": 35,
+      "turn": 16,
+      "intended_prompt_tokens": 23613,
+      "actual_prompt_tokens": 23613,
+      "output_tokens": 93,
+      "elapsed_s": 1.1508350970002539
+    },
+    {
+      "session_id": 36,
+      "turn": 11,
+      "intended_prompt_tokens": 12217,
+      "actual_prompt_tokens": 12217,
+      "output_tokens": 192,
+      "elapsed_s": 2.049300045000109
+    },
+    {
+      "session_id": 38,
+      "turn": 16,
+      "intended_prompt_tokens": 20205,
+      "actual_prompt_tokens": 20205,
+      "output_tokens": 178,
+      "elapsed_s": 2.854130502999851
+    },
+    {
+      "session_id": 35,
+      "turn": 17,
+      "intended_prompt_tokens": 25879,
+      "actual_prompt_tokens": 25879,
+      "output_tokens": 278,
+      "elapsed_s": 4.22753276100002
+    },
+    {
+      "session_id": 38,
+      "turn": 17,
+      "intended_prompt_tokens": 20561,
+      "actual_prompt_tokens": 20561,
+      "output_tokens": 119,
+      "elapsed_s": 1.3180871889999253
+    },
+    {
+      "session_id": 38,
+      "turn": 18,
+      "intended_prompt_tokens": 21672,
+      "actual_prompt_tokens": 21672,
+      "output_tokens": 84,
+      "elapsed_s": 1.0324130210001385
+    },
+    {
+      "session_id": 38,
+      "turn": 19,
+      "intended_prompt_tokens": 21852,
+      "actual_prompt_tokens": 21852,
+      "output_tokens": 53,
+      "elapsed_s": 0.5909017459998722
+    },
+    {
+      "session_id": 38,
+      "turn": 20,
+      "intended_prompt_tokens": 23263,
+      "actual_prompt_tokens": 23263,
+      "output_tokens": 88,
+      "elapsed_s": 1.2424074479999945
+    },
+    {
+      "session_id": 36,
+      "turn": 12,
+      "intended_prompt_tokens": 13194,
+      "actual_prompt_tokens": 13194,
+      "output_tokens": 494,
+      "elapsed_s": 5.4665949529999125
+    },
+    {
+      "session_id": 36,
+      "turn": 13,
+      "intended_prompt_tokens": 15482,
+      "actual_prompt_tokens": 15482,
+      "output_tokens": 337,
+      "elapsed_s": 4.271663688999979
+    },
+    {
+      "session_id": 38,
+      "turn": 21,
+      "intended_prompt_tokens": 26077,
+      "actual_prompt_tokens": 26077,
+      "output_tokens": 203,
+      "elapsed_s": 2.7488379890000942
+    },
+    {
+      "session_id": 38,
+      "turn": 22,
+      "intended_prompt_tokens": 27961,
+      "actual_prompt_tokens": 27961,
+      "output_tokens": 233,
+      "elapsed_s": 2.782739814999786
+    },
+    {
+      "session_id": 38,
+      "turn": 23,
+      "intended_prompt_tokens": 28745,
+      "actual_prompt_tokens": 28745,
+      "output_tokens": 102,
+      "elapsed_s": 1.4745085660001678
+    },
+    {
+      "session_id": 38,
+      "turn": 24,
+      "intended_prompt_tokens": 29661,
+      "actual_prompt_tokens": 29661,
+      "output_tokens": 143,
+      "elapsed_s": 1.6902346540000508
+    },
+    {
+      "session_id": 36,
+      "turn": 14,
+      "intended_prompt_tokens": 16683,
+      "actual_prompt_tokens": 16683,
+      "output_tokens": 147,
+      "elapsed_s": 1.8625660130001052
+    }
+  ]
+}
