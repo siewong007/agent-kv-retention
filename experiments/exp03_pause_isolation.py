@@ -1,7 +1,7 @@
 """EXP03 -- separating "the pause got longer" from "the load got lighter".
 
 EXP01's pause sweep ran closed-loop at fixed concurrency. In that setup a longer tool
-pause also means a lower arrival rate, so GPU utilisation fell from 99% to 32% across
+pause also means a lower arrival rate, so GPU utilisation fell from 100% to 45% across
 the sweep. Every latency and cost number in that figure is a mix of two effects pushing
 in opposite directions: the cache gets colder (worse) while the machine gets emptier
 (better). The conclusion drawn from it -- that a cache win stops being a cost win when
@@ -38,7 +38,7 @@ EXP01 conclusions. So:
 
 If the findings hold in both, they are not artefacts of closed-loop scheduling.
 
-    python -m experiments.exp03_pause_isolation --seeds 15 --out results/exp03
+    python -m experiments.exp03_pause_isolation --seeds 15 --out results/v3_exp03
 """
 
 from __future__ import annotations

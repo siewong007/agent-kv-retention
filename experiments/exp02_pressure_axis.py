@@ -19,7 +19,7 @@ If the three collapse onto one curve, pressure is the axis and every EXP01 resul
 transfers to other hardware by rescaling. If they do not, the axis is wrong and the
 results are specific to the configuration that produced them.
 
-    python -m experiments.exp02_pressure_axis --seeds 10 --out results/exp02
+    python -m experiments.exp02_pressure_axis --seeds 15 --out results/v2_exp02_seeds15
 """
 
 from __future__ import annotations

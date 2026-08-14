@@ -1,8 +1,7 @@
 """EXP05 -- where should the termination classifier's decision threshold sit?
 
-EXP04 found that `predict_terminal` loses to LRU below roughly 0.7 precision. It ran at
-a decision threshold of 0.5, which is the default for a balanced problem and this problem
-is not balanced:
+EXP04 ran `predict_terminal` at a decision threshold of 0.5, which is the default for a
+balanced problem. This problem is not balanced:
 
     false positive   a live session is marked dead, its cache is evicted first, and it
                      recomputes its whole context on return -- the full cost of a miss
@@ -16,10 +15,10 @@ experiment sweeps the threshold and asks two things:
      found it losing?
   2. is there an optimum, and does it sit where the precision/recall trade-off predicts?
 
-Run at two signal strengths taken from EXP04: one below its crossover (0.75, where
-predict_terminal scored -9.5%) and one above (3.00, where it scored +57.9%).
+Run at two signal strengths taken from EXP04: a weak one (0.75) where the deployable arm
+is indistinguishable from LRU, and a strong one (3.00) where it measurably wins.
 
-    python -m experiments.exp05_threshold --seeds 10 --out results/exp05
+    python -m experiments.exp05_threshold --seeds 15 --out results/exp05_seeds15
 """
 
 from __future__ import annotations

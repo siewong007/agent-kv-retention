@@ -1,9 +1,9 @@
 """EXP04 -- how much of the oracle's headroom can a real predictor actually get?
 
-EXP01 established that the headroom exists (18.3% at the peak), that no tuned constant
-can reach any of it, and that most of it at the operating point comes from knowing
-whether a session has ENDED rather than how long it pauses. This experiment builds the
-deployable version and measures what it captures.
+EXP01 established that the headroom exists (13.7% [12.5, 15.0] at the peak, 100 seeds),
+that no tuned constant can reach any of it, and that most of it at the operating point
+comes from knowing whether a session has ENDED rather than how long it pauses. This
+experiment builds the deployable version and measures what it captures.
 
 Two predictors, matching the two oracle arms so the comparison is clean:
 
@@ -24,13 +24,13 @@ Discipline that decides whether the number means anything:
   * **Only causally available features.** A prediction is made when a turn FINISHES,
     so it may use the turn index, the prompt and output sizes, the tool just used, the
     previous tool and the previous pause. It may not use anything from the future.
-  * **Swept over `tool_pause_spread`.** That knob sets how much of the pause a tool's
-    identity explains -- i.e. how learnable the synthetic world is. A predictor result
-    at a single setting says as much about the generator as about the predictor, so the
-    answer is reported as a curve. At spread 0 the pause is unlearnable by construction
-    and any apparent skill is leakage.
+  * **Swept over `termination_signal_strength`.** That knob sets how strongly a session
+    signals it is about to end -- i.e. how learnable the synthetic world is. A predictor
+    result at a single setting says as much about the generator as about the predictor,
+    so the answer is reported as a curve. At strength 0 termination is unlearnable by
+    construction and any apparent skill is leakage.
 
-    python -m experiments.exp04_predictor --seeds 10 --out results/exp04
+    python -m experiments.exp04_predictor --seeds 15 --out results/exp04_seeds15
 """
 
 from __future__ import annotations

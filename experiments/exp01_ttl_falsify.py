@@ -20,7 +20,7 @@ Decision rule, fixed before looking at the numbers:
     headroom > 30% and const captures < 50% -> the premise survives; build a predictor.
 
 Usage:
-    python -m experiments.exp01_ttl_falsify --sessions 200 --seeds 3 --out results/exp01
+    python -m experiments.exp01_ttl_falsify --sessions 200 --seeds 100 --concurrency 8,10,12,14,16,18 --pause "" --arms lru,ttl_oracle,oracle_terminal,belady --out results/exp01_share_seeds100
 """
 
 from __future__ import annotations
