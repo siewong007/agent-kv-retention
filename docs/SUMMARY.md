@@ -8,15 +8,16 @@ that contains the config and seed that produced it.
 real hardware; the workload is not.
 
 > **2026-08-15, from [validation_findings.md](validation_findings.md):** the simulator
-> has now been compared to vLLM end-to-end. The **timing model is validated** — makespan
-> agrees within 2% at both pressures tested. The **hit-rate model is validated at
-> pressure 0.64** (0.9010 vs 0.9151, 1.4 pp). At pressure 1.02 the comparison could not
-> be made: vLLM's counters are per-scheduling and were inflated 1.694x by preemption, so
-> its ratio is not a per-request hit rate. What *is* refuted there is the admission
-> model — the simulator preempted 0 times over 1122 calls where vLLM re-scheduled 69% of
-> prompt tokens, because it admits only whole prompts. Its pressure axis is therefore
-> softer than a real server's by an unmeasured amount, so headroom figures should be read
-> in simulator pressure units. Cost and latency conclusions are unaffected.
+> has now been compared to vLLM end-to-end, three runs. The **timing model is validated**
+> — makespan agrees within 2% every time. The **eviction model is validated** — hit rate
+> agrees to 1.4 pp at pressure 0.64 and to 1.4 pp at pressure 1.08, with the sign
+> flipping, so absolute hit rates here are not systematically optimistic. Getting the
+> second number required capping `max_num_seqs` on both sides: at default admission vLLM
+> preempts, its `/metrics` counters are per-scheduling and were inflated 1.694x, and the
+> ratio is then not a hit rate at all. That admission difference is the one thing still
+> refuted — the simulator preempted 0 times over 1122 calls where vLLM re-scheduled 69%
+> of prompt tokens — so the mapping from simulator pressure to server pressure is not the
+> identity and headroom should be quoted in simulator pressure units.
 
 ---
 
@@ -144,12 +145,12 @@ Ordered by how much damage each would do to the report.
    the fitted interval-shrinkage exponent is 0.10 against an ideal 0.5.
 4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080. Nothing
    here has been checked against a second model or a headless server.
-5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, and it
-   half held.** Timing agrees within 2% at both pressures; hit rate agrees within 1.4 pp
-   at pressure 0.64. Above pressure 1.0 the hit rate is **still unmeasured**, and the
-   admission model is known to differ: the simulator never preempts, vLLM constantly
-   does. See [validation_findings.md](validation_findings.md), which also lists the one
-   local run that would close it.
+5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done.** Timing
+   within 2%, hit rate within 1.4 pp at pressure 0.64 and 1.08. What is still open is
+   narrower: the **admission** model differs (the simulator never preempts, vLLM does),
+   so simulator pressure and server pressure are not the same axis. See
+   [validation_findings.md](validation_findings.md) for the two local runs that would
+   map one onto the other.
 6. **`predict_terminal`'s neutrality at weak signal is unresolved, not proved.** Showing
    an arm is neutral needs far more seeds than showing it wins; those intervals are
    30–60 pp wide.

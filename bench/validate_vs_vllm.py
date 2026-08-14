@@ -36,9 +36,15 @@ What makes the comparison fair, and what does not:
     request that resumes is counted twice in both numerator and denominator. The
     simulator's token_hit_rate counts each prompt once. At pressure 1.02 vLLM's queries
     came to 1.694x the prompt tokens sent, and comparing its ratio to the simulator's
-    produced a 25 pp "disagreement" that was almost entirely this. The headline
-    comparison is now usage.prompt_tokens_details.cached_tokens, which is per request;
-    the /metrics ratio is still reported, with a warning when it is inflated.
+    produced a 25 pp "disagreement" that was almost entirely this.
+
+    The fix that works on a stock build is to remove the preemption rather than to
+    correct for it: pass the same --max-num-seqs to this script and to the server, low
+    enough that vLLM queues instead of over-committing, which is what the simulator's
+    whole-prompt admission already does. The script prints the inflation on both sides
+    and only trusts the comparison when both read 1.000. (A server build that reports
+    usage.prompt_tokens_details.cached_tokens would give the per-request number
+    directly; vLLM 0.26 leaves that field None on /v1/completions.)
 
 A disagreement here is a result, not a bug to be tuned out. If the hit rates differ,
 that difference bounds how much any simulated headroom figure can be trusted, and it
@@ -46,7 +52,11 @@ belongs in the thesis rather than in a fix.
 
     # server, prefix caching ON (note: NOT serve_calib.sh, which turns it off):
     #   bash bench/serve_validate.sh
-    python -m bench.validate_vs_vllm --sessions 40 --concurrency 10 --out results/validate
+    python -m bench.validate_vs_vllm --sessions 40 --concurrency 10 --pool-blocks 13663 --out results/validate
+
+    # above pressure 1.0, matched admission so the comparison stays valid:
+    #   bash bench/serve_validate.sh   # with --max-num-seqs 8 added to the vllm line
+    python -m bench.validate_vs_vllm --sessions 60 --concurrency 16 --max-num-seqs 8 --pool-blocks 12865 --out results/validate_matched_admission
 """
 
 from __future__ import annotations
@@ -84,6 +94,10 @@ def read_prefix_cache_metrics(base_url: str) -> dict:
     wanted = {
         "queries": ("vllm:prefix_cache_queries_total", "vllm:gpu_prefix_cache_queries_total"),
         "hits": ("vllm:prefix_cache_hits_total", "vllm:gpu_prefix_cache_hits_total"),
+        # Preemptions need no denominator, which makes them the cleanest behavioural
+        # comparison available: the simulator admits only whole prompts and therefore
+        # never preempts, while vLLM admits optimistically and does.
+        "preemptions": ("vllm:num_preemptions_total",),
     }
     found: dict = {}
     for key, names in wanted.items():
@@ -174,6 +188,15 @@ def main(argv=None) -> int:
                     help="multiply every pause. 1.0 keeps the workload's real timing; "
                          "lower values shorten the run but change what the scheduler "
                          "sees, so the comparison is only clean at 1.0")
+    ap.add_argument("--max-num-seqs", type=int, default=None,
+                    help="cap concurrently RUNNING sequences on the simulator side. "
+                         "Pass the same value to the server (--max-num-seqs) to remove "
+                         "the admission difference between the two: vLLM then queues "
+                         "instead of over-committing, which is what the simulator's "
+                         "whole-prompt admission already does. With preemption gone, "
+                         "vLLM's per-scheduling counters collapse to a per-request hit "
+                         "rate and the eviction models become directly comparable. "
+                         "This isolates a mechanism; it is NOT vLLM as deployed")
     ap.add_argument("--out", default="results/validate")
     args = ap.parse_args(argv)
 
@@ -187,6 +210,8 @@ def main(argv=None) -> int:
         "policy.kind": "lru",
         "seed": args.seed,
     })
+    if args.max_num_seqs is not None:
+        cfg = cfg.replace(**{"engine.max_num_seqs": args.max_num_seqs})
     sessions = generate_sessions(cfg.workload, args.seed)
 
     # Truncate to the model's context window, on BOTH sides. A session is cut at the
@@ -213,6 +238,8 @@ def main(argv=None) -> int:
     print(f"sessions         : {args.sessions} at concurrency {args.concurrency}")
     print(f"offered pressure : {pressure:.2f}")
     print(f"pause scale      : {args.pause_scale}")
+    print(f"max_num_seqs     : {cfg.engine.max_num_seqs} "
+          f"(must match the server's --max-num-seqs)")
     print(f"turns            : {total_turns} kept, {dropped} dropped for exceeding "
           f"{args.max_prompt_tokens} prompt tokens")
 
@@ -266,6 +293,8 @@ def main(argv=None) -> int:
             "hit_rate": vllm_hit,
             "query_inflation": inflation,
             "per_request_hit_rate": vllm_per_request_hit,
+            "num_preemptions": (after.get("preemptions", 0.0)
+                                - before.get("preemptions", 0.0)),
             "metric_used": after.get("queries_metric"),
             "wall_s": wall,
             "n_calls": len(replayer.records),
@@ -293,11 +322,29 @@ def main(argv=None) -> int:
         json.dump(payload, f, indent=2)
 
     print("\n=== prefix-cache hit rate ===")
-    print(f"  vLLM      {vllm_hit:.4f}   ({h:.0f} hits / {q:.0f} queries, "
-          f"metric {after.get('queries_metric')})")
-    print(f"  simulator {sim['token_hit_rate']:.4f}")
-    delta = sim["token_hit_rate"] - vllm_hit
-    print(f"  delta     {delta:+.4f}  ({100*delta/vllm_hit:+.1f}% relative)")
+    sim_infl = sim["query_tokens"] / sim["prompt_tokens_total"]
+    n_preempt = after.get("preemptions", 0.0) - before.get("preemptions", 0.0)
+    print(f"  query inflation:  vLLM {inflation:.4f}x   simulator {sim_infl:.4f}x")
+    print(f"  preemptions:      vLLM {n_preempt:.0f}          "
+          f"simulator {sim['n_preemptions']}")
+    if vllm_per_request_hit is not None:
+        print(f"  per-request:      vLLM {vllm_per_request_hit:.4f}   "
+              f"simulator {sim['token_hit_rate']:.4f}   "
+              f"delta {sim['token_hit_rate']-vllm_per_request_hit:+.4f}")
+    print(f"  per-scheduling:   vLLM {vllm_hit:.4f}   "
+          f"simulator {sim['query_hit_rate']:.4f}   "
+          f"delta {sim['query_hit_rate']-vllm_hit:+.4f}"
+          f"   (metric {after.get('queries_metric')})")
+    if inflation > 1.001:
+        print("\n  WARNING: vLLM scheduled prompts more than once, so its /metrics ratio")
+        print("  counts resumed requests twice in BOTH numerator and denominator. It is")
+        print("  NOT a per-request hit rate and must not be compared to one -- that")
+        print("  mistake produced a 25 pp phantom disagreement. Either match the two")
+        print("  admission models with --max-num-seqs until this reads 1.000, or use a")
+        print("  server build that reports usage.prompt_tokens_details.cached_tokens.")
+    else:
+        print("\n  Inflation is 1.000 on both sides: every prompt was scheduled exactly")
+        print("  once, so the two hit rates are the same quantity and directly comparable.")
     print()
     print(f"  tokenisation: replay sent {actual/intended:.3f}x the intended tokens")
     print(f"  wall clock:   vLLM {wall:.0f}s, simulator predicted "

@@ -1,7 +1,8 @@
-# Validation against vLLM — the timing model holds, and one comparison was invalid
+# Validation against vLLM — timing and eviction both hold; admission does not
 
 **Date:** 2026-08-14, revised 2026-08-15 · **Data:** `results/validate/` (pressure 0.64),
-`results/validate_pressured/` (pressure 1.02), `results/validate_diagnosis/` ·
+`results/validate_pressured/` (pressure 1.02, invalid — see below),
+`results/validate_matched_admission/` (pressure 1.08), `results/validate_diagnosis/` ·
 **Harness:** `bench/validate_vs_vllm.py`, re-analysis in `bench/diagnose_validation.py`
 
 Every number in this project comes from a simulator whose timing constants were fitted
@@ -12,16 +13,18 @@ to vLLM but whose *behaviour* had never been compared to it. This closes that ga
 > conclusion was wrong. It compared two different quantities: vLLM's `/metrics` counters
 > are incremented **once per scheduling** and count tokens, so a preempted-and-resumed
 > request is counted twice in both numerator and denominator, while the simulator's
-> `token_hit_rate` counts each prompt once. The section below is the corrected analysis.
-> The retraction is kept rather than removed because the check that caught it is the
+> `token_hit_rate` counts each prompt once. The measurement has since been redone with
+> the two admission models matched, which removes the preemption and makes the counters
+> comparable again: **the eviction model agrees to 1.4 pp above pressure 1.0.** The
+> retraction is kept rather than removed because the check that caught it is the
 > reusable part.
 
 ## Method
 
 The same generated sessions drive both sides, turn by turn, with real `sleep`s for the
 pauses so vLLM's scheduler sees the same idle gaps the simulator models. The KV pool is
-read from the server's startup log (13663 blocks) and handed to the simulator, so neither
-side guesses. Prompts are built as raw **token ids**, structured to mirror the
+read from the server's startup log for each run (13663 blocks at default settings,
+12865 with `--max-num-seqs 8`) and handed to the simulator, so neither side guesses. Prompts are built as raw **token ids**, structured to mirror the
 simulator's content model exactly: one shared system prefix across all sessions, then a
 session-private tail that grows turn by turn.
 
@@ -31,22 +34,28 @@ covering the longest contexts.
 
 ## Result
 
-| pressure | metric | vLLM | simulator | difference |
-|---|---|---|---|---|
-| 0.64 | wall clock | 652 s | 639 s | **−2%** |
-| 1.02 | wall clock | 831 s | 836 s | **+1%** |
-| 0.64 | prefix-cache hit rate | 0.9010 | 0.9151 | **+1.4 pp** |
-| 1.02 | prefix-cache hit rate | *not measured* | 0.8041 | — |
+| pressure | admission | metric | vLLM | simulator | difference |
+|---|---|---|---|---|---|
+| 0.64 | default | wall clock | 652 s | 639 s | **−2%** |
+| 1.02 | default | wall clock | 831 s | 836 s | **+1%** |
+| 1.08 | matched | wall clock | 958 s | 972 s | **+1.5%** |
+| 0.64 | default | prefix-cache hit rate | 0.9010 | 0.9151 | **+1.4 pp** |
+| 1.02 | default | prefix-cache hit rate | *not measurable* | 0.8041 | — |
+| **1.08** | **matched** | **prefix-cache hit rate** | **0.7517** | **0.7382** | **−1.4 pp** |
 
-**The timing model is validated.** End-to-end makespan agrees within 2% at both
-pressures, from four fitted constants and a hand-written scheduler. Every cost and
-latency figure in this project rests on that, and it survives at both pressures —
-including the one where the cache comparison does not.
+**The timing model is validated.** End-to-end makespan agrees within 2% in all three
+runs, from four fitted constants and a hand-written scheduler. Every cost and latency
+figure in this project rests on that, and it survives everywhere tested — including the
+run where the cache comparison does not work.
 
-**The hit-rate model is validated at pressure 0.64 only.** There, vLLM scheduled every
-prompt exactly once (9,854,329 queried tokens against 9,854,329 prompt tokens sent, a
-ratio of 1.000), so its counters *are* a per-request hit rate and the comparison is
-exact. 1.4 pp is a good agreement for a model that was never fitted to it.
+**The hit-rate model is validated at both pressures where the comparison is valid.** At
+0.64 and at 1.08 vLLM scheduled every prompt exactly once (inflation 1.0000, preemptions
+0), so its counters *are* a per-request hit rate and the comparison is exact. The
+agreement is 1.4 pp in both cases and **the sign flips** — the simulator is slightly
+optimistic at 0.64 and slightly pessimistic at 1.08 — which is what a small definitional
+difference looks like, not a bias. For a model whose eviction policy was never fitted to
+anything, that is a good result, and it is the one that matters: pressure 1.08 is above
+where this project's claims live.
 
 ## Why pressure 1.02 is not a measurement
 
@@ -78,75 +87,97 @@ direction. The physically plausible end is the low one — blocks freed by preem
 cached in vLLM's free queue and a promptly resumed request should re-hit most of them —
 which would mean the simulator is optimistic, but that is an argument, not a measurement.
 
-## What *is* refuted: the admission and preemption model
+## The measurement that closes it: match the admission models
 
-One quantity in that run needs no denominator at all, and it disagrees completely:
+The ambiguity above exists only because vLLM preempted. The fix is to remove the
+preemption rather than to correct for it. vLLM 0.26 does not populate
+`usage.prompt_tokens_details.cached_tokens` on `/v1/completions` (it comes back `None`),
+so the per-request number is not available from a stock server; but capping
+`--max-num-seqs` on **both** sides makes vLLM queue instead of over-committing, which is
+exactly what the simulator's whole-prompt admission already does.
+
+At `--max-num-seqs 8` on the server and `engine.max_num_seqs=8` in the simulator, 60
+sessions at concurrency 16 against the same pool:
+
+| | vLLM | simulator |
+|---|---|---|
+| query inflation | **1.0000** | **1.0000** |
+| preemptions | **0** | **0** |
+| prefix-cache hit rate | **0.7517** | **0.7382** |
+| wall clock | 958 s | 972 s |
+
+Inflation 1.0000 on both sides is the precondition, not a nicety: it says every prompt was
+scheduled exactly once, so the two ratios are the same quantity. The eviction model agrees
+to **1.4 pp at pressure 1.08**, and the simulator is on the *pessimistic* side this time.
+Capping `max_num_seqs` also shrinks the KV pool, because more activation memory is
+reserved (13663 to 12865 blocks), which is why this run sits at 1.08 rather than 1.02; the
+pool was re-read from the server rather than carried over.
+
+This isolates a mechanism. It is **not** vLLM as deployed -- a production server would use
+its default admission and would preempt. What it establishes is narrower and sufficient:
+given the same admission behaviour, the simulator's block pool, prefix lookup and LRU
+eviction reproduce vLLM's to about a point and a half, above pressure 1.0.
+
+## What remains refuted: the admission and preemption model
+
+At default settings the two systems still differ, and one quantity in the pressure-1.02
+run needs no denominator at all:
 
 | | preemptions |
 |---|---|
 | simulator, 1122 calls at pressure 1.02 | **0** |
-| vLLM, same trace, same pool | ~69% of prompt tokens re-scheduled |
+| vLLM, same trace, same pool, default admission | 69% of prompt tokens re-scheduled |
 
 The simulator never preempted once. This follows directly from a documented
 simplification: `sim/engine.py` admits a request **only if its whole prompt fits**, so it
 can never over-commit and never has to take memory back. vLLM admits optimistically and
 grows into the space with chunked prefill, then preempts when it runs out.
 
-So the simulator runs a smaller, more conservative live footprint than vLLM does at the
-same nominal pressure. Two consequences, one reassuring and one not:
+So at default settings the simulator runs a smaller, more conservative live footprint than
+vLLM does at the same nominal pressure. Two consequences, one reassuring and one not:
 
 - **Reassuring:** makespan still agreed within 1%, so vLLM's preemptions are cheap. That
-  fits the mechanism — a preempted request's blocks go back to the free queue still
+  fits the mechanism -- a preempted request's blocks go back to the free queue still
   cached, and resumption largely re-hits them rather than recomputing.
-- **Not:** "pressure" does not mean the same thing on the two systems. A simulator run at
-  nominal pressure 1.02 is doing something a real server would only do at some lower
-  pressure, because the real server has admitted more work into the same pool.
+- **Not:** "pressure" does not mean quite the same thing on the two systems at default
+  settings. A real server admits more work into the same pool, so the mapping from
+  simulator pressure to server pressure is not the identity. Its size is unmeasured.
 
 ## What this does to the project's claims
 
-**Unaffected:** everything resting on the timing model — cost conversion, the wall-clock
-versus GPU-time billing divergence, makespan, and the arithmetic bound on what a retention
-policy can touch at long pauses. Validated at both pressures.
+**Validated:** the timing model, in all three runs (2%, 1%, 1.5% on makespan). Cost
+conversion, the wall-clock versus GPU-time billing divergence, and the arithmetic bound on
+what a retention policy can touch at long pauses all rest on this.
 
-**Unaffected:** hit rate at moderate pressure, validated to 1.4 pp.
+**Validated:** the eviction model, to 1.4 pp at pressure 0.64 and 1.4 pp at pressure 1.08,
+with the sign flipping between them. This is the one that was in doubt for a day, and it
+holds. Absolute hit rates in EXP01-EXP05 are not systematically optimistic.
 
-**Open:** absolute hit rates at pressure near and above 1.0, and therefore the position of
-EXP01/EXP02's peak-headroom point on the pressure axis. The admission difference gives the
-direction — the simulator's pressure axis is *softer* than a real server's — but not the
-size. Headroom figures should be quoted in **simulator pressure units** until this is
-closed.
+**Open, and now the only open item from this work:** the pressure axis itself. Matching
+`max_num_seqs` validated the cache under matched admission; it did not measure how a
+server's *default* admission shifts the mapping. EXP01/EXP02 headroom peaks near pressure
+0.85 and collapses by 1.6, so where that peak sits on a real server's axis is worth
+knowing. Quote headroom in **simulator pressure units**, and say so.
 
-**Probably unaffected, and worth saying why:** the policy *ranking*. All arms run inside
-the same admission model, and the mechanism that differs is policy-independent — whole-
-prompt admission and preemption are identical code for `lru`, `belady` and `predict`
-alike. That is an argument for the ranking being robust, not evidence of it.
+**Argued, not measured:** the policy *ranking*. All arms run inside the same admission
+model, and the mechanism that differs is policy-independent -- whole-prompt admission and
+preemption are identical code for `lru`, `belady` and `predict` alike. That is a reason to
+expect the ranking to be robust, not evidence that it is.
 
-## How to close it
+## How to close the remaining item
 
-The fix is one more local run, not a redesign. vLLM's OpenAI-compatible responses carry
-`usage.prompt_tokens_details.cached_tokens` — a **per-request** count, exactly the
-simulator's definition, immune to the re-query inflation. The harness now records it,
-reports it as the headline comparison, and prints a warning whenever the `/metrics`
-inflation exceeds 1.0. Re-running the pressure-1.02 case is enough to turn the row above
-from *not measured* into a number.
+Two local runs, no HPC time:
 
-The second thing worth measuring at the same time is preemption: vLLM's
-`vllm:num_preemptions_total` against the simulator's `n_preemptions`, which is now in the
-summary. That comparison needs no denominator either.
+1. Sweep `--max-num-seqs` on both sides (say 6, 8, 12, default) at fixed workload and read
+   off how the hit rate moves. That maps simulator pressure to server pressure directly,
+   without needing the per-request counter.
+2. Compare `vllm:num_preemptions_total` to the simulator's `n_preemptions` across that
+   sweep. Both are denominator-free, so the admission difference becomes a curve instead
+   of a single 0-versus-69% data point.
 
-## Candidate causes, if the corrected comparison still disagrees
-
-Ordered by how much of a gap each could plausibly explain, with the leading one now
-promoted from hypothesis to confirmed mechanism.
-
-1. **Whole-prompt admission — confirmed to differ, size unknown.** See above.
-2. **Finished-request blocks.** The simulator keeps them in an LRU pool until something
-   needs the space. If vLLM frees or deprioritises them more eagerly, it would evict the
-   very blocks an agent workload returns to.
-3. **Reserved capacity.** vLLM may hold back blocks for `max_num_batched_tokens` or for
-   CUDA-graph padding that the 13663 figure does not reflect, so its *usable* pool is
-   smaller than the number handed to the simulator.
-4. **Fragmentation.** The simulator's pool is exact; a real allocator is not.
+Giving `sim/engine.py` the opposite policy -- optimistic admission with chunked prefill and
+recompute preemption -- is the larger fix, and it should only be attempted if step 1 shows
+the mapping matters for the headroom claims.
 
 ## The methodological point worth keeping
 
@@ -164,6 +195,7 @@ under test were perfect.
    the query count to the number of prompt tokens sent** — a ratio that must be 1.000 if
    the counters mean what they appear to mean — settles it in one line, and the same
    unlimited-pool ceiling shows the reported hit count exceeding the maximum possible.
+   The redone measurement put the real disagreement at 1.4 pp, in the other direction.
 
 Both checks are cheap, both are denominator-level sanity rather than domain insight, and
 in both cases the wrong answer was more interesting than the right one, which is exactly
@@ -173,9 +205,12 @@ silently.
 
 ## What is not established here
 
-- Two pressures, one seed, one model, one pool size.
-- The hit-rate comparison at pressure 1.02 has not been made at all; only its bound is
-  known.
+- Three runs, one seed each, one model, one workload generator. The 1.4 pp agreements
+  are single measurements without intervals; nothing here says how much they would
+  move on another seed.
+- The pressure-1.08 agreement holds under *matched* admission. Under vLLM's default
+  admission the hit rate at that pressure is still not measured, and the pressure-1.02
+  attempt bounds it only to [0.238, 0.932].
 - The longest contexts (30k–50k tokens) are excluded by the context-window truncation,
   and those are exactly the contexts where eviction pressure is highest.
 - No attempt was made to change the simulator to match vLLM. The admission difference is
