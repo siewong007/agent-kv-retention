@@ -183,6 +183,8 @@ class Engine:
 
         self._arrival_seq = 0
         self._admit_seq = 0
+        self.query_tokens = 0
+        self.query_hit_tokens = 0
         self.gpu_busy_s = 0.0
         self.n_steps = 0
 
@@ -267,6 +269,16 @@ class Engine:
         req.prefill_tokens = req.prompt_tokens - req.cached_tokens
         req.prefilled_tokens = req.cached_tokens
         req.state = PREFILL
+        # vLLM's prefix_cache_queries_total / _hits_total are incremented once per
+        # SCHEDULING, not once per request, and they count tokens. A request that is
+        # preempted and resumed queries the cache again and is counted again. Mirroring
+        # that here is what makes the two hit rates comparable at all: token_hit_rate
+        # below counts each request's prompt once, which is the right number for the
+        # policy experiments but is NOT what the server reports under preemption.
+        # See docs/validation_findings.md -- confusing the two produced a 25 pp
+        # "disagreement" that was entirely an accounting difference.
+        self.query_tokens += req.prompt_tokens
+        self.query_hit_tokens += req.cached_tokens
         self._admit_seq += 1
         req.admit_seq = self._admit_seq
         if req.first_schedule_time < 0:
@@ -524,6 +536,11 @@ class Engine:
             "queue_p50": st.median(queues) if queues else 0.0,
             "queue_p95": pct(queues, 0.95),
             "n_preemptions": sum(r["n_preemptions"] for r in recs),
+            # vLLM-comparable accounting: per scheduling, not per request.
+            "query_tokens": self.query_tokens,
+            "query_hit_tokens": self.query_hit_tokens,
+            "query_hit_rate": (self.query_hit_tokens / self.query_tokens
+                               if self.query_tokens else 0.0),
             "n_evictions": self.pool.n_evictions,
             "n_protected_evictions": self.pool.n_protected_evictions,
             "pool_blocks": self.cfg.engine.kv_pool_blocks,

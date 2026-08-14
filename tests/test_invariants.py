@@ -265,6 +265,35 @@ def test_survives_heavy_preemption():
 
 
 @check
+def test_query_accounting_matches_vllms_counters():
+    """The two hit-rate definitions must coincide iff nothing was preempted.
+
+    vLLM's prefix_cache_queries_total / _hits_total are incremented once per SCHEDULING
+    and counted in tokens, so a preempted-and-resumed request is counted twice. The
+    simulator's token_hit_rate counts each request's prompt once. Comparing the two
+    across that difference is what produced a spurious 25 pp "disagreement" in the first
+    validation run (docs/validation_findings.md), so both are now reported and this
+    pins the relationship between them.
+    """
+    # A pool with room to spare, so admission never has to give anything back.
+    quiet = small(**{"policy.kind": "lru", "engine.kv_pool_blocks": 60000})
+    r = run(quiet)
+    assert r.summary["n_preemptions"] == 0, "expected a config that does not thrash"
+    assert r.summary["query_tokens"] == r.summary["prompt_tokens_total"]
+    assert abs(r.summary["query_hit_rate"] - r.summary["token_hit_rate"]) < 1e-12
+
+    thrash = Config().replace(**{
+        "workload.n_sessions": 20,
+        "arrival.concurrency": 20,
+        "engine.kv_pool_blocks": 8000,
+        "policy.kind": "lru",
+    })
+    r = run(thrash)
+    assert r.summary["n_preemptions"] > 0, "expected a config that thrashes"
+    assert r.summary["query_tokens"] > r.summary["prompt_tokens_total"],         "preemption must inflate the per-scheduling denominator, as it does in vLLM"
+
+
+@check
 def test_predict_with_perfect_input_equals_belady():
     """The predict arm fed the truth must be indistinguishable from belady."""
     cfg = small(**{"policy.kind": "belady"})

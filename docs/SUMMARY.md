@@ -7,14 +7,16 @@ that contains the config and seed that produced it.
 **Read the caveats section before quoting anything.** The engine is calibrated against
 real hardware; the workload is not.
 
-> **2026-08-02, from [validation_findings.md](validation_findings.md):** the simulator
+> **2026-08-15, from [validation_findings.md](validation_findings.md):** the simulator
 > has now been compared to vLLM end-to-end. The **timing model is validated** — makespan
-> agrees within 2% at two pressures. The **eviction model is refuted**: at pressure 1.02
-> the simulator reports a 0.804 hit rate where vLLM measures 0.550, because it loses only
-> 11.4 pp to eviction where vLLM loses 36.8. Every absolute hit rate under pressure in
-> this document is therefore optimistic, and the pressure axis is shifted. Cost and
-> latency conclusions are unaffected; headroom figures should be read in simulator
-> pressure units until the eviction model is fixed.
+> agrees within 2% at both pressures tested. The **hit-rate model is validated at
+> pressure 0.64** (0.9010 vs 0.9151, 1.4 pp). At pressure 1.02 the comparison could not
+> be made: vLLM's counters are per-scheduling and were inflated 1.694x by preemption, so
+> its ratio is not a per-request hit rate. What *is* refuted there is the admission
+> model — the simulator preempted 0 times over 1122 calls where vLLM re-scheduled 69% of
+> prompt tokens, because it admits only whole prompts. Its pressure axis is therefore
+> softer than a real server's by an unmeasured amount, so headroom figures should be read
+> in simulator pressure units. Cost and latency conclusions are unaffected.
 
 ---
 
@@ -143,10 +145,11 @@ Ordered by how much damage each would do to the report.
 4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080. Nothing
    here has been checked against a second model or a headless server.
 5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, and it
-   half failed.** Timing agrees within 2%; the eviction model under-evicts by 3.2x at
-   pressure 1.02. See [validation_findings.md](validation_findings.md). This is now the
-   *second* most damaging open item, above everything below it — whether the policy
-   ranking survives the shift is untested.
+   half held.** Timing agrees within 2% at both pressures; hit rate agrees within 1.4 pp
+   at pressure 0.64. Above pressure 1.0 the hit rate is **still unmeasured**, and the
+   admission model is known to differ: the simulator never preempts, vLLM constantly
+   does. See [validation_findings.md](validation_findings.md), which also lists the one
+   local run that would close it.
 6. **`predict_terminal`'s neutrality at weak signal is unresolved, not proved.** Showing
    an arm is neutral needs far more seeds than showing it wins; those intervals are
    30–60 pp wide.

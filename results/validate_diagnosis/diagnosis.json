@@ -1,0 +1,28 @@
+{
+  "0.64": {
+    "prompt_tokens": 9854329,
+    "vllm_query_inflation": 1.0,
+    "vllm_hit_rate": 0.9010277615046138,
+    "sim_token_hit_rate": 0.9150593612208401,
+    "sim_query_hit_rate": 0.9150593612208401,
+    "sim_query_inflation": 1.0,
+    "sim_ceiling_token_hit_rate": 0.9150593612208401,
+    "sim_n_preemptions": 0,
+    "sim_n_evictions": 46686,
+    "max_hits_under_single_query_accounting": 9017296.0,
+    "vllm_hits": 8879024.0
+  },
+  "1.02": {
+    "prompt_tokens": 15360566,
+    "vllm_query_inflation": 1.6935104474665843,
+    "vllm_hit_rate": 0.5501214975628409,
+    "sim_token_hit_rate": 0.8040943282949339,
+    "sim_query_hit_rate": 0.8040943282949339,
+    "sim_query_inflation": 1.0,
+    "sim_ceiling_token_hit_rate": 0.9178745106137365,
+    "sim_n_preemptions": 0,
+    "sim_n_evictions": 186697,
+    "max_hits_under_single_query_accounting": 14099072.0,
+    "vllm_hits": 14310464.0
+  }
+}

@@ -31,6 +31,15 @@ What makes the comparison fair, and what does not:
     The cost is that this validation does not cover the longest contexts, which is
     stated in the output rather than buried.
 
+  * and the two sides are compared on the SAME accounting. vLLM's /metrics prefix-cache
+    counters are incremented once per SCHEDULING and counted in tokens, so a preempted
+    request that resumes is counted twice in both numerator and denominator. The
+    simulator's token_hit_rate counts each prompt once. At pressure 1.02 vLLM's queries
+    came to 1.694x the prompt tokens sent, and comparing its ratio to the simulator's
+    produced a 25 pp "disagreement" that was almost entirely this. The headline
+    comparison is now usage.prompt_tokens_details.cached_tokens, which is per request;
+    the /metrics ratio is still reported, with a warning when it is inflated.
+
 A disagreement here is a result, not a bug to be tuned out. If the hit rates differ,
 that difference bounds how much any simulated headroom figure can be trusted, and it
 belongs in the thesis rather than in a fix.
@@ -128,13 +137,20 @@ class Replayer:
             t0 = time.perf_counter()
             resp = _post(self.base_url, "/v1/completions", payload)
             elapsed = time.perf_counter() - t0
+            # Per-request cached tokens, if the server reports them. This is the only
+            # quantity directly comparable to the simulator's token_hit_rate: the
+            # /metrics counters are per SCHEDULING, so under preemption they count a
+            # resumed request twice and their ratio is not a per-request hit rate.
+            usage = resp["usage"]
+            details = usage.get("prompt_tokens_details") or {}
             with self.lock:
                 self.records.append({
                     "session_id": session.session_id,
                     "turn": turn.index,
                     "intended_prompt_tokens": turn.prompt_tokens,
-                    "actual_prompt_tokens": resp["usage"]["prompt_tokens"],
-                    "output_tokens": resp["usage"]["completion_tokens"],
+                    "actual_prompt_tokens": usage["prompt_tokens"],
+                    "cached_prompt_tokens": details.get("cached_tokens"),
+                    "output_tokens": usage["completion_tokens"],
                     "elapsed_s": elapsed,
                 })
             if turn.pause_after_s > 0:
@@ -227,6 +243,15 @@ def main(argv=None) -> int:
     intended = sum(r["intended_prompt_tokens"] for r in replayer.records)
     actual = sum(r["actual_prompt_tokens"] for r in replayer.records)
 
+    # Is the /metrics ratio a per-request hit rate at all? It is only when every prompt
+    # was scheduled exactly once. Anything above 1.0 means requests were preempted and
+    # re-queried, and both counters are inflated by an unknown amount.
+    inflation = q / actual if actual else float("nan")
+    per_request = [r["cached_prompt_tokens"] for r in replayer.records]
+    have_per_request = all(x is not None for x in per_request)
+    vllm_per_request_hit = (sum(per_request) / actual
+                            if have_per_request and actual else None)
+
     payload = {
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "server": info,
@@ -239,6 +264,8 @@ def main(argv=None) -> int:
             "prefix_cache_queries": q,
             "prefix_cache_hits": h,
             "hit_rate": vllm_hit,
+            "query_inflation": inflation,
+            "per_request_hit_rate": vllm_per_request_hit,
             "metric_used": after.get("queries_metric"),
             "wall_s": wall,
             "n_calls": len(replayer.records),
@@ -246,6 +273,9 @@ def main(argv=None) -> int:
         },
         "simulator": {
             "hit_rate": sim["token_hit_rate"],
+            "query_hit_rate": sim["query_hit_rate"],
+            "query_inflation": sim["query_tokens"] / sim["prompt_tokens_total"],
+            "n_preemptions": sim["n_preemptions"],
             "makespan_s": sim["makespan_s"],
             "n_calls": sim["n_calls"],
             "prefill_tokens_computed": sim["prefill_tokens_computed"],
@@ -273,10 +303,9 @@ def main(argv=None) -> int:
     print(f"  wall clock:   vLLM {wall:.0f}s, simulator predicted "
           f"{sim['makespan_s']:.0f}s ({sim['makespan_s']/wall:.2f}x)")
     print()
-    print("  vLLM counts hits in BLOCKS queried by the scheduler; the simulator counts")
-    print("  them in prompt TOKENS. The two agree only when block-aligned reuse")
-    print("  dominates, which is the regime here, but the definitions are not identical")
-    print("  and a few points of difference are expected before any modelling error.")
+    print("  vLLM's /metrics counters are in TOKENS, incremented once per scheduling.")
+    print("  The simulator reports both accountings so the comparison can be made on")
+    print("  whichever one the server actually produced.")
     print(f"\nwrote {path}")
     return 0
 
