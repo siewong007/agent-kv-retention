@@ -7,17 +7,17 @@ that contains the config and seed that produced it.
 **Read the caveats section before quoting anything.** The engine is calibrated against
 real hardware; the workload is not.
 
-> **2026-08-15, from [validation_findings.md](validation_findings.md):** the simulator
-> has now been compared to vLLM end-to-end, three runs. The **timing model is validated**
-> — makespan agrees within 2% every time. The **eviction model is validated** — hit rate
-> agrees to 1.4 pp at pressure 0.64 and to 1.4 pp at pressure 1.08, with the sign
-> flipping, so absolute hit rates here are not systematically optimistic. Getting the
-> second number required capping `max_num_seqs` on both sides: at default admission vLLM
-> preempts, its `/metrics` counters are per-scheduling and were inflated 1.694x, and the
-> ratio is then not a hit rate at all. That admission difference is the one thing still
-> refuted — the simulator preempted 0 times over 1122 calls where vLLM re-scheduled 69%
-> of prompt tokens — so the mapping from simulator pressure to server pressure is not the
-> identity and headroom should be quoted in simulator pressure units.
+> **2026-08-16, from [validation_findings.md](validation_findings.md):** the simulator
+> has been compared to vLLM end-to-end across seven runs, and the result is a **range of
+> validity rather than a verdict**. Up to about pressure 1.1 it tracks the real server:
+> makespan within 2% at pressures 0.64, 1.02 and 1.08, hit rate within 1.4 pp at 0.64 and
+> 1.08 with the sign flipping. At pressure 1.27, on comparisons that are equally exact,
+> it is **4.8–10.9 pp pessimistic on hit rate and 11–19% slow on makespan**. Peak headroom
+> (pressure 0.84) and every per-experiment run sit inside the validated range; EXP02's
+> high-pressure tail does not, and the collapse it shows is probably exaggerated. Two
+> earlier readings of these runs were retracted along the way — a 3.2x eviction claim that
+> was an accounting artefact, and a preemption claim that was an inference from it — both
+> documented in place.
 
 ---
 
@@ -145,12 +145,12 @@ Ordered by how much damage each would do to the report.
    the fitted interval-shrinkage exponent is 0.10 against an ideal 0.5.
 4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080. Nothing
    here has been checked against a second model or a headless server.
-5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done.** Timing
-   within 2%, hit rate within 1.4 pp at pressure 0.64 and 1.08. What is still open is
-   narrower: the **admission** model differs (the simulator never preempts, vLLM does),
-   so simulator pressure and server pressure are not the same axis. See
-   [validation_findings.md](validation_findings.md) for the two local runs that would
-   map one onto the other.
+5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, with a
+   boundary.** It tracks vLLM to about pressure 1.1 (2% on makespan, 1.4 pp on hit rate)
+   and comes apart above it (11–19%, 4.8–10.9 pp at pressure 1.27). Everything quoted in
+   this document is from inside the validated range except EXP02's high-pressure tail.
+   The boundary is located only to somewhere in (1.08, 1.27), and every point on both
+   sides of it is a single seed. See [validation_findings.md](validation_findings.md).
 6. **`predict_terminal`'s neutrality at weak signal is unresolved, not proved.** Showing
    an arm is neutral needs far more seeds than showing it wins; those intervals are
    30–60 pp wide.

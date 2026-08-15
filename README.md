@@ -34,7 +34,7 @@ are kept in `results/exp0*` and should not be quoted.
 | [EXP04](docs/exp04_findings.md) | how much headroom does a real predictor capture? | 49.6% [20.9, 67.2] at the strongest signal tested, and indistinguishable from LRU at the other three. Ranking by predicted *pause length* is catastrophic at any accuracy |
 | [EXP05](docs/exp05_findings.md) | where should the classifier's decision threshold sit? | it *is* the policy. False positives are the whole cost; at weak signal no threshold beats LRU, at strong signal five of six do |
 | [calibration](docs/calibration.md) | were the derived constants any good? | no — all wrong by 20–58%, and one whole term was missing |
-| [validation](docs/validation_findings.md) | does the simulator behave like vLLM? | timing yes (2% on makespan); cache yes (**1.4 pp** at pressure 0.64 and 1.08, sign flipping); admission **no** — the simulator never preempts, vLLM re-schedules 69% of tokens |
+| [validation](docs/validation_findings.md) | does the simulator behave like vLLM? | **up to about pressure 1.1, yes** — 2% on makespan, 1.4 pp on hit rate. At 1.27 it is 4.8–10.9 pp pessimistic and 11–19% slow |
 
 ## Layout
 
@@ -102,6 +102,13 @@ To recalibrate against real hardware (needs the GPU; releases it when done):
 bash bench/serve_calib.sh && python bench/check_env.py && python bench/read_server_config.py ~/vllm_calib_server.log && python -m bench.fit_timing && python -m bench.fit_batch
 ```
 
+To re-validate the simulator's behaviour against vLLM (needs the GPU; ~90 min, releases it
+when done). The sweep pins the KV pool so admission width is the only thing varying:
+
+```bash
+bash bench/sweep_admission.sh && python -m bench.analyze_admission_sweep
+```
+
 ## Policy arms
 
 Two mechanisms, so that "better information" and "better mechanism" never get confused
@@ -149,12 +156,12 @@ Seven rules, all load-bearing:
    beat that signal, and a noisy predictor does not — see [EXP04](docs/exp04_findings.md).
    The corollary is that a predictor's *decision threshold* is not a hyperparameter, it
    is the policy: see [EXP05](docs/exp05_findings.md).
-6. **Pressure is a simulator unit, not a server unit.** Timing (2%) and hit rate (1.4 pp
-   at pressure 0.64 and 1.08) are both validated against real vLLM, so the numbers here
-   are sound *at a given simulator pressure*. But the simulator admits a request only if
-   its whole prompt fits and therefore never preempts, while vLLM admits optimistically
-   and re-scheduled 69% of prompts at nominal pressure 1.02. The mapping between the two
-   pressure axes is unmeasured. See [validation](docs/validation_findings.md).
+6. **The simulator is validated to about pressure 1.1, not beyond.** Against real vLLM it
+   holds makespan to 2% and hit rate to 1.4 pp at pressures 0.64 and 1.08; at 1.27 it runs
+   4.8–10.9 pp pessimistic on hit rate and 11–19% slow. Peak headroom (pressure 0.84) is
+   inside that range. EXP02's high-pressure tail is not, and the collapse it shows is
+   probably exaggerated — quote it as a property of the simulator. See
+   [validation](docs/validation_findings.md).
 7. **Engine constants are measured; workload constants are not.** See
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
