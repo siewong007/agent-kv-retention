@@ -1,0 +1,96 @@
+{
+  "created_utc": "2026-08-15T18:42:29Z",
+  "point": "sweep_1.27",
+  "point_config": {
+    "sessions": 60,
+    "concurrency": 16,
+    "pool": 10922,
+    "max_num_seqs": 8
+  },
+  "max_prompt_tokens": 30000,
+  "rows": [
+    {
+      "seed": 0,
+      "hit_rate": 0.5192621157319333,
+      "makespan_s": 1334.7506810605928,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2723532055694877,
+      "n_calls": 1122
+    },
+    {
+      "seed": 1,
+      "hit_rate": 0.6323822041067739,
+      "makespan_s": 1152.0768114512807,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2631066660603743,
+      "n_calls": 1043
+    },
+    {
+      "seed": 2,
+      "hit_rate": 0.6307089861160773,
+      "makespan_s": 1066.9533201606225,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2371684656931776,
+      "n_calls": 1017
+    },
+    {
+      "seed": 3,
+      "hit_rate": 0.4377628655354271,
+      "makespan_s": 1469.9923987582451,
+      "n_preemptions": 0,
+      "pressure_offered": 1.3070916402476649,
+      "n_calls": 1093
+    },
+    {
+      "seed": 4,
+      "hit_rate": 0.5283163403979743,
+      "makespan_s": 1261.6931911557106,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2160054216217975,
+      "n_calls": 1070
+    },
+    {
+      "seed": 5,
+      "hit_rate": 0.6186081710202447,
+      "makespan_s": 1110.6886345821024,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2081355958490505,
+      "n_calls": 1039
+    },
+    {
+      "seed": 6,
+      "hit_rate": 0.7323542657577802,
+      "makespan_s": 845.3469932735251,
+      "n_preemptions": 0,
+      "pressure_offered": 1.1322208203446007,
+      "n_calls": 1019
+    },
+    {
+      "seed": 7,
+      "hit_rate": 0.4357518293440909,
+      "makespan_s": 1251.1042757323194,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2429153691376185,
+      "n_calls": 1011
+    },
+    {
+      "seed": 8,
+      "hit_rate": 0.4380903113955134,
+      "makespan_s": 1366.4114770964143,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2940369222091024,
+      "n_calls": 1044
+    },
+    {
+      "seed": 9,
+      "hit_rate": 0.6246811587262792,
+      "makespan_s": 1124.6861069580984,
+      "n_preemptions": 0,
+      "pressure_offered": 1.2615566567031018,
+      "n_calls": 1064
+    }
+  ],
+  "hit_rate_mean": 0.5597918248132094,
+  "hit_rate_sd": 0.10299298809938391,
+  "hit_rate_spread": 0.2966024364136893
+}
