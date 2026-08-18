@@ -19,12 +19,19 @@ Run inside WSL:
 
 from __future__ import annotations
 
+import argparse
 import json
 import platform
+import socket
 import subprocess
 import sys
 
-REQUIRED_CAPABILITY = (12, 0)
+# The local box is Blackwell (sm_120) and the project's written rule names it. The HPC
+# nodes are Turing (7.5) or Ada (8.9), so this cannot be a hardcoded constant without the
+# script failing on the machine it exists to check. Pass --expect-capability there.
+# What must NEVER be silently accepted is a capability that differs from the one expected,
+# because that is exactly how numbers from two platforms end up in one figure.
+DEFAULT_CAPABILITY = (12, 0)
 MIN_TORCH = (2, 7, 0)
 MIN_CUDA = (12, 8)
 # What the project's written rule names. Not a failure if the build is newer, but it
@@ -41,8 +48,34 @@ def _version_tuple(text: str) -> tuple[int, ...]:
     return tuple(parts)
 
 
-def main() -> int:
-    report: dict = {"platform": platform.platform(), "python": sys.version.split()[0]}
+def _parse_capability(text: str) -> tuple[int, int]:
+    major, _, minor = text.partition(".")
+    return (int(major), int(minor))
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--expect-capability", default=None,
+                    help="compute capability this run is supposed to be on, e.g. 7.5 for "
+                         "a Turing HPC node, 8.9 for Ada, 12.0 for the local Blackwell "
+                         "box (the default). A mismatch is a hard failure, because the "
+                         "whole point is that numbers from two platforms must never be "
+                         "mixed. Pass 'any' to record the capability without asserting it")
+    ap.add_argument("--out", default=None,
+                    help="also write the report as JSON here, so the platform a set of "
+                         "results came from is recorded next to the results themselves")
+    args = ap.parse_args(argv)
+
+    if args.expect_capability in (None, ""):
+        expected: tuple[int, int] | None = DEFAULT_CAPABILITY
+    elif args.expect_capability.lower() == "any":
+        expected = None
+    else:
+        expected = _parse_capability(args.expect_capability)
+
+    report: dict = {"platform": platform.platform(), "python": sys.version.split()[0],
+                    "hostname": socket.gethostname(),
+                    "expected_capability": list(expected) if expected else "any"}
     problems: list[str] = []
 
     try:
@@ -78,8 +111,10 @@ def main() -> int:
         report["device"] = torch.cuda.get_device_name(0)
         props = torch.cuda.get_device_properties(0)
         report["total_memory_gb"] = round(props.total_memory / 2**30, 2)
-        if cap != REQUIRED_CAPABILITY:
-            problems.append(f"compute capability {cap}, expected {REQUIRED_CAPABILITY}")
+        if expected is not None and cap != expected:
+            problems.append(f"compute capability {cap}, expected {tuple(expected)}. "
+                            f"Either this is the wrong node, or --expect-capability is "
+                            f"wrong; do not proceed until it is one of those two")
 
         # A capability number proves nothing on its own -- the wheel may simply lack
         # sm_120 kernels and fall back or crash. Force an actual matmul.
@@ -110,6 +145,12 @@ def main() -> int:
         report["nvidia_smi"] = out.stdout.strip() or out.stderr.strip()
     except (OSError, subprocess.SubprocessError) as exc:
         report["nvidia_smi"] = f"unavailable: {exc}"
+
+    if args.out:
+        import os
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+        with open(args.out, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2)
 
     print(json.dumps(report, indent=2))
     if "cuda_build_note" in report:

@@ -47,6 +47,7 @@ sim/          the simulator. stdlib only, no GPU, deterministic under a seed
   run.py        single-run CLI
 experiments/  sweeps that answer one question each, plus their figures
 bench/        GPU-side calibration: env check, vLLM launch, timing and batch fits
+hpc/          the batch job that repeats calibration + validation on an HPC node
 tests/        invariants the simulator must hold for its numbers to mean anything
 docs/         findings, and the calibration ledger of measured vs invented constants
 results/      run outputs, each with full config + seed + environment
@@ -100,6 +101,14 @@ To recalibrate against real hardware (needs the GPU; releases it when done):
 
 ```bash
 bash bench/serve_calib.sh && python bench/check_env.py && python bench/read_server_config.py ~/vllm_calib_server.log && python -m bench.fit_timing && python -m bench.fit_batch
+```
+
+To repeat calibration and validation on an HPC node — needed only if the thesis reports
+HPC numbers rather than local ones, since the two must never share a figure. ~2.5 h,
+about RM 8 on a T4; see [hpc/README.md](hpc/README.md) for the four values to fill in:
+
+```bash
+sbatch --export=ALL,PROJECT=$HOME/agent-kv-retention,VENV=$HOME/venv-vllm,EXPECT_CAPABILITY=7.5,RM_PER_HOUR=3.06 hpc/calibrate.sbatch
 ```
 
 To re-validate the simulator's behaviour against vLLM (needs the GPU; ~90 min, releases it
