@@ -75,14 +75,34 @@ Everything lands under `results/hpc/` so that a stray path cannot mix the two ro
 
 ## Afterwards — deliberately not automatic
 
-The constants do not take effect by existing.
+The constants do not take effect by existing. Two scripts do the rest, neither of which
+touches a GPU:
 
-1. Diff `results/hpc/calib/` against the constants in `sim/config.py`.
-2. If adopting them, edit `sim/config.py` **in its own commit that says so**, then re-run
-   all five experiments (CPU, no GPU time).
-3. Never plot the two rounds together.
+```bash
+python -m hpc.adopt_constants --results results/hpc
+```
 
-`manifest.json` carries `adopted_into_sim_config: false`, hardcoded, so that a
+Prints the platform the fits came from and a constant-by-constant diff against
+`sim/config.py`, and changes nothing. If the largest change is under about 1%, the two
+platforms agree on timing and **not** adopting is the better move — it keeps every
+existing result quotable. `kv_pool_blocks` is shown but never adopted automatically,
+because the experiments sweep the pool as a design parameter rather than inheriting one
+server's.
+
+```bash
+python -m hpc.adopt_constants --results results/hpc --apply
+bash hpc/rerun_experiments.sh
+```
+
+`--apply` edits the five constant lines and stamps the platform above them. It **refuses
+on a dirty tree**: the point of adopting in its own commit is that the platform switch is
+attributable to one change. `rerun_experiments.sh` then re-runs all five experiments plus
+the seed-sufficiency checks into `results/hpc_round/`, leaving the old directories alone —
+those are the only record of how the numbers moved between platforms.
+
+Then, by hand: update the findings docs (every number in them is from the previous round),
+commit the config edit and the new results together, and never plot the two rounds in one
+figure. `manifest.json` carries `adopted_into_sim_config: false`, hardcoded, so a
 half-finished adoption is visible rather than silent.
 
 ## Why validation is in this round and not left for later
