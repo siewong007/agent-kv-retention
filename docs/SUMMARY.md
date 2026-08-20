@@ -7,17 +7,19 @@ that contains the config and seed that produced it.
 **Read the caveats section before quoting anything.** The engine is calibrated against
 real hardware; the workload is not.
 
-> **2026-08-16, from [validation_findings.md](validation_findings.md):** the simulator
-> has been compared to vLLM end-to-end across seven runs, and the result is a **range of
-> validity rather than a verdict**. Up to about pressure 1.1 it tracks the real server:
-> makespan within 2% at pressures 0.64, 1.02 and 1.08, hit rate within 1.4 pp at 0.64 and
-> 1.08 with the sign flipping. At pressure 1.27, on comparisons that are equally exact,
-> it is **4.8–10.9 pp pessimistic on hit rate and 11–19% slow on makespan**. Peak headroom
-> (pressure 0.84) and every per-experiment run sit inside the validated range; EXP02's
-> high-pressure tail does not, and the collapse it shows is probably exaggerated. Two
-> earlier readings of these runs were retracted along the way — a 3.2x eviction claim that
-> was an accounting artefact, and a preemption claim that was an inference from it — both
-> documented in place.
+> **2026-08-19, from [validation_findings.md](validation_findings.md):** the simulator has
+> been compared to vLLM end-to-end across thirteen runs, and the result is a **range of
+> validity**. Up to about pressure 1.1 it tracks the real server: makespan within 2% at
+> pressures 0.64, 1.02 and 1.08, hit rate within 1.4 pp at 0.64 and 1.08 — though each of
+> those is a single seed. At pressure 1.27, over paired seeds, it is **4.1 pp [2.1, 5.3]
+> pessimistic on hit rate at cap 8 and 6.0 pp [2.5, 9.4] at cap 6**, and 7–9% slow. Both
+> intervals exclude zero, so the high-pressure disagreement is the one established result
+> of this work. Peak headroom (pressure 0.84) and every per-experiment run sit inside the
+> validated range; EXP02's high-pressure tail does not, and the collapse it shows is
+> probably exaggerated. **Three readings of these runs were retracted along the way** — a
+> 3.2x eviction claim that was an accounting artefact, a preemption claim inferred from
+> it, and an admission-width effect that did not survive going from one seed to four. All
+> three are documented in place.
 
 ---
 
@@ -152,10 +154,13 @@ Ordered by how much damage each would do to the report.
    the constants as belonging to this setup rather than to the card.
 5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, with a
    boundary.** It tracks vLLM to about pressure 1.1 (2% on makespan, 1.4 pp on hit rate)
-   and comes apart above it (11–19%, 4.8–10.9 pp at pressure 1.27). Everything quoted in
-   this document is from inside the validated range except EXP02's high-pressure tail.
-   The boundary is located only to somewhere in (1.08, 1.27), and every point on both
-   sides of it is a single seed. See [validation_findings.md](validation_findings.md).
+   and comes apart above it: at 1.27 it is 4.1 pp [2.1, 5.3] pessimistic and 7–9% slow.
+   Everything quoted in this document is from inside the validated range except EXP02's
+   high-pressure tail. Two caveats on that: the boundary is located only to somewhere in
+   (1.08, 1.27), and **the two agreements the validation rests on are single seeds** while
+   only the disagreement has been repeated. Whether the degradation is a real change in
+   the model or one small effective-pressure offset (~+0.05) read off a 17x steeper part
+   of the curve is not decided. See [validation_findings.md](validation_findings.md).
 6. **`predict_terminal`'s neutrality at weak signal is unresolved, not proved.** Showing
    an arm is neutral needs far more seeds than showing it wins; those intervals are
    30–60 pp wide.

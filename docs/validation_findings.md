@@ -1,9 +1,10 @@
 # Validation against vLLM — validated to about pressure 1.1, not beyond
 
-**Date:** 2026-08-14, revised 2026-08-16 · **Data:** `results/validate/` (pressure 0.64),
+**Date:** 2026-08-14, revised 2026-08-19 · **Data:** `results/validate/` (pressure 0.64),
 `results/validate_pressured/` (pressure 1.02, invalid — see below),
 `results/validate_matched_admission/` (pressure 1.08),
 `results/sweep_admission/` (pressure 1.27, four admission widths),
+`results/seeds_1p27/` (pressure 1.27, paired seeds at two widths),
 `results/validate_diagnosis/` · **Harness:** `bench/validate_vs_vllm.py`,
 `bench/sweep_admission.sh`, re-analysis in `bench/diagnose_validation.py` and
 `bench/analyze_admission_sweep.py`
@@ -30,6 +31,14 @@ to vLLM but whose *behaviour* had never been compared to it. This closes that ga
 > preempt, **the simulator preempts more, not less** (10 vs 3, 19 vs 4). The inflation
 > counts scheduling *attempts*, not preemptions. The sweep also found the real limit
 > of the validation, which is neither of those things: see the last section.
+>
+> **Third correction, 2026-08-19.** The sweep was one seed per point, and one of the
+> conclusions drawn from it does not survive four. It reported gaps of 4.8 pp and
+> 10.9 pp at two admission widths at the SAME pressure, and used that 2.3x difference
+> to rule out a uniform effective-pressure offset as the explanation. Over paired
+> seeds the width effect is **−1.2 pp, 95% [−6.1, +1.4]** — it spans zero. The 2.3x
+> was seed noise and the dull explanation is back in contention. What the seeds DO
+> establish is the gap itself, which was previously only measured: see below.
 
 ## Method
 
@@ -54,22 +63,27 @@ covering the longest contexts.
 | 0.64 | default | prefix-cache hit rate | 0.9010 | 0.9151 | **+1.4 pp** |
 | 1.02 | default | prefix-cache hit rate | *not measurable* | 0.8041 | — |
 | **1.08** | **matched** | **prefix-cache hit rate** | **0.7517** | **0.7382** | **−1.4 pp** |
-| 1.27 | matched, cap 6 | wall clock | 1258 s | 1493 s | **+19%** |
-| 1.27 | matched, cap 8 | wall clock | 1206 s | 1335 s | **+11%** |
-| **1.27** | **matched, cap 6** | **prefix-cache hit rate** | **0.5733** | **0.4644** | **−10.9 pp** |
-| **1.27** | **matched, cap 8** | **prefix-cache hit rate** | **0.5668** | **0.5193** | **−4.8 pp** |
+| ~1.27 | matched, cap 6 | wall clock | — | — | **+8.8%** (4 seeds) |
+| ~1.27 | matched, cap 8 | wall clock | — | — | **+6.7%** (3 seeds) |
+| **~1.27** | **matched, cap 6** | **prefix-cache hit rate** | — | — | **−6.0 pp, 95% [−9.4, −2.5]** |
+| **~1.27** | **matched, cap 8** | **prefix-cache hit rate** | — | — | **−4.1 pp, 95% [−5.3, −2.1]** |
 
 **The timing model is validated up to about pressure 1.1.** Makespan agrees within 2%
 at 0.64, 1.02 and 1.08, from four fitted constants and a hand-written scheduler. At
-1.27 it does not: the simulator is 11–19% slow. Cost and latency figures inherit that
-boundary.
+1.27 it does not: the simulator runs 7–9% slow, averaged over paired seeds. (The
+single-seed figures were 11% and 19%; seed 0 was the extreme one.) Cost and latency
+figures inherit that boundary.
 
 **The hit-rate model is validated on the same range and no further.** At 0.64 and at
 1.08 vLLM scheduled every prompt exactly once (inflation 1.0000, preemptions 0), so its
 counters *are* a per-request hit rate and the comparison is exact: 1.4 pp both times,
 with the sign flipping, which is what a small definitional difference looks like rather
-than a bias. At pressure 1.27, on comparisons that are equally exact — inflation 1.000
-and zero preemptions on both sides — the simulator is **4.8 to 10.9 pp pessimistic**.
+than a bias. Both of those are single seeds.
+
+At pressure 1.27, over paired seeds on comparisons that are equally exact, the
+simulator is **4.1 pp [2.1, 5.3] pessimistic at cap 8 and 6.0 pp [2.5, 9.4] at cap 6**.
+Both intervals exclude zero, so unlike everything else in this document the
+high-pressure disagreement is now established rather than merely observed.
 
 The agreement therefore does not hold everywhere; it holds up to roughly pressure 1.1
 and degrades sharply above it. **EXP01/EXP02's peak headroom sits at pressure 0.84,
@@ -202,6 +216,61 @@ chunked prefill does, and it serialises admission while it waits for that slice.
 rate and longer makespan follow from the same mechanism. This is an explanation that fits,
 not one that has been tested.
 
+## The paired seeds, and the claim they withdrew
+
+`bench/seeds_at_pressure.sh` repeats the pressure-1.27 comparison on seeds 1–3 at both
+admission widths, under conditions held identical to the sweep so its seed 0 is a fourth
+data point rather than a near-miss: the same pinned pool (10922 blocks), the same 60
+sessions at concurrency 16, `max_num_seqs` passed to both sides. The server is restarted
+between seeds, so it never begins warm against a simulator that begins cold.
+
+| cap | seed | vLLM | simulator | gap | makespan sim/vLLM |
+|---|---|---|---|---|---|
+| 6 | 0 | 0.5733 | 0.4644 | −10.9 pp | 1.187 |
+| 6 | 1 | 0.6730 | 0.6336 | −4.0 pp | 1.078 |
+| 6 | 2 | 0.6250 | 0.6147 | −1.0 pp | 1.006 |
+| 6 | 3 | 0.4781 | 0.3983 | −8.0 pp | 1.082 |
+| 8 | 0 | 0.5668 | 0.5193 | −4.8 pp | 1.107 |
+| 8 | 1 | 0.6857 | 0.6324 | −5.3 pp | 1.075 |
+| 8 | 2 | 0.6515 | 0.6307 | −2.1 pp | 1.019 |
+| 8 | 3 | *dropped* | | | |
+
+Seed 3 at cap 8 is excluded because vLLM's query inflation was 1.281 there: it preempted,
+its counters stopped being a per-request hit rate, and averaging it in would reproduce the
+25 pp phantom this document already retracted once. It is dropped with its reason rather
+than silently.
+
+**What the seeds establish.** The gap is real:
+
+| | gap | 95% interval | n |
+|---|---|---|---|
+| cap 6 | **−6.0 pp** | [−9.4, −2.5] | 4 |
+| cap 8 | **−4.1 pp** | [−5.3, −2.1] | 3 |
+
+Both intervals exclude zero. The simulator is genuinely pessimistic about cache retention
+at pressure 1.27, by roughly four to six points, and roughly 7–9% slow on makespan. That
+is the first disagreement in this document that has an interval attached to it.
+
+**What the seeds withdrew.** The previous section used the *difference between the two
+widths* — 4.8 pp against 10.9 pp at identical pressure, a 2.3x ratio — to rule out a
+uniform effective-pressure offset as the explanation, on the grounds that one offset
+cannot produce two different gaps at one pressure. Paired on the three shared seeds, that
+width effect is **−1.2 pp, 95% [−6.1, +1.4]**. It spans zero. The 2.3x was one seed's
+noise; seed 0 happened to be the extreme member of the cap-6 group, whose other seeds gave
+−4.0, −1.0 and −8.0 pp.
+
+So the dull explanation is back in contention. Dividing each gap by the local slope
+(`bench/pressure_sensitivity.py`) gives implied offsets of **+0.041** at cap 8 and
+**+0.060** at cap 6, which agree to within 0.02 of pressure. On the multi-seed evidence,
+the simulator behaves like a server at slightly higher pressure than its nominal one, by
+about +0.05, and the "breakdown above 1.1" may be that same small error read off a much
+steeper part of the curve — the slope is 17x larger at 1.08 than at 0.64.
+
+That is not confirmed. It is no longer excluded, which is a weaker and more accurate thing
+to say. The two lower-pressure points that would test it across the curve are single seeds,
+and at pressure 0.64 the slope is −0.061, small enough that dividing by it turns any noise
+in one run into a meaningless offset.
+
 ## What this does to the project's claims
 
 **Validated below about pressure 1.1:** timing (2% on makespan at 0.64, 1.02 and 1.08)
@@ -212,12 +281,12 @@ can touch at long pauses all rest on the timing model and inherit this range.
 **EXP01/EXP02's headline sits inside it.** Peak headroom is at pressure 0.84, and the
 per-experiment runs are at or below that. Those numbers are backed by measurement.
 
-**Not validated above it.** At pressure 1.27 the simulator is 4.8-10.9 pp pessimistic on
-hit rate and 11-19% slow on makespan. EXP02's high-pressure tail -- the collapse of
-headroom by pressure 1.6 -- is in that region. It should be described as a property of the
-simulator, not a prediction about a server, and the *shape* of the collapse is the part to
-distrust: the simulator holding less cache than vLLM under pressure would exaggerate
-exactly that collapse.
+**Not validated above it, and now quantified.** At pressure 1.27 the simulator is
+4.1 pp [2.1, 5.3] pessimistic at cap 8 and 6.0 pp [2.5, 9.4] at cap 6, and 7-9% slow on
+makespan. EXP02's high-pressure tail -- the collapse of headroom by pressure 1.6 -- is in
+that region. It should be described as a property of the simulator, not a prediction about
+a server, and the *shape* of the collapse is the part to distrust: a simulator holding
+less cache than vLLM under pressure exaggerates exactly that collapse.
 
 **Argued, not measured:** the policy *ranking*. All arms run inside the same admission
 model, and the mechanism that differs is policy-independent -- whole-prompt admission and
@@ -226,50 +295,64 @@ expect the ranking to be robust, not evidence that it is.
 
 ## How to close the remaining item
 
-The sweep above was step 1, and it turned the open question into a narrower one: what
-happens between pressure 1.08 and 1.27, and is the boundary sharp or gradual? Two local
-runs, no HPC time:
+Step 2 below is done and is what produced the section above. What is left is step 1, now
+sharper for having a real effect size to test against:
 
-1. Fill in pressure 1.15 and 1.20 at `max_num_seqs=8`, by pinning `--kv-cache-memory` to
-   the pool each one needs. Four points on that axis would say whether the agreement
-   decays smoothly or falls off a cliff, and a cliff would point at a specific mechanism.
-2. Repeat the pressure-1.27, `max_num_seqs=8` point on two or three more seeds. Every
-   number in this document is a single run; a 4.8 pp disagreement quoted without an
-   interval is exactly the kind of claim this project has had to retract twice already.
+1. **Paired seeds at pressures 1.08 and 0.64.** Both are single runs, and they are the
+   points that would decide between "one uniform pressure offset" and "the model degrades
+   above 1.1". If the offset implied at 1.08 comes out near +0.05 with an interval, the
+   uniform-offset reading is confirmed and the "boundary at 1.1" framing should go; if it
+   comes out near zero, the model really does change behaviour and the admission
+   difference is the place to look. About 40 minutes per seed at 1.08.
+2. ~~Repeat the pressure-1.27 point on more seeds.~~ Done: `results/seeds_1p27/`.
 
-Giving `sim/engine.py` optimistic admission with chunked prefill is the larger fix. The
-sweep raises its priority -- it is now the leading explanation for a measured 10.9 pp gap
-rather than for a hypothetical one -- but step 2 should come first, because a
-single-seed effect is not yet worth rebuilding the engine for.
+Giving `sim/engine.py` optimistic admission with chunked prefill is still the larger fix,
+and it is now *less* urgent rather than more: the effect it was invoked to explain -- a
+gap that depends on admission width -- turned out not to be there. Do step 1 before
+rebuilding anything.
 
 ## The methodological point worth keeping
 
-This validation produced two false findings before producing a true one, and both were
-caught the same way — by asking what the measurement apparatus would report if the system
-under test were perfect.
+This validation produced three false findings before producing a true one. The first two
+were caught the same way — by asking what the measurement apparatus would report if the
+system under test were perfect. The third needed a different question, and a cheaper one.
 
 1. The first run reported an 8.1 pp disagreement caused entirely by the harness: prompts
    were built as `"word " * n`, which made all forty sessions byte-identical and mutual
    prefixes of one another, so vLLM served every session from every other session's cache
    and reported 99.6%. **Giving the simulator an unlimited pool** did not move its hit
    rate, which proved eviction was not involved and pointed straight at the harness.
-2. The second run reported a 25 pp disagreement and a 3.2x eviction ratio, and I wrote it
+2. The second run reported a 25 pp disagreement and a 3.2x eviction ratio, and it was written
    up as a refutation of the eviction model. It was an accounting difference. **Comparing
    the query count to the number of prompt tokens sent** — a ratio that must be 1.000 if
    the counters mean what they appear to mean — settles it in one line, and the same
    unlimited-pool ceiling shows the reported hit count exceeding the maximum possible.
    The redone measurement put the real disagreement at 1.4 pp, in the other direction.
+3. The third finding was a gap that depended on admission width — 4.8 pp against 10.9 pp
+   at the same pressure — which no single pressure offset can produce, so it was written
+   up as evidence that the admission model is what differs. It came from one seed per
+   point and did not survive four: the width effect is −1.2 pp, 95% [−6.1, +1.4].
+   **Run the same thing again with a different seed before explaining it.** The
+   explanation was constructed, was mechanistically plausible, and described noise.
 
-Both checks are cheap, both are denominator-level sanity rather than domain insight, and
-in both cases the wrong answer was more interesting than the right one, which is exactly
-why it got written up. `tests/test_invariants.py::test_query_accounting_matches_vllms_counters`
-now pins the relationship between the two definitions so the second mistake cannot recur
-silently.
+The first two checks are denominator-level sanity rather than domain insight, and the
+third is not even that — it is just repetition. All three are cheap. In all three cases
+the wrong answer was more interesting than the right one, which is exactly why it got
+written up, and why the habit that catches these has to be mechanical rather than a matter
+of being suspicious enough on the day.
+
+`tests/test_invariants.py::test_query_accounting_matches_vllms_counters` pins the
+relationship between the two hit-rate definitions so the second mistake cannot recur
+silently. There is no equivalent guard against the third, because no test can tell you
+that a number came from one seed — only the discipline of not explaining an effect until
+it has an interval.
 
 ## What is not established here
 
-- Seven runs, one seed each, one model, one workload generator. Every agreement and
-  every disagreement here is a single measurement without an interval.
+- Thirteen runs, one model, one workload generator. The pressure-1.27 comparison has
+  four paired seeds at cap 6 and three at cap 8; **every other point in this document
+  is still a single seed without an interval**, including both of the agreements that
+  the validation rests on.
 - Three pressures, and the boundary between the two regimes is located only to
   somewhere in (1.08, 1.27).
 - All comparisons above pressure 1.0 use *matched* admission. Under vLLM's default

@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-08-15T18:41:30Z",
+  "created_utc": "2026-08-20T20:32:42Z",
   "sessions": 60,
   "concurrency": 16,
   "max_num_seqs": 8,
@@ -104,33 +104,41 @@
   "measured_comparisons": [
     [
       0.64,
-      0.9151,
-      0.901,
-      "default admission"
+      0.0141,
+      "default admission, 1 seed"
     ],
     [
       1.08,
-      0.7382,
-      0.7517,
-      "matched, cap 8"
+      -0.0135,
+      "matched, cap 8, 1 seed"
     ],
     [
       1.27,
-      0.5193,
-      0.5668,
-      "matched, cap 8"
+      -0.0405,
+      "matched, cap 8, mean of 3 seeds"
     ],
     [
       1.27,
-      0.4644,
-      0.5733,
-      "matched, cap 6"
+      -0.0596,
+      "matched, cap 6, mean of 4 seeds"
     ]
   ],
   "implied_offsets": [
-    -0.2305346884886108,
-    0.01314566730848385,
-    0.04809940004433284,
-    0.11027420347006
+    [
+      -0.23053468848861078,
+      "default admission, 1 seed"
+    ],
+    [
+      0.013145667308483783,
+      "matched, cap 8, 1 seed"
+    ],
+    [
+      0.041011067406220646,
+      "matched, cap 8, mean of 3 seeds"
+    ],
+    [
+      0.06035208931878396,
+      "matched, cap 6, mean of 4 seeds"
+    ]
   ]
 }
