@@ -47,7 +47,7 @@ sim/          the simulator. stdlib only, no GPU, deterministic under a seed
   run.py        single-run CLI
 experiments/  sweeps that answer one question each, plus their figures
 bench/        GPU-side calibration: env check, vLLM launch, timing and batch fits
-hpc/          the batch job that repeats calibration + validation on an HPC node
+hpc/          an HPC round, written then NOT used -- see the decision in hpc/README.md
 tests/        invariants the simulator must hold for its numbers to mean anything
 docs/         findings, and the calibration ledger of measured vs invented constants
 results/      run outputs, each with full config + seed + environment
@@ -101,14 +101,6 @@ To recalibrate against real hardware (needs the GPU; releases it when done):
 
 ```bash
 bash bench/serve_calib.sh && python bench/check_env.py && python bench/read_server_config.py ~/vllm_calib_server.log && python -m bench.fit_timing && python -m bench.fit_batch
-```
-
-To repeat calibration and validation on an HPC node — needed only if the thesis reports
-HPC numbers rather than local ones, since the two must never share a figure. ~2.5 h,
-about RM 8 on a T4; see [hpc/README.md](hpc/README.md) for the four values to fill in:
-
-```bash
-sbatch --export=ALL,PROJECT=$HOME/agent-kv-retention,VENV=$HOME/venv-vllm,EXPECT_CAPABILITY=7.5,RM_PER_HOUR=3.06 hpc/calibrate.sbatch
 ```
 
 To re-validate the simulator's behaviour against vLLM (needs the GPU; ~90 min, releases it
@@ -175,6 +167,25 @@ Seven rules, all load-bearing:
    [docs/calibration.md](docs/calibration.md) for the row-by-row ledger. The pause and
    tool-result distributions are still invented, and they are what every headroom figure
    is a function of.
+
+## Platform
+
+Every number in this repository comes from one machine: an **RTX 5080 (Blackwell, sm_120)
+under WSL2**, with Qwen2.5-3B-Instruct on vLLM 0.26. That is a deliberate choice made on
+2026-08-19 rather than a limitation nobody got around to fixing — an HPC round was
+scripted (`hpc/`) and then not run, because one platform satisfies the
+never-mix-two-platforms rule more simply than two do.
+
+What it costs is that two WSL2-specific effects are properties of the reported numbers
+rather than things a second platform would have averaged away:
+
+- `step_overhead_s = 9.554 ms` includes a native-sampler penalty, because the torch wheel
+  ships the CUDA runtime without `nvcc` and FlashInfer cannot JIT its kernels. A machine
+  with a full toolkit would measure less.
+- The KV pool is what remains after a Windows desktop holds ~1.3 GiB.
+
+Both are in [docs/calibration.md](docs/calibration.md). Quote the constants as belonging
+to this setup, not to the card.
 
 ## License
 

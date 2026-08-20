@@ -1,4 +1,18 @@
-# HPC calibration round
+# HPC calibration round — NOT USED
+
+> **Decision, 2026-08-19: the thesis reports RTX 5080 / WSL2 numbers. This round is not
+> being run.** The scripts below are correct and tested and stay here in case that
+> changes, but nothing in the project depends on them, and `results/hpc/` does not exist.
+>
+> The rule they existed to serve -- one platform and one round per figure -- is satisfied
+> more simply by having only one platform. What it costs is that the WSL2-specific
+> properties in [calibration.md](../docs/calibration.md) are now disclosed limitations of
+> the reported numbers rather than artefacts that a second platform would have removed:
+> `step_overhead_s` carries a native-sampler penalty from the missing CUDA toolkit, and
+> the KV pool is what is left after a Windows desktop takes ~1.3 GiB.
+>
+> The RM 7,500 HPC credit expires at the end of semester and is forfeit if unused. This
+> decision spends none of it.
 
 Every engine constant in `sim/config.py` was fitted on a local RTX 5080 under WSL2, and
 [docs/calibration.md](../docs/calibration.md) records that some of them are WSL-specific

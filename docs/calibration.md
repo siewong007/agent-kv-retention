@@ -65,14 +65,22 @@ zero, understating the cost of a partial hit -- which is the central quantity th
 thesis measures. Marginal rate is 15.0k tok/s at position 0 and 7.6k tok/s at position
 16k. Guarded by `tests/test_invariants.py::test_prefill_is_charged_per_position`.
 
-### WSL-specific caveats that do not transfer to HPC
+### WSL-specific properties of the reported platform
+
+**Decision, 2026-08-19: the RTX 5080 under WSL2 is the only platform this project uses.**
+These were written when an HPC round was expected to supersede them, as things that "do
+not transfer". They now describe the machine every number in the thesis comes from, so
+they are disclosed limitations rather than deferred ones. In particular the second item
+means `step_overhead_s` carries a fixed penalty that a full CUDA toolkit would not have.
 
 - `VLLM_WSL2_ENABLE_PIN_MEMORY=1` is required; vLLM disables pinned memory under WSL by
   default and the V1 worker then dies with a misleading "UVA is not available".
 - `VLLM_USE_FLASHINFER_SAMPLER=0` is required, because FlashInfer JIT-compiles its
   sampling kernels and the torch wheel ships the CUDA runtime without `nvcc`. The native
   sampler is slower by a fixed per-step amount that lands inside the measured
-  `step_overhead_s`, so an HPC node with a full toolkit will measure a smaller one.
+  `step_overhead_s`. A machine with a full toolkit would measure a smaller one, so the
+  9.554 ms figure -- and every cost number derived from it -- is specific to this setup
+  and should be reported that way rather than as a property of the GPU.
 
 KV bytes per token for Qwen2.5-3B (bf16, as vLLM loads it):
 `2 (K,V) x 36 layers x 2 KV heads x 128 head_dim x 2 bytes = 36864 B/token`.

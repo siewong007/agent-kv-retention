@@ -143,8 +143,13 @@ Ordered by how much damage each would do to the report.
 3. **Open-loop operation is metastable near saturation** and its aggregates there are
    bimodal mixtures. More seeds estimate the mixture better, not an operating point —
    the fitted interval-shrinkage exponent is 0.10 against an ideal 0.5.
-4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080. Nothing
-   here has been checked against a second model or a headless server.
+4. **One model, one GPU, one context-length regime.** Qwen2.5-3B on an RTX 5080 under
+   WSL2, and as of 2026-08-19 that is the final platform by decision, not by default — an
+   HPC round was scripted and deliberately not run. So nothing here is checked against a
+   second model or a headless server, and two WSL2 effects are baked into the constants
+   rather than averaged away: `step_overhead_s` carries a native-sampler penalty from the
+   missing CUDA toolkit, and the KV pool is what a Windows desktop leaves behind. Report
+   the constants as belonging to this setup rather than to the card.
 5. ~~The simulator has never been validated against vLLM end-to-end.~~ **Done, with a
    boundary.** It tracks vLLM to about pressure 1.1 (2% on makespan, 1.4 pp on hit rate)
    and comes apart above it (11–19%, 4.8–10.9 pp at pressure 1.27). Everything quoted in
